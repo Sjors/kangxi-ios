@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3394" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Character" representedClassName="Character" syncable="YES">
+        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="simplified" attributeType="String" syncable="YES"/>
+        <relationship name="secondRadical" maxCount="1" deletionRule="Nullify" destinationEntity="SecondRadical" inverseName="characters" inverseEntity="SecondRadical" syncable="YES"/>
+    </entity>
+    <entity name="FirstRadical" representedClassName="FirstRadical" syncable="YES">
+        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="simplified" attributeType="String" syncable="YES"/>
+        <relationship name="secondRadicals" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SecondRadical" inverseName="firstRadical" inverseEntity="SecondRadical" syncable="YES"/>
+    </entity>
+    <entity name="SecondRadical" representedClassName="SecondRadical" syncable="YES">
+        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="simplified" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="characters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Character" inverseName="secondRadical" inverseEntity="Character" syncable="YES"/>
+        <relationship name="firstRadical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FirstRadical" inverseName="secondRadicals" inverseEntity="FirstRadical" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FirstRadical" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SecondRadical" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Character" positionX="0" positionY="0" width="0" height="0"/>
+    </elements>
 </model>

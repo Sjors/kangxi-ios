@@ -8,7 +8,10 @@
 
 #import "AppDelegate.h"
 
-#import "MainViewController.h"
+#import "FirstRadicalsViewController.h"
+
+// Temporary imports for dummy data:
+#import "FirstRadical.h"
 
 @implementation AppDelegate
 
@@ -19,10 +22,32 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    MainViewController *controller = (MainViewController *)self.window.rootViewController;
+    FirstRadicalsViewController *controller = (FirstRadicalsViewController *)self.window.rootViewController;
     controller.managedObjectContext = self.managedObjectContext;
+        
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext]];
     
-    //  testLabel.font = [UIFont fontWithName:@"STKaiti" size:30];
+    [request setIncludesSubentities:NO];
+    
+    NSError *err;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
+    if(count == NSNotFound) {
+        //Handle error
+    }
+    
+    if(count == 0) {        // Dummy data:
+        int tally = 0;
+        for(NSString *radical in @[@"人", @"口",@"亻",@"土",@"扌",@"日",@"日",@"日",@"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"] ) {
+            FirstRadical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext];
+            r.simplified = radical;
+            r.position = [NSNumber numberWithInt:tally];
+            tally++;
+        }
+                                   
+       [self.managedObjectContext save:nil];
+    }
+    
     
     return YES;
 }
