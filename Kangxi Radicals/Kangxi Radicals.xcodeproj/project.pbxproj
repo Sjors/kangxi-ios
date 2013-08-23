@@ -197,9 +197,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A2B849CB17C75AB2009801D0 /* Kangxi Radicals */ = {
+		A2B849CB17C75AB2009801D0 /* KangXi */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "Kangxi Radicals" */;
+			buildConfigurationList = A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "KangXi" */;
 			buildPhases = (
 				A2B849C817C75AB2009801D0 /* Sources */,
 				A2B849C917C75AB2009801D0 /* Frameworks */,
@@ -209,7 +209,7 @@
 			);
 			dependencies = (
 			);
-			name = "Kangxi Radicals";
+			name = KangXi;
 			productName = "Kangxi Radicals";
 			productReference = A2B849CC17C75AB2009801D0 /* Kangxi Radicals.app */;
 			productType = "com.apple.product-type.application";
@@ -262,7 +262,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A2B849CB17C75AB2009801D0 /* Kangxi Radicals */,
+				A2B849CB17C75AB2009801D0 /* KangXi */,
 				A2B849F417C75AB3009801D0 /* Kangxi RadicalsTests */,
 			);
 		};
@@ -316,7 +316,7 @@
 /* Begin PBXTargetDependency section */
 		A2B849FC17C75AB3009801D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A2B849CB17C75AB2009801D0 /* Kangxi Radicals */;
+			target = A2B849CB17C75AB2009801D0 /* KangXi */;
 			targetProxy = A2B849FB17C75AB3009801D0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -497,7 +497,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "Kangxi Radicals" */ = {
+		A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "KangXi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2B84A0817C75AB3009801D0 /* Debug */,
