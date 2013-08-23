@@ -22,7 +22,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    FirstRadicalsViewController *controller = (FirstRadicalsViewController *)self.window.rootViewController;
+    
+    self.window.tintColor = [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1];
+    
+    FirstRadicalsViewController *controller = [((UINavigationController *)((FirstRadicalsViewController *)self.window.rootViewController)).viewControllers objectAtIndex:0];
     controller.managedObjectContext = self.managedObjectContext;
         
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -38,7 +41,7 @@
     
     if(count == 0) {        // Dummy data:
         int tally = 0;
-        for(NSString *radical in @[@"人", @"口",@"亻",@"土",@"扌",@"日",@"日",@"日",@"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"] ) {
+        for(NSString *radical in @[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"] ) {
             FirstRadical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext];
             r.simplified = radical;
             r.position = [NSNumber numberWithInt:tally];

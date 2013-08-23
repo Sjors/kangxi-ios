@@ -35,36 +35,59 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
+}
+
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
- return [[self.fetchedResultsController fetchedObjects] count];
+    if (section == 0) {
+        return [[self.fetchedResultsController fetchedObjects] count];
+    } else {
+        return 1;
+    }
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"firstRadicalCell";
+    UICollectionViewCell *cell;
+    if(indexPath.section == 0) {
+        static NSString *CellIdentifier = @"firstRadicalCell";
 
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    [self configureCell:cell atIndexPath:indexPath];
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        [self configureCell:cell atIndexPath:indexPath];
+    } else {
+        static NSString *CellIdentifier = @"moreCell";
+        
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+
+    }
     
     return cell;
 }
 
 -(void)configureCell:(UICollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     FirstRadical *radical = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    UILabel *simplified = (UILabel *)[cell viewWithTag:1];
-    simplified.font = [UIFont fontWithName:@"STKaiti" size:50];
+    UIButton *simplified = (UIButton *)[cell viewWithTag:1];
+    simplified.titleLabel.font = [UIFont fontWithName:@"STKaiti" size:50];
     
-    simplified.text = radical.simplified;
+    [simplified setTitle:radical.simplified forState:UIControlStateNormal];
 }
 
--(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
-        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
+//-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+//    if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
+//        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
+//    } else {
+//        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
+//    }
+//}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return CGSizeMake(70,70);
     } else {
-        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
+        return CGSizeMake(320, 45);
     }
 }
-
 
 
 #pragma mark - NSFetchedResultController and delegates
