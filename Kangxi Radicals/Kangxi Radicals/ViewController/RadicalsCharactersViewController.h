@@ -1,5 +1,5 @@
 //
-//  FirstRadicalsViewController.h
+//  RadicalsCharactersViewController.h
 //  Kangxi Radicals
 //
 //  Created by Sjors Provoost on 23-08-13.
@@ -10,9 +10,11 @@
 #import <CoreData/CoreData.h>
 #import "FirstRadical.h"
 
-@interface FirstRadicalsViewController : UICollectionViewController {
+@interface RadicalsCharactersViewController : UICollectionViewController {
     NSFetchedResultsController *_fetchedResultsController;
 }
 @property NSManagedObjectContext *managedObjectContext;
 @property (readonly) NSFetchedResultsController *fetchedResultsController;
+@property NSString *mode;
+@property id radical;
 @end

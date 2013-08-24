@@ -25,7 +25,7 @@
 		A2B84A0217C75AB3009801D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0017C75AB3009801D0 /* InfoPlist.strings */; };
 		A2B84A0417C75AB3009801D0 /* Kangxi_RadicalsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B84A0317C75AB3009801D0 /* Kangxi_RadicalsTests.m */; };
 		A2B84A1017C76281009801D0 /* 华文楷体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0F17C76281009801D0 /* 华文楷体.TTF */; };
-		A2F5488017C7815F00FB2E5E /* FirstRadicalsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5487F17C7815F00FB2E5E /* FirstRadicalsViewController.m */; };
+		A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */; };
 		A2F5488317C787D600FB2E5E /* SecondRadical.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488217C787D600FB2E5E /* SecondRadical.m */; };
 		A2F5488617C787D700FB2E5E /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488517C787D700FB2E5E /* Character.m */; };
 		A2F5488917C787D700FB2E5E /* FirstRadical.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488817C787D700FB2E5E /* FirstRadical.m */; };
@@ -64,8 +64,8 @@
 		A2B84A0117C75AB3009801D0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A2B84A0317C75AB3009801D0 /* Kangxi_RadicalsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Kangxi_RadicalsTests.m; sourceTree = "<group>"; };
 		A2B84A0F17C76281009801D0 /* 华文楷体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "华文楷体.TTF"; sourceTree = "<group>"; };
-		A2F5487E17C7815F00FB2E5E /* FirstRadicalsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirstRadicalsViewController.h; path = ViewController/FirstRadicalsViewController.h; sourceTree = "<group>"; };
-		A2F5487F17C7815F00FB2E5E /* FirstRadicalsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FirstRadicalsViewController.m; path = ViewController/FirstRadicalsViewController.m; sourceTree = "<group>"; };
+		A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalsCharactersViewController.h; path = ViewController/RadicalsCharactersViewController.h; sourceTree = "<group>"; };
+		A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalsCharactersViewController.m; path = ViewController/RadicalsCharactersViewController.m; sourceTree = "<group>"; };
 		A2F5488117C787D600FB2E5E /* SecondRadical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecondRadical.h; path = Model/SecondRadical.h; sourceTree = "<group>"; };
 		A2F5488217C787D600FB2E5E /* SecondRadical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecondRadical.m; path = Model/SecondRadical.m; sourceTree = "<group>"; };
 		A2F5488417C787D700FB2E5E /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Character.h; path = Model/Character.h; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 			children = (
 				A2B849EC17C75AB2009801D0 /* FlipsideViewController.h */,
 				A2B849ED17C75AB2009801D0 /* FlipsideViewController.m */,
-				A2F5487E17C7815F00FB2E5E /* FirstRadicalsViewController.h */,
-				A2F5487F17C7815F00FB2E5E /* FirstRadicalsViewController.m */,
+				A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */,
+				A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -325,7 +325,7 @@
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
 				A2F5488317C787D600FB2E5E /* SecondRadical.m in Sources */,
-				A2F5488017C7815F00FB2E5E /* FirstRadicalsViewController.m in Sources */,
+				A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#define kEntitySecondRadical @"SecondRadical"
+
 @class Character, FirstRadical;
 
 @interface SecondRadical : NSManagedObject

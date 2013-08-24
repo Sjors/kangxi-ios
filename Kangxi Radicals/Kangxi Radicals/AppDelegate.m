@@ -8,10 +8,11 @@
 
 #import "AppDelegate.h"
 
-#import "FirstRadicalsViewController.h"
+#import "RadicalsCharactersViewController.h"
 
 // Temporary imports for dummy data:
 #import "FirstRadical.h"
+#import "SecondRadical.h"
 
 @implementation AppDelegate
 
@@ -25,9 +26,10 @@
     
     self.window.tintColor = [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1];
     
-    FirstRadicalsViewController *controller = [((UINavigationController *)((FirstRadicalsViewController *)self.window.rootViewController)).viewControllers objectAtIndex:0];
+    RadicalsCharactersViewController *controller = [((UINavigationController *)((RadicalsCharactersViewController *)self.window.rootViewController)).viewControllers objectAtIndex:0];
     controller.managedObjectContext = self.managedObjectContext;
-        
+    controller.mode = @"FirstRadical";
+    
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext]];
     
@@ -45,6 +47,19 @@
             FirstRadical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext];
             r.simplified = radical;
             r.position = [NSNumber numberWithInt:tally];
+            
+            if([radical isEqualToString:@"人"]) {
+                int tally2 = 0;
+                for(NSString *radical2 in @[@"人", @"口", @"土", @"忄", @"日", @"纟", @"刂", @"⺮", @"车", @"方", @"冫", @"子", @"王", @"⺷", @"卩", @"爫", @"二", @"冂", @"ハ", @"⺈"] ) {
+                    SecondRadical* r2 = [NSEntityDescription insertNewObjectForEntityForName:kEntitySecondRadical inManagedObjectContext:self.managedObjectContext];
+                    r2.simplified = radical2;
+                    r2.position = [NSNumber numberWithInt:tally2];
+                    r2.firstRadical = r;
+                }
+                tally2++;
+                
+            }
+            
             tally++;
         }
                                    
