@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Chinese.h"
 
 #define kEntityFirstRadical @"FirstRadical"
 
 @class SecondRadical;
 
-@interface FirstRadical : NSManagedObject
+@interface FirstRadical : NSManagedObject<Chinese>
 
-@property (nonatomic, retain) NSString * simplified;
 @property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) NSSet *secondRadicals;
 @end

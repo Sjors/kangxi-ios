@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "FirstRadical.h"
+#import "Chinese.h"
 
 @interface RadicalsCharactersViewController : UICollectionViewController {
     NSFetchedResultsController *_fetchedResultsController;
@@ -16,5 +17,5 @@
 @property NSManagedObjectContext *managedObjectContext;
 @property (readonly) NSFetchedResultsController *fetchedResultsController;
 @property NSString *mode;
-@property id radical;
+@property id<Chinese>radical;
 @end

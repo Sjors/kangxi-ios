@@ -13,6 +13,7 @@
 // Temporary imports for dummy data:
 #import "FirstRadical.h"
 #import "SecondRadical.h"
+#import "Character.h"
 
 @implementation AppDelegate
 
@@ -55,6 +56,18 @@
                     r2.simplified = radical2;
                     r2.position = [NSNumber numberWithInt:tally2];
                     r2.firstRadical = r;
+                    
+                     if([radical2 isEqualToString:@"口"]) {
+                         int tally = 0;
+                         for(NSString *character in @[@"喝", @"答", @"给", @"拿", @"容", @"命", @"合", @"拾", @"咳", @"盒", @"吸", @"俗"] ) {
+                             Character* c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:self.managedObjectContext];
+                             c.simplified = character;
+                             c.position = [NSNumber numberWithInt:tally];
+                             c.secondRadical = r2;
+                         }
+                         tally++;
+
+                     }
                 }
                 tally2++;
                 
