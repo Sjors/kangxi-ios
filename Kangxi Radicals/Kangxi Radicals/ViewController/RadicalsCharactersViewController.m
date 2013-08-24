@@ -7,6 +7,8 @@
 //
 
 #import "RadicalsCharactersViewController.h"
+#import "CharacterViewController.h"
+
 #import "FirstRadical.h"
 #import "SecondRadical.h"
 #import "Character.h"
@@ -72,34 +74,16 @@
     [self.fetchedResultsController performFetch:nil];
 }
 
--(UIView *)titleViewWithText:(NSString *)title numberOfChineseCharacters:(int)n {
-    NSMutableAttributedString *attString=[[NSMutableAttributedString alloc] initWithString:title];
-    
-    UIFont *font=[UIFont fontWithName:@"STKaiti" size:20.0f];
-    [attString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, n)];
-    
-    
-    UIView *customTitleView = [[UIView alloc] init];
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 30.0f)];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    
-    titleLabel.attributedText = attString;
-    [titleLabel sizeToFit];
-    
-    customTitleView.frame = CGRectMake(self.navigationItem.titleView.frame.size.width/2 - titleLabel.frame.size.width/2, self.navigationItem.titleView.frame.size.height/2 - titleLabel.frame.size.height/2, titleLabel.frame.size.width, titleLabel.frame.size.height);
-    
-    [customTitleView addSubview:titleLabel];
-    
-    return customTitleView;
-}
-
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     if([identifier isEqualToString:@"search"]) {
-        return [self.mode isEqualToString:@"FirstRadical"] || [self.mode isEqualToString:@"SecondRadical"] ;
+        if([self.mode isEqualToString:@"FirstRadical"] || [self.mode isEqualToString:@"SecondRadical"]) {
+            return YES;
+        } else if ([self.mode isEqualToString:@"Character"]) {
+            [self performSegueWithIdentifier:@"character" sender:self];
+            return NO;
+        }
     }
-    
-    return false;
+    return NO;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -107,16 +91,27 @@
     //        [[segue destinationViewController] setDelegate:self];
     //    }
     
-    RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
     
-    controller.managedObjectContext = self.managedObjectContext;
     
     if([self.mode isEqualToString:@"FirstRadical"]) {
+        RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
+        controller.managedObjectContext = self.managedObjectContext;
+
+
         controller.mode = @"SecondRadical";
         controller.radical = [self.fetchedResultsController objectAtIndexPath:[self.collectionView.indexPathsForSelectedItems firstObject]];
     } else if([self.mode isEqualToString:@"SecondRadical"]) {
+        RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
+        controller.managedObjectContext = self.managedObjectContext;
+
+
         controller.mode = @"Character";
         controller.radical = [self.fetchedResultsController objectAtIndexPath:[self.collectionView.indexPathsForSelectedItems firstObject]];
+    } else if([self.mode isEqualToString:@"Character"]) {
+        CharacterViewController *controller = (CharacterViewController *)segue.destinationViewController;
+        controller.managedObjectContext = self.managedObjectContext;
+
+        controller.character = [self.fetchedResultsController objectAtIndexPath:[self.collectionView.indexPathsForSelectedItems firstObject]];
     }
 
     // Cool idea, but I have no idea how this is supposed to work:

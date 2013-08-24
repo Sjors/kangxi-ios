@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
+		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
 		A2B849D217C75AB2009801D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849D117C75AB2009801D0 /* CoreGraphics.framework */; };
 		A2B849D417C75AB2009801D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849D317C75AB2009801D0 /* UIKit.framework */; };
@@ -43,6 +45,10 @@
 
 /* Begin PBXFileReference section */
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
+		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
+		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
+		A2ABB77317C8E93F002931C9 /* UIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Additions.h"; path = "Categories/UIViewController+Additions.h"; sourceTree = "<group>"; };
+		A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Additions.m"; path = "Categories/UIViewController+Additions.m"; sourceTree = "<group>"; };
 		A2B849CC17C75AB2009801D0 /* Kangxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kangxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B849CF17C75AB2009801D0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A2B849D117C75AB2009801D0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -101,6 +107,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A2ABB77617C8E977002931C9 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A2ABB77317C8E93F002931C9 /* UIViewController+Additions.h */,
+				A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		A2B849C317C75AB2009801D0 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +157,7 @@
 				A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */,
 				A2F5487D17C780F200FB2E5E /* Model */,
 				A2F5487317C7660000FB2E5E /* ViewControllers */,
+				A2ABB77617C8E977002931C9 /* Categories */,
 				A2B84A0D17C7623C009801D0 /* Resources */,
 				A2B849D817C75AB2009801D0 /* Supporting Files */,
 			);
@@ -201,6 +217,8 @@
 				A2B849ED17C75AB2009801D0 /* FlipsideViewController.m */,
 				A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */,
 				A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */,
+				A2ABB77017C8E768002931C9 /* CharacterViewController.h */,
+				A2ABB77117C8E768002931C9 /* CharacterViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -327,6 +345,8 @@
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
 				A2F5488317C787D600FB2E5E /* SecondRadical.m in Sources */,
+				A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */,
+				A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */,
 				A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

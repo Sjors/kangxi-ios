@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "FirstRadical.h"
 #import "Chinese.h"
+#import "UIViewController+Additions.h"
 
 @interface RadicalsCharactersViewController : UICollectionViewController {
     NSFetchedResultsController *_fetchedResultsController;

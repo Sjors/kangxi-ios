@@ -64,10 +64,50 @@
                     </collectionView>
                     <navigationItem key="navigationItem" title="Which radical do you recognize?" id="rGC-23-waQ"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <segue destination="2Vg-IY-BaT" kind="push" identifier="character" id="iZu-pe-3Na"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrV-g3-GcS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="30" y="187"/>
+        </scene>
+        <!--Character View Controller - 拿-->
+        <scene sceneID="gUH-67-GHX">
+            <objects>
+                <viewController storyboardIdentifier="Character" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2Vg-IY-BaT" customClass="CharacterViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bLp-Om-62p"/>
+                        <viewControllerLayoutGuide type="bottom" id="LAs-gf-0BQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="J39-lm-mpE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="拿" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agj-R5-z8x">
+                                <rect key="frame" x="20" y="86" width="280" height="280"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="250"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ná" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPW-op-wd1">
+                                <rect key="frame" x="20" y="374" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="拿" id="0Eg-Py-G3e"/>
+                    <connections>
+                        <outlet property="pinyin" destination="GPW-op-wd1" id="B7K-Wy-r2R"/>
+                        <outlet property="simplified" destination="Agj-R5-z8x" id="S5W-SV-fWK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TCN-lo-Rut" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="425" y="189"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Pq2-TV-cTx">
