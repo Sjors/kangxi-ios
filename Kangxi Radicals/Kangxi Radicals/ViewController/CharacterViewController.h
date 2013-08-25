@@ -10,9 +10,7 @@
 #import "Character.h"
 #import "UIViewController+Additions.h"
 
-@interface CharacterViewController : UIViewController {
-    IBOutlet UILabel *simplified;
-    IBOutlet UILabel *pinyin;
+@interface CharacterViewController : UITableViewController {
 }
 
 @property NSManagedObjectContext *managedObjectContext;

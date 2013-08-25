@@ -14,6 +14,7 @@
 #import "FirstRadical.h"
 #import "SecondRadical.h"
 #import "Character.h"
+#import "Word.h"
 
 @implementation AppDelegate
 
@@ -64,6 +65,21 @@
                              c.simplified = character;
                              c.position = [NSNumber numberWithInt:tally];
                              c.secondRadical = r2;
+                             
+                             if([character isEqualToString:@"答"]) {
+                                 int tally = 0;
+                                 for(NSArray *word in @[@[@"答", @"answer, reply; return; assent to"], @[@"报答", @"to repay; to requite"], @[@"答应", @"to promise; to agree; to reply"], @[@"答案", @"answer; solution;"], @[@"答辩", @"to reply (to an accusatio; to defend one's dissertat"], @[@"回答", @"to reply; to answer; the answer"]] ) {
+                                     Word* w = [NSEntityDescription insertNewObjectForEntityForName:kEntityWord inManagedObjectContext:self.managedObjectContext];
+                                     w.simplified = [word firstObject];
+                                     w.english = [word lastObject];
+
+                                     w.position = [NSNumber numberWithInt:tally];
+                                     w.character = c;
+                                 }
+                                 tally++;
+                                 
+                             }
+
                          }
                          tally++;
 

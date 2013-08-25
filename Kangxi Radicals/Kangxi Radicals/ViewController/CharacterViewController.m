@@ -26,16 +26,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.titleView = [self titleViewWithText:self.character.simplified numberOfChineseCharacters:1];
-    
-    simplified.font = [UIFont fontWithName:@"STKaiti" size:250];
-    simplified.text = self.character.simplified;
-    
-    NSMutableString *string = [self.character.simplified mutableCopy];
-    CFStringTransform((__bridge CFMutableStringRef)(string),
+    NSMutableString *pinyin = [self.character.simplified mutableCopy];
+    CFStringTransform((__bridge CFMutableStringRef)(pinyin),
                       NULL, kCFStringTransformMandarinLatin, NO);
+
     
-    pinyin.text = string;
+    NSString *titleText = [NSString stringWithFormat:@"%@ %@",self.character.simplified, pinyin];
+    self.navigationItem.titleView = [self titleViewWithText:titleText numberOfChineseCharacters:1];
+    
+//    simplified.font = [UIFont fontWithName:@"STKaiti" size:250];
+//    simplified.text = self.character.simplified;
+//    
+//
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,5 +45,16 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+# pragma mark Tableview and delegates
+-(int)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 0;
+    //    return [[self.fetchedResultsController fetchedObjects] count];
+}
+
 
 @end

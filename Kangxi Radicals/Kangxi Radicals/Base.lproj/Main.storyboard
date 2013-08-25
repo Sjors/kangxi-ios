@@ -65,49 +65,57 @@
                     <navigationItem key="navigationItem" title="Which radical do you recognize?" id="rGC-23-waQ"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="2Vg-IY-BaT" kind="push" identifier="character" id="iZu-pe-3Na"/>
+                        <segue destination="4CX-tG-a95" kind="push" identifier="character" id="38d-Cs-AW0"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrV-g3-GcS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="30" y="187"/>
         </scene>
-        <!--Character View Controller - 拿-->
-        <scene sceneID="gUH-67-GHX">
+        <!--Character View Controller - 答 dá-->
+        <scene sceneID="RAM-th-3PZ">
             <objects>
-                <viewController storyboardIdentifier="Character" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2Vg-IY-BaT" customClass="CharacterViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="bLp-Om-62p"/>
-                        <viewControllerLayoutGuide type="bottom" id="LAs-gf-0BQ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="J39-lm-mpE">
+                <tableViewController id="4CX-tG-a95" customClass="CharacterViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bco-bp-p1F">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="拿" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agj-R5-z8x">
-                                <rect key="frame" x="20" y="86" width="280" height="280"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="250"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ná" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPW-op-wd1">
-                                <rect key="frame" x="20" y="374" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="拿" id="0Eg-Py-G3e"/>
-                    <connections>
-                        <outlet property="pinyin" destination="GPW-op-wd1" id="B7K-Wy-r2R"/>
-                        <outlet property="simplified" destination="Agj-R5-z8x" id="S5W-SV-fWK"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TCN-lo-Rut" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="wordCell" textLabel="p7w-dF-C9o" detailTextLabel="V4W-Uw-R3h" style="IBUITableViewCellStyleSubtitle" id="rbM-8X-Uvp">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rbM-8X-Uvp" id="e3p-4r-AJ0">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="答 (dá)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p7w-dF-C9o">
+                                            <rect key="frame" x="15" y="3" width="53" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="answer, reply; return; assent to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V4W-Uw-R3h">
+                                            <rect key="frame" x="15" y="25" width="172" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="4CX-tG-a95" id="wg3-q3-pFP"/>
+                            <outlet property="delegate" destination="4CX-tG-a95" id="jHJ-Ky-6ad"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="答 dá" id="QUq-W5-dad"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ezw-uY-bwU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="425" y="189"/>
+            <point key="canvasLocation" x="438" y="187"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Pq2-TV-cTx">

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A212613417CA66D50022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613317CA66D50022390D /* Word.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -44,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A212613217CA66D50022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
+		A212613317CA66D50022390D /* Word.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Word.m; path = Model/Word.m; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
 		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
 		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
@@ -233,6 +236,8 @@
 				A2F5488117C787D600FB2E5E /* SecondRadical.h */,
 				A2F5488217C787D600FB2E5E /* SecondRadical.m */,
 				A2ABB76F17C8E1C0002931C9 /* Chinese.h */,
+				A212613217CA66D50022390D /* Word.h */,
+				A212613317CA66D50022390D /* Word.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 			files = (
 				A2B849E217C75AB2009801D0 /* AppDelegate.m in Sources */,
 				A2F5488917C787D700FB2E5E /* FirstRadical.m in Sources */,
+				A212613417CA66D50022390D /* Word.m in Sources */,
 				A2F5488617C787D700FB2E5E /* Character.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
