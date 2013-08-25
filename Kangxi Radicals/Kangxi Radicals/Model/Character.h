@@ -19,4 +19,6 @@
 @property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) SecondRadical *secondRadical;
 
+-(NSString *)pinyin;
+
 @end

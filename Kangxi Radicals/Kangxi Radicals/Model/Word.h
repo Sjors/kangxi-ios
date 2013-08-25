@@ -20,5 +20,7 @@
 @property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) Character *character;
 
+-(NSString *)pinyin;
+
 
 @end

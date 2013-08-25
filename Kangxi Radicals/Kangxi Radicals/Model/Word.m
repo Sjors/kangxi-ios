@@ -17,5 +17,13 @@
 @dynamic character;
 @dynamic position;
 
+// Duplicate from character...
+-(NSString *)pinyin {
+    NSMutableString *pinyin = [self.simplified mutableCopy];
+    CFStringTransform((__bridge CFMutableStringRef)(pinyin),
+                      NULL, kCFStringTransformMandarinLatin, NO);
+    
+    return pinyin;
+}
 
 @end

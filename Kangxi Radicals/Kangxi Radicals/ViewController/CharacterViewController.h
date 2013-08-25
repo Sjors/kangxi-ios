@@ -11,9 +11,12 @@
 #import "UIViewController+Additions.h"
 
 @interface CharacterViewController : UITableViewController {
+    NSFetchedResultsController *_fetchedResultsController;
 }
 
 @property NSManagedObjectContext *managedObjectContext;
+@property (readonly) NSFetchedResultsController *fetchedResultsController;
+
 @property Character *character;
 
 @end
