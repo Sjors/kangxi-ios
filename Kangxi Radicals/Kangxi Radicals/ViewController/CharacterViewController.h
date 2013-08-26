@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Character.h"
 #import "UIViewController+Additions.h"
+#import <AVFoundation/AVFoundation.h>
 
-@interface CharacterViewController : UITableViewController {
+@interface CharacterViewController : UITableViewController <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate, AVAudioPlayerDelegate> {
     NSFetchedResultsController *_fetchedResultsController;
 }
 
