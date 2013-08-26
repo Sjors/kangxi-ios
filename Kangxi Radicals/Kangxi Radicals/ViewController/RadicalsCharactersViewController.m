@@ -164,7 +164,13 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     if([self.mode isEqualToString:@"Radical"]) {
-        return [self.fetchedResultsController.sections count] + 1;
+        if (self.radical && [self.radical.section intValue] == 1) {
+            // Second screen radicals do not have assorter characters
+            return [self.fetchedResultsController.sections count];
+
+        } else {
+            return [self.fetchedResultsController.sections count] + 1;
+        }
     } else {
         return [self.fetchedResultsController.sections count];
 
@@ -226,8 +232,11 @@
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
     } else {
         UICollectionReusableView *view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
-        if([self.mode isEqualToString:@"Character"] || indexPath.section == [self.fetchedResultsController.sections count]) {
+        if([self.mode isEqualToString:@"Character"] || indexPath.section == [self.fetchedResultsController.sections count] || (self.radical && [self.radical.section intValue] == 1)) {
             [view viewWithTag:1].hidden = YES;
+        } else {
+            [view viewWithTag:1].hidden = NO;
+
         }
         return view;
 

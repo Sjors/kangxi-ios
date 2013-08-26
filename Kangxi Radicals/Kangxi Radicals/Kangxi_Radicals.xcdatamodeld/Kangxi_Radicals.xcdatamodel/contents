@@ -17,8 +17,8 @@
     </entity>
     <entity name="Word" representedClassName="Word" syncable="YES">
         <attribute name="english" attributeType="String" syncable="YES"/>
-        <attribute name="position" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
+        <attribute name="wordLength" attributeType="Integer 16" syncable="YES"/>
         <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="words" inverseEntity="Character" syncable="YES"/>
     </entity>
     <elements>

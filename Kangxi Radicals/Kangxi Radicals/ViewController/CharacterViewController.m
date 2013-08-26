@@ -271,10 +271,12 @@
     
     [fetchRequest setEntity:entity];
     
+    
+    
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY characters = %@", self.character]];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]
-                              initWithKey:@"position" ascending:YES  selector:nil];
+                              initWithKey:@"wordLength" ascending:YES  selector:nil];
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     

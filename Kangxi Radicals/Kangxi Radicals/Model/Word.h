@@ -18,7 +18,7 @@
 
 @property (nonatomic, retain) NSString * simplified;
 @property (nonatomic, retain) NSString * english;
-@property (nonatomic, retain) NSNumber * position;
+@property (nonatomic, retain) NSNumber * wordLength;
 @property (nonatomic, retain) NSSet *characters;
 @end
 
@@ -31,5 +31,6 @@
 
 -(NSString *)pinyin;
 
++ (Word *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

@@ -34,4 +34,7 @@
 
 -(NSString *)pinyin;
 
++ (Character *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context;
+
+
 @end
