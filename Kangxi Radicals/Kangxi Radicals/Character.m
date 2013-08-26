@@ -15,7 +15,6 @@
 
 @dynamic position;
 @dynamic simplified;
-@dynamic secondRadical;
 @dynamic words;
 
 -(NSString *)pinyin {

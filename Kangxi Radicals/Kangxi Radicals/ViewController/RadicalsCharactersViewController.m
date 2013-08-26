@@ -72,7 +72,7 @@
         
     }else if([self.mode isEqualToString:@"Character"]) {
         self.entityName = kEntityCharacter;
-        self.predicate =[NSPredicate predicateWithFormat:@"secondRadical = %@", self.radical];
+        self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@", self.radical];
         
         NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
                                            initWithKey:@"position" ascending:YES  selector:nil];

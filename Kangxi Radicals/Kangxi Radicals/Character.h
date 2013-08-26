@@ -17,7 +17,6 @@
 
 @interface Character : NSManagedObject <Chinese>
 
-@property (nonatomic, retain) Radical *secondRadical;
 @property (nonatomic, retain) NSSet *words;
 @end
 
@@ -27,6 +26,11 @@
 - (void)removeWordsObject:(Word *)value;
 - (void)addWords:(NSSet *)values;
 - (void)removeWords:(NSSet *)values;
+
+- (void)addSecondRadicalsObject:(Radical *)value;
+- (void)removeSecondRadicalsObject:(Radical *)value;
+- (void)addSecondRadicals:(NSSet *)values;
+- (void)removeSecondRadicals:(NSSet *)values;
 
 -(NSString *)pinyin;
 

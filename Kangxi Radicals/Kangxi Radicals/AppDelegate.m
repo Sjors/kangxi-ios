@@ -79,7 +79,7 @@
                                      c.simplified = character;
                                      c.position = [NSNumber numberWithInt:cTally];
                                     
-                                     c.secondRadical = r2;
+                                     [c addSecondRadicalsObject:r2];
                                     
                                      if([character isEqualToString:@"答"]) {
                                          int wTally = 0;
@@ -112,7 +112,7 @@
                         c.simplified = character;
                         c.position = [NSNumber numberWithInt:renTally];
                         
-                        c.secondRadical = r; // R is "isFirstRadical" but it is the secondRadical of these characters.
+                        [c addSecondRadicalsObject:r]; // R is "isFirstRadical" but it is the secondRadical of these characters.
                         renTally++;
                     }
 
