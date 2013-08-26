@@ -3,7 +3,7 @@
     <entity name="Character" representedClassName="Character" syncable="YES">
         <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
-        <relationship name="secondRadical" maxCount="1" deletionRule="Nullify" destinationEntity="Radical" inverseName="characters" inverseEntity="Radical" syncable="YES"/>
+        <relationship name="secondRadical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Radical" inverseName="characters" inverseEntity="Radical" syncable="YES"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="characters" inverseEntity="Word" syncable="YES"/>
     </entity>
     <entity name="Radical" representedClassName="Radical" syncable="YES">

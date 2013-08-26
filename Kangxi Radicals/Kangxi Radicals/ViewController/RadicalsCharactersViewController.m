@@ -42,9 +42,9 @@
     [super viewDidLoad];
     
     
-    if([self.mode isEqualToString:@"FirstRadical"]) {
+    if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
         self.entityName = kEntityRadical;
-        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@", @YES];
+        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@ OR section == 2", @YES];
         self.sectionNameKeyPath = @"section";
         NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
                                          initWithKey:@"section" ascending:YES  selector:nil];
@@ -54,9 +54,9 @@
         self.sortDescriptors = @[sortSection, sortPostition];
         
         self.title = @"Which radical do you recognize?";
-    } else if([self.mode isEqualToString:@"SecondRadical"]) {
+    } else if([self.mode isEqualToString:@"Radical"]) {
         self.entityName = kEntityRadical;
-        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@", self.radical, @NO];
+        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND section < 2", self.radical, @NO];
         self.sectionNameKeyPath = @"section";
         
         NSString *title = [NSString stringWithFormat:@"%@ - Pick one more", ((Radical *)self.radical).simplified];
@@ -79,9 +79,19 @@
         
         self.sortDescriptors = @[sortPostition];
         
-        NSString *title = [NSString stringWithFormat:@"%@ %@ characters", ((Radical *)self.radical).firstRadical.simplified, ((Radical *)self.radical).simplified];
+        NSString *title;
+        if(self.radical.firstRadical) {
+            title = [NSString stringWithFormat:@"%@ %@ characters", self.radical.firstRadical.simplified, self.radical.simplified];
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3];
+
+        } else if (self.radical) {
+            title = [NSString stringWithFormat:@"%@ characters",self.radical.simplified];
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1];
+        } else {
+            self.title = @"Assorted characters";
+        }
+
         
-        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3];  
     } else {
         NSLog(@"Unknown mode, not good...");
     }
@@ -91,13 +101,17 @@
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     if([identifier isEqualToString:@"search"]) {
-        if([self.mode isEqualToString:@"FirstRadical"] || [self.mode isEqualToString:@"SecondRadical"]) {
+        if([self.mode isEqualToString:@"Radical"]) {
             return YES;
         } else if ([self.mode isEqualToString:@"Character"]) {
             [self performSegueWithIdentifier:@"character" sender:self];
             return NO;
         }
     }
+    if([identifier isEqualToString:@"assortedCharactersSegue"]) {
+        return YES;
+    }
+    
     return NO;
 }
 
@@ -108,20 +122,30 @@
     
     
     
-    if([self.mode isEqualToString:@"FirstRadical"]) {
+    if([self.mode isEqualToString:@"Radical"]) {
         RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
         controller.managedObjectContext = self.managedObjectContext;
 
+        NSIndexPath *indexPath =  [self.collectionView.indexPathsForSelectedItems firstObject];
+        
+        if (indexPath.section < [self.fetchedResultsController.sections count]) {
+            Radical *radical =[self.fetchedResultsController objectAtIndexPath:indexPath];
+            controller.radical = radical;
+            if([radical.isFirstRadical boolValue]) {
+                controller.mode = @"Radical";
+            } else {
+                controller.mode = @"Character";
+                
+            }
 
-        controller.mode = @"SecondRadical";
-        controller.radical = [self.fetchedResultsController objectAtIndexPath:[self.collectionView.indexPathsForSelectedItems firstObject]];
-    } else if([self.mode isEqualToString:@"SecondRadical"]) {
-        RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
-        controller.managedObjectContext = self.managedObjectContext;
-
-
-        controller.mode = @"Character";
-        controller.radical = [self.fetchedResultsController objectAtIndexPath:[self.collectionView.indexPathsForSelectedItems firstObject]];
+        } else {
+            controller.mode = @"Character";
+            if (self.radical) {
+                controller.radical = self.radical;
+            }
+        }
+      
+        
     } else if([self.mode isEqualToString:@"Character"]) {
         CharacterViewController *controller = (CharacterViewController *)segue.destinationViewController;
         controller.managedObjectContext = self.managedObjectContext;
@@ -139,21 +163,52 @@
 #pragma mark - UICollectionView and delegates
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [self.fetchedResultsController.sections count];
+    if([self.mode isEqualToString:@"Radical"]) {
+        return [self.fetchedResultsController.sections count] + 1;
+    } else {
+        return [self.fetchedResultsController.sections count];
+
+    }
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];}
+    if([self sectionWithChineseCells:section]) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+        return [sectionInfo numberOfObjects];
+    } else {
+        return 1;
+    }
+}
+
+-(BOOL)sectionWithChineseCells:(NSInteger)section {
+    return [self.mode isEqualToString:@"Character"] || section < [self.fetchedResultsController.sections count];
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if([self sectionWithChineseCells:indexPath.section]) {
+        return CGSizeMake(70, 70);
+    } else {
+        return CGSizeMake(320, 44);
+
+    }
+}
+
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
-    static NSString *CellIdentifier = @"chineseCell";
-
-    cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    [self configureCell:cell atIndexPath:indexPath];
-       
+    if([self sectionWithChineseCells:indexPath.section]) {
+        static NSString *CellIdentifier = @"chineseCell";
+
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        [self configureCell:cell atIndexPath:indexPath];
+    } else {
+        static NSString *CellIdentifier = @"assortedCharactersCell";
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    }
+    
     return cell;
 }
 
@@ -170,7 +225,12 @@
     if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
     } else {
-        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
+        UICollectionReusableView *view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
+        if([self.mode isEqualToString:@"Character"] || indexPath.section == [self.fetchedResultsController.sections count]) {
+            [view viewWithTag:1].hidden = YES;
+        }
+        return view;
+
     }
 }
 

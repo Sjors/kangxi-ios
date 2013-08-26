@@ -29,7 +29,7 @@
     
     RadicalsCharactersViewController *controller = [((UINavigationController *)((RadicalsCharactersViewController *)self.window.rootViewController)).viewControllers objectAtIndex:0];
     controller.managedObjectContext = self.managedObjectContext;
-    controller.mode = @"FirstRadical";
+    controller.mode = @"Radical";
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext]];
@@ -44,13 +44,17 @@
     
     if(count == 0) {        // Dummy data:
         int sectionTally = 0;
-        for(NSArray *section in @[@[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"],
-            @[@"女", @"心", @"纟", @"辶", @"贝", @"目", @"尸", @"工", @"王", @"戈", @"匕", @"夂", @"巳", @"乚", @"冂", @"卜", @"𠃌", @"⺈"]]) {
+        for(NSArray *section in @[
+            @[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"],
+            @[@"女", @"心", @"纟", @"辶", @"贝", @"目", @"尸", @"工", @"王", @"戈", @"匕", @"夂", @"巳", @"乚", @"冂", @"卜", @"𠃌", @"⺈"],
+            @[@"忄", @"钅", @"刂", @"页", @"巾", @"山", @"攵", @"彳", @"方", @"儿", @"冫", @"子", @"斤", @"白", @"皿", @"干", @"夕", @"止", @"阝", @"ハ"]
+        ]) {
             int tally = 0;
 
             for(NSString *radical in section ) {
                 Radical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext];
-                r.isFirstRadical = @YES;
+                r.isFirstRadical = [NSNumber numberWithBool:(sectionTally == 0 || sectionTally == 1)];
+                    
                 r.simplified = radical;
                 r.position = [NSNumber numberWithInt:tally];
                 r.section = [NSNumber numberWithInt:sectionTally];
@@ -101,6 +105,18 @@
                     
                     }
                     
+                    // Assorted characters with ren:
+                    int renTally = 0;
+                    for(NSString *character in @[@"价", @"俩", @"俗", @"拾", @"擦", @"脸", @"输", @"茶"] ) {
+                        Character* c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:self.managedObjectContext];
+                        c.simplified = character;
+                        c.position = [NSNumber numberWithInt:renTally];
+                        
+                        c.secondRadical = r; // R is "isFirstRadical" but it is the secondRadical of these characters.
+                        renTally++;
+                    }
+
+                    
                 }
                 
                 tally++;
@@ -108,17 +124,26 @@
             sectionTally++;
         }
         
+        int cTally = 0;
+        
+        for(NSString *character in @[@"推", @"赛", @"齐", @"黑", @"黄", @"鸽", @"鸟", @"鲜", @"鱼", @"马", @"码", @"首"]) {
+            Character* c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:self.managedObjectContext];
+            c.simplified = character;
+            c.position = [NSNumber numberWithInt:cTally];
+            cTally++;
+        }
+        
         NSError *error;
        [self.managedObjectContext save:&error];
         if(error != nil) {
-            
+          
         }
     }
     
     
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

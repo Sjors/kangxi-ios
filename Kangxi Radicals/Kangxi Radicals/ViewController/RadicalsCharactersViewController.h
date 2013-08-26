@@ -18,5 +18,5 @@
 @property NSManagedObjectContext *managedObjectContext;
 @property (readonly) NSFetchedResultsController *fetchedResultsController;
 @property NSString *mode;
-@property id<Chinese>radical;
+@property Radical *radical;
 @end
