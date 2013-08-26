@@ -11,6 +11,7 @@
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
 		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
+		A21AE0E317CBB50100168361 /* import.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0E217CBB50100168361 /* import.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -52,6 +53,8 @@
 		A21AE0DB17CB87C100168361 /* Character.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Character.m; sourceTree = "<group>"; };
 		A21AE0DD17CB87C200168361 /* Radical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Radical.h; sourceTree = "<group>"; };
 		A21AE0DE17CB87C200168361 /* Radical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Radical.m; sourceTree = "<group>"; };
+		A21AE0E217CBB50100168361 /* import.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = import.m; sourceTree = "<group>"; };
+		A21AE0E417CBB87200168361 /* import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = import.h; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
 		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
 		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 			children = (
 				A2B849E017C75AB2009801D0 /* AppDelegate.h */,
 				A2B849E117C75AB2009801D0 /* AppDelegate.m */,
+				A21AE0E417CBB87200168361 /* import.h */,
+				A21AE0E217CBB50100168361 /* import.m */,
 				A2B849E317C75AB2009801D0 /* Main.storyboard */,
 				A2F5487D17C780F200FB2E5E /* Model */,
 				A2F5487317C7660000FB2E5E /* ViewControllers */,
@@ -347,6 +352,7 @@
 				A212613717CA71500022390D /* Word.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
 				A21AE0DF17CB87C200168361 /* Radical.m in Sources */,
+				A21AE0E317CBB50100168361 /* import.m in Sources */,
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
 				A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */,
