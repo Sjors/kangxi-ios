@@ -14,7 +14,7 @@
 #import "Radical.h"
 #import "Character.h"
 #import "Word.h"
-#import "import.h"
+//#import "import.h"
 
 @implementation AppDelegate
 
@@ -37,15 +37,15 @@
     
     [request setIncludesSubentities:NO];
     
-    NSError *err;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
-    if(count == NSNotFound) {
-        //Handle error
-    }
+//    NSError *err;
+//    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
+//    if(count == NSNotFound) {
+//        //Handle error
+//    }
     
-    
-    if(count == 0) {        // Dummy data:
-        [Populator import:self.managedObjectContext];
+//    
+//    if(count == 0) {        // Dummy data:
+//        [Populator import:self.managedObjectContext];
 //        int sectionTally = 0;
 //        for(NSArray *section in @[
 //            @[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"],
@@ -141,7 +141,7 @@
 //        if(error != nil) {
 //          
 //        }
-    }
+//    }
     
     
     return YES;
@@ -229,9 +229,20 @@
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Kangxi_Radicals.sqlite"];
     
+    if(![storeURL checkResourceIsReachableAndReturnError:nil]) {
+        NSURL *bundleURL =[[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
+        
+        [[NSFileManager defaultManager] copyItemAtPath:[bundleURL path] toPath:[storeURL path] error:nil];
+        
+        [self addSkipBackupAttributeToItemAtURL:storeURL];
+    }
+    
+//    NSURL *storeURL = [[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
+    
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil  error:&error]) {
+        // @{NSReadOnlyPersistentStoreOption : @YES}
         /*
          Replace this implementation with code to handle the error appropriately.
          
@@ -260,6 +271,19 @@
     }    
     
     return _persistentStoreCoordinator;
+}
+
+- (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
+{
+    assert([[NSFileManager defaultManager] fileExistsAtPath: [URL path]]);
+    
+    NSError *error = nil;
+    BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+                                  forKey: NSURLIsExcludedFromBackupKey error: &error];
+    if(!success){
+        NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
+    }
+    return success;
 }
 
 #pragma mark - Application's Documents directory
