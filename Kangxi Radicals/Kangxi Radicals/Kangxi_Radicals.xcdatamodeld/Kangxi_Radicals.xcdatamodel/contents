@@ -3,19 +3,17 @@
     <entity name="Character" representedClassName="Character" syncable="YES">
         <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
-        <relationship name="secondRadical" maxCount="1" deletionRule="Nullify" destinationEntity="SecondRadical" inverseName="characters" inverseEntity="SecondRadical" syncable="YES"/>
+        <relationship name="secondRadical" maxCount="1" deletionRule="Nullify" destinationEntity="Radical" inverseName="characters" inverseEntity="Radical" syncable="YES"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="characters" inverseEntity="Word" syncable="YES"/>
     </entity>
-    <entity name="FirstRadical" representedClassName="FirstRadical" syncable="YES">
+    <entity name="Radical" representedClassName="Radical" syncable="YES">
+        <attribute name="isFirstRadical" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="section" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
-        <relationship name="secondRadicals" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SecondRadical" inverseName="firstRadical" inverseEntity="SecondRadical" syncable="YES"/>
-    </entity>
-    <entity name="SecondRadical" representedClassName="SecondRadical" syncable="YES">
-        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
-        <attribute name="simplified" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="characters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Character" inverseName="secondRadical" inverseEntity="Character" syncable="YES"/>
-        <relationship name="firstRadical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FirstRadical" inverseName="secondRadicals" inverseEntity="FirstRadical" syncable="YES"/>
+        <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="secondRadical" inverseEntity="Character" syncable="YES"/>
+        <relationship name="firstRadical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Radical" inverseName="secondRadicals" inverseEntity="Radical" syncable="YES"/>
+        <relationship name="secondRadicals" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Radical" inverseName="firstRadical" inverseEntity="Radical" syncable="YES"/>
     </entity>
     <entity name="Word" representedClassName="Word" syncable="YES">
         <attribute name="english" attributeType="String" syncable="YES"/>
@@ -25,8 +23,7 @@
     </entity>
     <elements>
         <element name="Character" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="FirstRadical" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SecondRadical" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Radical" positionX="0" positionY="0" width="0" height="0"/>
         <element name="Word" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

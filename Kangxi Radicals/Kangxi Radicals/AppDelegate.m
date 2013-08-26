@@ -11,8 +11,7 @@
 #import "RadicalsCharactersViewController.h"
 
 // Temporary imports for dummy data:
-#import "FirstRadical.h"
-#import "SecondRadical.h"
+#import "Radical.h"
 #import "Character.h"
 #import "Word.h"
 
@@ -33,7 +32,7 @@
     controller.mode = @"FirstRadical";
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext]];
     
     [request setIncludesSubentities:NO];
     
@@ -44,55 +43,76 @@
     }
     
     if(count == 0) {        // Dummy data:
-        int tally = 0;
-        for(NSString *radical in @[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"] ) {
-            FirstRadical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityFirstRadical inManagedObjectContext:self.managedObjectContext];
-            r.simplified = radical;
-            r.position = [NSNumber numberWithInt:tally];
-            
-            if([radical isEqualToString:@"人"]) {
-                int tally2 = 0;
-                for(NSString *radical2 in @[@"人", @"口", @"土", @"忄", @"日", @"纟", @"刂", @"⺮", @"车", @"方", @"冫", @"子", @"王", @"⺷", @"卩", @"爫", @"二", @"冂", @"ハ", @"⺈"] ) {
-                    SecondRadical* r2 = [NSEntityDescription insertNewObjectForEntityForName:kEntitySecondRadical inManagedObjectContext:self.managedObjectContext];
-                    r2.simplified = radical2;
-                    r2.position = [NSNumber numberWithInt:tally2];
-                    r2.firstRadical = r;
-                    
-                     if([radical2 isEqualToString:@"口"]) {
-                         int tally = 0;
-                         for(NSString *character in @[@"喝", @"答", @"给", @"拿", @"容", @"命", @"合", @"拾", @"咳", @"盒", @"吸", @"俗"] ) {
-                             Character* c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:self.managedObjectContext];
-                             c.simplified = character;
-                             c.position = [NSNumber numberWithInt:tally];
-                             c.secondRadical = r2;
-                             
-                             if([character isEqualToString:@"答"]) {
-                                 int tally = 0;
-                                 for(NSArray *word in @[@[@"答", @"answer, reply; return; assent to"], @[@"报答", @"to repay; to requite"], @[@"答应", @"to promise; to agree; to reply"], @[@"答案", @"answer; solution;"], @[@"答辩", @"to reply (to an accusatio; to defend one's dissertat"], @[@"回答", @"to reply; to answer; the answer"]] ) {
-                                     Word* w = [NSEntityDescription insertNewObjectForEntityForName:kEntityWord inManagedObjectContext:self.managedObjectContext];
-                                     w.simplified = [word firstObject];
-                                     w.english = [word lastObject];
+        int sectionTally = 0;
+        for(NSArray *section in @[@[@"人", @"口",@"亻",@"土",@"扌",@"日", @"月", @"木", @"氵",@"艹",@"讠",@"宀",@"又" ,@"禾" ,@"田" ,@"十" ,@"亠" ,@"厶" ,@"大" ,@"丷"],
+            @[@"女", @"心", @"纟", @"辶", @"贝", @"目", @"尸", @"工", @"王", @"戈", @"匕", @"夂", @"巳", @"乚", @"冂", @"卜", @"𠃌", @"⺈"]]) {
+            int tally = 0;
 
-                                     w.position = [NSNumber numberWithInt:tally];
-                                     [w addCharactersObject:c];
-                                 }
-                                 tally++;
-                                 
-                             }
-
-                         }
-                         tally++;
-
-                     }
-                }
-                tally2++;
+            for(NSString *radical in section ) {
+                Radical* r = [NSEntityDescription insertNewObjectForEntityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext];
+                r.isFirstRadical = @YES;
+                r.simplified = radical;
+                r.position = [NSNumber numberWithInt:tally];
+                r.section = [NSNumber numberWithInt:sectionTally];
                 
+                if([radical isEqualToString:@"人"]) {
+                    int sectionTally2 = 0;
+                    for(NSArray *section in  @[@[@"人", @"口", @"土", @"忄", @"日", @"纟", @"刂", @"⺮", @"车", @"方", @"冫", @"子", @"王", @"⺷", @"卩", @"爫", @"二", @"冂", @"ハ", @"⺈"],
+                        @[@"心", @"手", @"氵", @"犭", @"马", @"十", @"方", @"饣", @"亠", @"艮", @"皿", @"示", @"小", @"止", @"牛", @"匕", @"凵", @"卜", @"毋", @"朩"]]) {
+                        int tally2 = 0;
+                        for(NSString *radical2 in section ) {
+                            Radical* r2 = [NSEntityDescription insertNewObjectForEntityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext];
+                            r2.isFirstRadical = @NO;
+                            r2.simplified = radical2;
+                            r2.section = [NSNumber numberWithInt:sectionTally2];
+                            r2.position = [NSNumber numberWithInt:tally2];
+                            r2.firstRadical = r;
+                            
+                            if([radical2 isEqualToString:@"口"]) {
+                                int cTally = 0;
+                                for(NSString *character in @[@"喝", @"答", @"给", @"拿", @"容", @"命", @"合", @"拾", @"咳", @"盒", @"吸", @"俗"] ) {
+                                     Character* c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:self.managedObjectContext];
+                                     c.simplified = character;
+                                     c.position = [NSNumber numberWithInt:cTally];
+                                    
+                                     c.secondRadical = r2;
+                                    
+                                     if([character isEqualToString:@"答"]) {
+                                         int wTally = 0;
+                                         for(NSArray *word in @[@[@"答", @"answer, reply; return; assent to"], @[@"报答", @"to repay; to requite"], @[@"答应", @"to promise; to agree; to reply"], @[@"答案", @"answer; solution;"], @[@"答辩", @"to reply (to an accusatio; to defend one's dissertat"], @[@"回答", @"to reply; to answer; the answer"]] ) {
+                                             Word* w = [NSEntityDescription insertNewObjectForEntityForName:kEntityWord inManagedObjectContext:self.managedObjectContext];
+                                             w.simplified = [word firstObject];
+                                             w.english = [word lastObject];
+
+                                             w.position = [NSNumber numberWithInt:wTally];
+                                             [w addCharactersObject:c];
+                                         }
+                                         wTally++;
+                                         
+                                     }
+                                     cTally++;
+
+                                 }
+
+                             }
+                             tally2++;
+                        }
+                        sectionTally2++;
+                    
+                    }
+                    
+                }
+                
+                tally++;
             }
-            
-            tally++;
+            sectionTally++;
         }
-                                   
-       [self.managedObjectContext save:nil];
+        
+        NSError *error;
+       [self.managedObjectContext save:&error];
+        if(error != nil) {
+            
+        }
     }
     
     

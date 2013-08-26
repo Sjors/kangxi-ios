@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @protocol Chinese <NSObject>
+@property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) NSString * simplified;
 @end

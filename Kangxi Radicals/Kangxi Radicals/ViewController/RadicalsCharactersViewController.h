@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "FirstRadical.h"
+#import "Radical.h"
 #import "Chinese.h"
 #import "UIViewController+Additions.h"
 

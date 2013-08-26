@@ -2,19 +2,21 @@
 //  Character.m
 //  Kangxi Radicals
 //
-//  Created by Sjors Provoost on 23-08-13.
+//  Created by Sjors Provoost on 26-08-13.
 //  Copyright (c) 2013 Purple Dunes. All rights reserved.
 //
 
 #import "Character.h"
-#import "SecondRadical.h"
+#import "Radical.h"
+#import "Word.h"
 
 
 @implementation Character
 
-@dynamic simplified;
 @dynamic position;
+@dynamic simplified;
 @dynamic secondRadical;
+@dynamic words;
 
 -(NSString *)pinyin {
     NSMutableString *pinyin = [self.simplified mutableCopy];

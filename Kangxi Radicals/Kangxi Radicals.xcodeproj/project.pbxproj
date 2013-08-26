@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
+		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
+		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -30,9 +32,6 @@
 		A2B84A0417C75AB3009801D0 /* Kangxi_RadicalsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B84A0317C75AB3009801D0 /* Kangxi_RadicalsTests.m */; };
 		A2B84A1017C76281009801D0 /* 华文楷体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0F17C76281009801D0 /* 华文楷体.TTF */; };
 		A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */; };
-		A2F5488317C787D600FB2E5E /* SecondRadical.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488217C787D600FB2E5E /* SecondRadical.m */; };
-		A2F5488617C787D700FB2E5E /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488517C787D700FB2E5E /* Character.m */; };
-		A2F5488917C787D700FB2E5E /* FirstRadical.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5488817C787D700FB2E5E /* FirstRadical.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +48,10 @@
 		A212613517CA71500022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
 		A212613617CA71500022390D /* Word.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Word.m; path = Model/Word.m; sourceTree = "<group>"; };
 		A21AE0D217CB63B900168361 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A21AE0DA17CB87C100168361 /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		A21AE0DB17CB87C100168361 /* Character.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Character.m; sourceTree = "<group>"; };
+		A21AE0DD17CB87C200168361 /* Radical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Radical.h; sourceTree = "<group>"; };
+		A21AE0DE17CB87C200168361 /* Radical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Radical.m; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
 		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
 		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
@@ -78,12 +81,6 @@
 		A2B84A0F17C76281009801D0 /* 华文楷体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "华文楷体.TTF"; sourceTree = "<group>"; };
 		A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalsCharactersViewController.h; path = ViewController/RadicalsCharactersViewController.h; sourceTree = "<group>"; };
 		A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalsCharactersViewController.m; path = ViewController/RadicalsCharactersViewController.m; sourceTree = "<group>"; };
-		A2F5488117C787D600FB2E5E /* SecondRadical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecondRadical.h; path = Model/SecondRadical.h; sourceTree = "<group>"; };
-		A2F5488217C787D600FB2E5E /* SecondRadical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecondRadical.m; path = Model/SecondRadical.m; sourceTree = "<group>"; };
-		A2F5488417C787D700FB2E5E /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Character.h; path = Model/Character.h; sourceTree = "<group>"; };
-		A2F5488517C787D700FB2E5E /* Character.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Character.m; path = Model/Character.m; sourceTree = "<group>"; };
-		A2F5488717C787D700FB2E5E /* FirstRadical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirstRadical.h; path = Model/FirstRadical.h; sourceTree = "<group>"; };
-		A2F5488817C787D700FB2E5E /* FirstRadical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FirstRadical.m; path = Model/FirstRadical.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,7 +157,6 @@
 				A2B849E017C75AB2009801D0 /* AppDelegate.h */,
 				A2B849E117C75AB2009801D0 /* AppDelegate.m */,
 				A2B849E317C75AB2009801D0 /* Main.storyboard */,
-				A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */,
 				A2F5487D17C780F200FB2E5E /* Model */,
 				A2F5487317C7660000FB2E5E /* ViewControllers */,
 				A2ABB77617C8E977002931C9 /* Categories */,
@@ -233,12 +229,11 @@
 		A2F5487D17C780F200FB2E5E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A2F5488717C787D700FB2E5E /* FirstRadical.h */,
-				A2F5488817C787D700FB2E5E /* FirstRadical.m */,
-				A2F5488417C787D700FB2E5E /* Character.h */,
-				A2F5488517C787D700FB2E5E /* Character.m */,
-				A2F5488117C787D600FB2E5E /* SecondRadical.h */,
-				A2F5488217C787D600FB2E5E /* SecondRadical.m */,
+				A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */,
+				A21AE0DD17CB87C200168361 /* Radical.h */,
+				A21AE0DE17CB87C200168361 /* Radical.m */,
+				A21AE0DA17CB87C100168361 /* Character.h */,
+				A21AE0DB17CB87C100168361 /* Character.m */,
 				A212613517CA71500022390D /* Word.h */,
 				A212613617CA71500022390D /* Word.m */,
 				A2ABB76F17C8E1C0002931C9 /* Chinese.h */,
@@ -348,13 +343,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2B849E217C75AB2009801D0 /* AppDelegate.m in Sources */,
-				A2F5488917C787D700FB2E5E /* FirstRadical.m in Sources */,
+				A21AE0DC17CB87C100168361 /* Character.m in Sources */,
 				A212613717CA71500022390D /* Word.m in Sources */,
-				A2F5488617C787D700FB2E5E /* Character.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
+				A21AE0DF17CB87C200168361 /* Radical.m in Sources */,
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
-				A2F5488317C787D600FB2E5E /* SecondRadical.m in Sources */,
 				A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */,
 				A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */,
 				A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */,

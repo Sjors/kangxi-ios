@@ -9,13 +9,14 @@
 #import "RadicalsCharactersViewController.h"
 #import "CharacterViewController.h"
 
-#import "FirstRadical.h"
-#import "SecondRadical.h"
+#import "Radical.h"
 #import "Character.h"
 
 @interface RadicalsCharactersViewController ()
 @property NSString *entityName;
 @property NSPredicate *predicate;
+@property NSString *sectionNameKeyPath;
+@property NSArray *sortDescriptors;
 @end
 
 @implementation RadicalsCharactersViewController
@@ -42,31 +43,45 @@
     
     
     if([self.mode isEqualToString:@"FirstRadical"]) {
-        self.entityName = kEntityFirstRadical;
-        self.predicate = nil;
+        self.entityName = kEntityRadical;
+        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@", @YES];
+        self.sectionNameKeyPath = @"section";
+        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
+                                         initWithKey:@"section" ascending:YES  selector:nil];
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"position" ascending:YES  selector:nil];
+        
+        self.sortDescriptors = @[sortSection, sortPostition];
+        
         self.title = @"Which radical do you recognize?";
     } else if([self.mode isEqualToString:@"SecondRadical"]) {
-        self.entityName = kEntitySecondRadical;
-        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@", self.radical];
+        self.entityName = kEntityRadical;
+        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@", self.radical, @NO];
+        self.sectionNameKeyPath = @"section";
         
-        NSString *title = [NSString stringWithFormat:@"%@ - Pick one more", ((FirstRadical *)self.radical).simplified];
+        NSString *title = [NSString stringWithFormat:@"%@ - Pick one more", ((Radical *)self.radical).simplified];
         
         self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1];
 
+        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
+                                         initWithKey:@"section" ascending:YES  selector:nil];
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"position" ascending:YES  selector:nil];
+        
+        self.sortDescriptors = @[sortSection, sortPostition];
         
     }else if([self.mode isEqualToString:@"Character"]) {
         self.entityName = kEntityCharacter;
         self.predicate =[NSPredicate predicateWithFormat:@"secondRadical = %@", self.radical];
         
-        NSString *title = [NSString stringWithFormat:@"%@ %@ characters", ((SecondRadical *)self.radical).firstRadical.simplified, ((SecondRadical *)self.radical).simplified];
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"position" ascending:YES  selector:nil];
         
-        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3];
+        self.sortDescriptors = @[sortPostition];
         
+        NSString *title = [NSString stringWithFormat:@"%@ %@ characters", ((Radical *)self.radical).firstRadical.simplified, ((Radical *)self.radical).simplified];
         
-        
-        //        self.navigationController.navigationBar.titleTextAttributes = @{NSFontAttributeName: [UIFont fontWithName:@"STKaiti" size:30.0f]};
-        
-        
+        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3];  
     } else {
         NSLog(@"Unknown mode, not good...");
     }
@@ -124,12 +139,12 @@
 #pragma mark - UICollectionView and delegates
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return [self.fetchedResultsController.sections count];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [[self.fetchedResultsController fetchedObjects] count];
-}
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];}
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell;
@@ -175,16 +190,13 @@
     
     [fetchRequest setPredicate:self.predicate];
     
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
-                              initWithKey:@"position" ascending:YES  selector:nil];
-    
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+    [fetchRequest setSortDescriptors:self.sortDescriptors];
     
     [fetchRequest setFetchBatchSize:20];
     
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                        managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil
+                                        managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeyPath
                                                    cacheName:nil];
     _fetchedResultsController = theFetchedResultsController;
     
