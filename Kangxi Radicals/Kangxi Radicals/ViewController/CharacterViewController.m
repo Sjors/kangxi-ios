@@ -81,6 +81,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    UIImageView *play = (UIImageView *)[cell viewWithTag:3];
+    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell viewWithTag:4];
+    
+    play.hidden = YES;
+    [spinner startAnimating];
+    
+    
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -100,7 +108,7 @@
     
     [fetchRequest setEntity:entity];
     
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"character = %@", self.character]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY characters = %@", self.character]];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]
                               initWithKey:@"position" ascending:YES  selector:nil];

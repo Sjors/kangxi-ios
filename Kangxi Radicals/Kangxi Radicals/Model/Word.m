@@ -14,10 +14,10 @@
 
 @dynamic simplified;
 @dynamic english;
-@dynamic character;
 @dynamic position;
+@dynamic characters;
 
-// Duplicate from character...
+// Duplicate from Character
 -(NSString *)pinyin {
     NSMutableString *pinyin = [self.simplified mutableCopy];
     CFStringTransform((__bridge CFMutableStringRef)(pinyin),

@@ -4,7 +4,7 @@
         <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
         <relationship name="secondRadical" maxCount="1" deletionRule="Nullify" destinationEntity="SecondRadical" inverseName="characters" inverseEntity="SecondRadical" syncable="YES"/>
-        <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="character" inverseEntity="Word" syncable="YES"/>
+        <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="characters" inverseEntity="Word" syncable="YES"/>
     </entity>
     <entity name="FirstRadical" representedClassName="FirstRadical" syncable="YES">
         <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -21,7 +21,7 @@
         <attribute name="english" attributeType="String" syncable="YES"/>
         <attribute name="position" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
-        <relationship name="character" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Character" inverseName="words" inverseEntity="Character" syncable="YES"/>
+        <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="words" inverseEntity="Character" syncable="YES"/>
     </entity>
     <elements>
         <element name="Character" positionX="0" positionY="0" width="0" height="0"/>

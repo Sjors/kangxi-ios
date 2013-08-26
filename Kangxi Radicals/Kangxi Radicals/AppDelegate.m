@@ -74,7 +74,7 @@
                                      w.english = [word lastObject];
 
                                      w.position = [NSNumber numberWithInt:tally];
-                                     w.character = c;
+                                     [w addCharactersObject:c];
                                  }
                                  tally++;
                                  

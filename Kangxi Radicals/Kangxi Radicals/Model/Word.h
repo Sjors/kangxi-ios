@@ -11,6 +11,7 @@
 
 #define kEntityWord @"Word"
 
+
 @class Character;
 
 @interface Word : NSManagedObject
@@ -18,7 +19,15 @@
 @property (nonatomic, retain) NSString * simplified;
 @property (nonatomic, retain) NSString * english;
 @property (nonatomic, retain) NSNumber * position;
-@property (nonatomic, retain) Character *character;
+@property (nonatomic, retain) NSSet *characters;
+@end
+
+@interface Word (CoreDataGeneratedAccessors)
+
+- (void)addCharactersObject:(Character *)value;
+- (void)removeCharactersObject:(Character *)value;
+- (void)addCharacters:(NSSet *)values;
+- (void)removeCharacters:(NSSet *)values;
 
 -(NSString *)pinyin;
 
