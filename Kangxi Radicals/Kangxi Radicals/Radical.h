@@ -21,6 +21,8 @@
 @property (nonatomic, retain) NSSet *secondRadicals;
 @property (nonatomic, retain) Radical *firstRadical;
 @property (nonatomic, retain) NSSet *characters;
+@property (nonatomic, retain) NSString * synonyms;
+
 @end
 
 @interface Radical (CoreDataGeneratedAccessors)
@@ -34,5 +36,10 @@
 - (void)removeCharactersObject:(Character *)value;
 - (void)addCharacters:(NSSet *)values;
 - (void)removesCharacters:(NSSet *)values;
+
+- (NSString *)formattedSynonyms;
+
++ (NSArray *)all:(NSManagedObjectContext *)context;
+
 
 @end

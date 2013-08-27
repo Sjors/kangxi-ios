@@ -59,9 +59,17 @@
         self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND section < 2", self.radical, @NO];
         self.sectionNameKeyPath = @"section";
         
-        NSString *title = [NSString stringWithFormat:@"%@ - Pick one more", ((Radical *)self.radical).simplified];
+        NSString *title;
+        NSString *formattedSynonyms = self.radical.formattedSynonyms;
+        if ([self.radical.synonyms length] > 3) {
+
+            title = [NSString stringWithFormat:@"%@%@", ((Radical *)self.radical).simplified, formattedSynonyms];
+        } else {
+            title = [NSString stringWithFormat:@"%@%@ - Pick one more", ((Radical *)self.radical).simplified, formattedSynonyms];
+
+        }
         
-        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1];
+        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
 
         NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
                                          initWithKey:@"section" ascending:YES  selector:nil];
@@ -81,12 +89,26 @@
         
         NSString *title;
         if(self.radical.firstRadical) {
-            title = [NSString stringWithFormat:@"%@ %@ characters", self.radical.firstRadical.simplified, self.radical.simplified];
-            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3];
+            NSString *formattedSynonyms = self.radical.formattedSynonyms;
+
+            if ([self.radical.synonyms length] > 3) {
+                title = [NSString stringWithFormat:@"%@ %@%@", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
+            } else {
+                title = [NSString stringWithFormat:@"%@ %@%@ characters", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
+
+            }
+            
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3 + [formattedSynonyms length]];
 
         } else if (self.radical) {
-            title = [NSString stringWithFormat:@"%@ characters",self.radical.simplified];
-            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1];
+            NSString *formattedSynonyms = self.radical.formattedSynonyms;
+            if ([self.radical.synonyms length] > 3) {
+                title = [NSString stringWithFormat:@"%@%@",self.radical.simplified, formattedSynonyms];
+
+            } else {
+                title = [NSString stringWithFormat:@"%@%@ characters",self.radical.simplified, formattedSynonyms];
+            }
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
         } else {
             self.title = @"Assorted characters";
         }

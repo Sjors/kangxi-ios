@@ -17,6 +17,7 @@
 
 //#define DO_IMPORT YES
 
+
 #ifdef DO_IMPORT
 #import "import.h"
 #endif
@@ -26,6 +27,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -38,11 +40,10 @@
         [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-shm"] error:NULL];
         [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-wal"] error:NULL];
 
-
-
     }
     [Populator import:self.managedObjectContext];
-    
+    [Populator synonyms:self.managedObjectContext];
+
     // Copy to project:
     NSError *error;
     NSString *destination = @"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi Radicals/Kangxi Radicals/Kangxi_Radicals.sqlite";

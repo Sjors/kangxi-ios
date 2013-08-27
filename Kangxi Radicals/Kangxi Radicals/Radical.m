@@ -20,5 +20,28 @@
 @dynamic secondRadicals;
 @dynamic firstRadical;
 @dynamic characters;
+@dynamic synonyms;
+
+- (NSString *)formattedSynonyms {
+    if (self.synonyms) {
+        return [NSString stringWithFormat:@"(%@)", self.synonyms];
+    } else {
+        return @"";
+    }
+}
+
++ (NSArray *)all:(NSManagedObjectContext *)context {
+    NSFetchRequest * fetch = [[NSFetchRequest alloc] init];
+    [fetch setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:context]];
+    
+    NSError *error = nil;
+    NSArray *array = [context executeFetchRequest:fetch error:&error];
+    
+    if(error) {
+        NSLog(@"%@",error);
+    }
+    
+    return array;
+}
 
 @end

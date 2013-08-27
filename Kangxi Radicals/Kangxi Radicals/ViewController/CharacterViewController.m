@@ -13,6 +13,7 @@
 @interface CharacterViewController ()
 @property NSURLSession *session;
 @property NSMutableArray *players;
+@property NSMutableArray *hasPronunciation;
 @end
 
 @implementation CharacterViewController
@@ -41,9 +42,13 @@
     int n = [[self.fetchedResultsController fetchedObjects] count];
     
     self.players = [[NSMutableArray alloc] initWithCapacity:n];
+    self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
+
     
     for(int i=0; i < n; i++) {
         [self.players addObject:@""];
+        [self.hasPronunciation addObject:@YES];
+
     }
 }
 
@@ -106,8 +111,7 @@
     
     UIImageView *play = (UIImageView *)[cell viewWithTag:3];
     play.image = [play.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    
+    play.hidden = ![[self.hasPronunciation objectAtIndex:indexPath.row] boolValue];
 }
 
 # pragma mark Playback
@@ -167,6 +171,7 @@
                         [self downloadAndPlayMP3:[NSURL URLWithString:pathmp3] indexPath:indexPath];
                         
                     } else {
+                        [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
                         [self errorMessage:@"No pronunciation." indexPath:indexPath disablePlayButton:YES];
                     }
                 } else {

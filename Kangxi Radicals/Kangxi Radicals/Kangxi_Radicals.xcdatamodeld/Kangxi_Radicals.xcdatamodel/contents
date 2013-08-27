@@ -11,6 +11,7 @@
         <attribute name="rank" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="section" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
+        <attribute name="synonyms" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="secondRadicals" inverseEntity="Character" syncable="YES"/>
         <relationship name="firstRadical" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Radical" inverseName="secondRadicals" inverseEntity="Radical" syncable="YES"/>
         <relationship name="secondRadicals" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Radical" inverseName="firstRadical" inverseEntity="Radical" syncable="YES"/>
