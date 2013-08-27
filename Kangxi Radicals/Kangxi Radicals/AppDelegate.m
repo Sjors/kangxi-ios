@@ -7,13 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import <Crashlytics/Crashlytics.h>
 
 #import "RadicalsCharactersViewController.h"
 
-// Temporary imports for dummy data:
-#import "Radical.h"
-#import "Character.h"
-#import "Word.h"
+//// Temporary imports for dummy data:
+//#import "Radical.h"
+//#import "Character.h"
+//#import "Word.h"
 
 //#define DO_IMPORT YES
 
@@ -31,7 +32,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+#ifndef DEBUG
+    // This should be at the top but after all other 3rd party SDK code.
+    [Crashlytics startWithAPIKey:@"1e9765b42004724029bbfe36e4c84518c51f7503"];
+#endif
+
 #ifdef DO_IMPORT
     if([[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
         [[NSFileManager defaultManager] removeItemAtPath:[[self storeURL] path] error:NULL];

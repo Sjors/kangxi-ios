@@ -12,6 +12,7 @@
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
 		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
 		A2835AD817CC099100100693 /* Kangxi_Radicals.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */; };
+		A2835AE217CD2CAA00100693 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2835AE117CD2CAA00100693 /* Crashlytics.framework */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -56,6 +57,7 @@
 		A21AE0E217CBB50100168361 /* import.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = import.m; sourceTree = "<group>"; };
 		A21AE0E417CBB87200168361 /* import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = import.h; sourceTree = "<group>"; };
 		A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kangxi_Radicals.sqlite; sourceTree = "<group>"; };
+		A2835AE117CD2CAA00100693 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
 		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
 		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				A2B849D217C75AB2009801D0 /* CoreGraphics.framework in Frameworks */,
 				A2B849D617C75AB2009801D0 /* CoreData.framework in Frameworks */,
 				A2B849D417C75AB2009801D0 /* UIKit.framework in Frameworks */,
+				A2835AE217CD2CAA00100693 /* Crashlytics.framework in Frameworks */,
 				A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,6 +148,7 @@
 		A2B849CE17C75AB2009801D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A2835AE117CD2CAA00100693 /* Crashlytics.framework */,
 				A21AE0D217CB63B900168361 /* AVFoundation.framework */,
 				A2B849CF17C75AB2009801D0 /* Foundation.framework */,
 				A2B849D117C75AB2009801D0 /* CoreGraphics.framework */,
@@ -258,6 +262,7 @@
 				A2B849C817C75AB2009801D0 /* Sources */,
 				A2B849C917C75AB2009801D0 /* Frameworks */,
 				A2B849CA17C75AB2009801D0 /* Resources */,
+				A2835AE017CD2C7000100693 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -344,6 +349,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A2835AE017CD2C7000100693 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 1e9765b42004724029bbfe36e4c84518c51f7503";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A2B849C817C75AB2009801D0 /* Sources */ = {
@@ -483,6 +504,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi\\ Radicals",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kangxi Radicals/Kangxi Radicals-Prefix.pch";
 				INFOPLIST_FILE = "Kangxi Radicals/Kangxi Radicals-Info.plist";
@@ -497,6 +522,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi\\ Radicals",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kangxi Radicals/Kangxi Radicals-Prefix.pch";
 				INFOPLIST_FILE = "Kangxi Radicals/Kangxi Radicals-Info.plist";
