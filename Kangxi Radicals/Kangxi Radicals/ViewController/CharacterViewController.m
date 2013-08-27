@@ -10,10 +10,15 @@
 #import "Word.h"
 #import "AppDelegate.h"
 
+#ifndef DEBUG
+    #import <Mixpanel.h>
+#endif
+
 @interface CharacterViewController ()
 @property NSURLSession *session;
 @property NSMutableArray *players;
 @property NSMutableArray *hasPronunciation;
+@property NSMutableArray *alreadyPlayed;
 @end
 
 @implementation CharacterViewController
@@ -43,13 +48,17 @@
     
     self.players = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
+    self.alreadyPlayed = [[NSMutableArray alloc] initWithCapacity:n];
 
     
     for(int i=0; i < n; i++) {
         [self.players addObject:@""];
         [self.hasPronunciation addObject:@YES];
-
+        [self.alreadyPlayed addObject:@NO];
     }
+#ifndef DEBUG
+    [[Mixpanel sharedInstance] track:@"Lookup Words" properties:@{@"Character" : self.character.simplified}];
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,8 +156,10 @@
         
         // Debug no pronunciations:
 //        url = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/emeg2it4zzkkp53/forvo-result-no-pronunciations.json?token_hash=AAGMd9hiHBUGoIrifdX3srx4j-AvozQfwJCKxHsoqCbRLQ&dl=1"];
-
         
+        // Debug API limit:
+//        url = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/jxlzydq3q2pmkkp/forvo-api-limit.json?token_hash=AAG8KXGvJn6ADPhCHiPKGqtkwnWrZYHuZIUNudqxk-INTQ&dl=1"];
+
 //        NSLog(@"URL: %@", url);
         
         [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:YES];
@@ -160,7 +171,7 @@
                 NSError *error;
                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                 
-                if (error == nil && [result valueForKey:@"items"]) {
+                if (error == nil && [result respondsToSelector:@selector(objectForKey:)] && [result objectForKey:@"items"]) {
                     if ([[result valueForKey:@"items"] count] > 0) {
                         NSString *pathmp3 = [[[result valueForKey:@"items"] firstObject] valueForKey:@"pathmp3"];
                         
@@ -173,14 +184,42 @@
                     } else {
                         [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
                         [self errorMessage:@"No pronunciation." indexPath:indexPath disablePlayButton:YES];
+#ifndef DEBUG
+                        [[Mixpanel sharedInstance] track:@"Pronunciation Missing" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
+#endif
                     }
                 } else {
                     // Deal with error in JSON
-                    [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+                    BOOL limitReached = NO;
+                    
+                    if(![result respondsToSelector:@selector(objectForKey:)] && [result respondsToSelector:@selector(firstObject)]) {
+                        // It's an array.
+                        NSArray *resultA = (NSArray *)result;
+                        NSString *message = [resultA firstObject];
+                        if([message respondsToSelector:@selector(stringByAppendingString:) ]) {
+                            NSRange range;
+                            range = [message rangeOfString:@"limit"];
+                            if (range.location != NSNotFound) { limitReached = YES;  }
+                            range = [message rangeOfString:@"Limit"];
+                            if (range.location != NSNotFound) { limitReached = YES;  }
+                        }
+                    }
+                    
+                    if (limitReached) {
+                        [self errorMessage:@"Try again tomorrow" indexPath:indexPath disablePlayButton:YES];
+                    } else {
+                        [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+                        #ifndef DEBUG
+                        [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"NSJSONSerialization",  @"Error" : [error description]}];
+                        #endif
+                    }
                 }
             } else {
                 // Deal with error in download
                 [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+#ifndef DEBUG
+                [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download JSON",  @"Error" : [error description]}];
+#endif
             }
         }] resume];
     }
@@ -203,11 +242,28 @@
                 [player play];
             } else {
                 // Deal with audio file load error
+                if ([error code] == 1954115647) { //  Unsupported File Type
+                    // http://stackoverflow.com/questions/4901709/iphone-avaudioplayer-unsupported-file-type
+#ifndef DEBUG
+
+                    [[Mixpanel sharedInstance] track:@"Pronunciation Unsupported File Type" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
+#endif
+
+                } else {
+#ifndef DEBUG
+                    [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"AVAudioPlayer initWithData",  @"Error" : [error description]}];
+#endif
+                }
+                
                 [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
             }
         } else {
             // Deal with MP3 download error
             [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download MP3",  @"Error" : [error description]}];
+#endif
+
 
         }
         
@@ -215,14 +271,26 @@
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    NSIndexPath *indexPath = [self indexPathForPlayer:player];
     
-    [self restorePlayButton:[self indexPathForPlayer:player]];
+    [self restorePlayButton:indexPath];
+    
+    if(![[self.alreadyPlayed objectAtIndex:indexPath.row] boolValue]) {
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Play Pronunciation" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
+#endif
+        [self.alreadyPlayed setObject:@YES atIndexedSubscript:indexPath.row];
+    }
 }
 
 -(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error {
-    // Deal with error
+    NSIndexPath *indexPath = [self indexPathForPlayer:player];
+
     [self.players removeObject:player];
-    [self errorMessage:@"Audio file broken" indexPath:[self indexPathForPlayer:player] disablePlayButton:YES];
+    [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
+#ifndef DEBUG
+    [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"audioPlayerDecodeErrorDidOccur",  @"Error" : [error description]}];
+#endif
 }
 
 -(NSIndexPath *)indexPathForPlayer:(AVAudioPlayer *)player {

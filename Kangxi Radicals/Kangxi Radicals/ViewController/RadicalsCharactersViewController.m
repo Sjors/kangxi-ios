@@ -12,6 +12,10 @@
 #import "Radical.h"
 #import "Character.h"
 
+#ifndef DEBUG
+    #import <Mixpanel.h>
+#endif
+
 @interface RadicalsCharactersViewController ()
 @property NSString *entityName;
 @property NSPredicate *predicate;
@@ -78,6 +82,10 @@
         
         self.sortDescriptors = @[sortSection, sortPostition];
         
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Lookup Radical" properties:@{@"Radical" : self.radical.simplified}];
+#endif
+        
     }else if([self.mode isEqualToString:@"Character"]) {
         self.entityName = kEntityCharacter;
         self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@", self.radical];
@@ -99,6 +107,10 @@
             }
             
             self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3 + [formattedSynonyms length]];
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical 1" : self.radical.firstRadical.simplified, @"Radical 2" : self.radical.simplified}];
+#endif
+
 
         } else if (self.radical) {
             NSString *formattedSynonyms = self.radical.formattedSynonyms;
@@ -109,8 +121,14 @@
                 title = [NSString stringWithFormat:@"%@%@ characters",self.radical.simplified, formattedSynonyms];
             }
             self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical" : self.radical.simplified}];
+#endif
         } else {
             self.title = @"Assorted characters";
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Lookup Characters"];
+#endif
         }
 
         

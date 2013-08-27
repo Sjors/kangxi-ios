@@ -7,17 +7,18 @@
 //
 
 #import "AppDelegate.h"
-#import <Crashlytics/Crashlytics.h>
+
+#ifndef DEBUG
+    #import <Crashlytics/Crashlytics.h>
+    #import <Mixpanel/Mixpanel.h>
+#endif
 
 #import "RadicalsCharactersViewController.h"
 
-//// Temporary imports for dummy data:
-//#import "Radical.h"
-//#import "Character.h"
-//#import "Word.h"
 
 //#define DO_IMPORT YES
 
+#define MIXPANEL_TOKEN @"205327faee0efccec16b37c2db34d98d"
 
 #ifdef DO_IMPORT
 #import "import.h"
@@ -33,9 +34,16 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #ifndef DEBUG
+    [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
+    [[Mixpanel sharedInstance] track:@"Launch"];
+#endif
+    
+#ifndef DEBUG
     // This should be at the top but after all other 3rd party SDK code.
     [Crashlytics startWithAPIKey:@"1e9765b42004724029bbfe36e4c84518c51f7503"];
 #endif
+    
+    
 
 #ifdef DO_IMPORT
     if([[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
@@ -186,6 +194,10 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+#ifndef DEBUG
+    [[Mixpanel sharedInstance] flush]; // Uploads datapoints to the Mixpanel Server.
+#endif
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

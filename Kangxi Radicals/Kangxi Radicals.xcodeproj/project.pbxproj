@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26230FF8897E46878EE06D3F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CA34C0C0AE45E5AB06F8EC /* libPods.a */; };
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A1CA34C0C0AE45E5AB06F8EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A212613517CA71500022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
 		A212613617CA71500022390D /* Word.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Word.m; path = Model/Word.m; sourceTree = "<group>"; };
 		A21AE0D217CB63B900168361 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -87,6 +89,7 @@
 		A2B84A0F17C76281009801D0 /* 华文楷体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "华文楷体.TTF"; sourceTree = "<group>"; };
 		A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalsCharactersViewController.h; path = ViewController/RadicalsCharactersViewController.h; sourceTree = "<group>"; };
 		A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalsCharactersViewController.m; path = ViewController/RadicalsCharactersViewController.m; sourceTree = "<group>"; };
+		D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +103,7 @@
 				A2B849D417C75AB2009801D0 /* UIKit.framework in Frameworks */,
 				A2835AE217CD2CAA00100693 /* Crashlytics.framework in Frameworks */,
 				A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */,
+				26230FF8897E46878EE06D3F /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,15 +128,22 @@
 				A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */,
 			);
 			name = Categories;
+			path = "Kangxi Radicals";
 			sourceTree = "<group>";
 		};
 		A2B849C317C75AB2009801D0 = {
 			isa = PBXGroup;
 			children = (
 				A2B849D717C75AB2009801D0 /* Kangxi Radicals */,
-				A2B849FD17C75AB3009801D0 /* Kangxi RadicalsTests */,
+				A2F5487D17C780F200FB2E5E /* Model */,
+				A2F5487317C7660000FB2E5E /* ViewControllers */,
+				A2ABB77617C8E977002931C9 /* Categories */,
+				A2B84A0D17C7623C009801D0 /* Resources */,
+				A2B849D817C75AB2009801D0 /* Supporting Files */,
+				A2B849FD17C75AB3009801D0 /* Tests */,
 				A2B849CE17C75AB2009801D0 /* Frameworks */,
 				A2B849CD17C75AB2009801D0 /* Products */,
+				D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +166,7 @@
 				A2B849D317C75AB2009801D0 /* UIKit.framework */,
 				A2B849D517C75AB2009801D0 /* CoreData.framework */,
 				A2B849F617C75AB3009801D0 /* XCTest.framework */,
+				A1CA34C0C0AE45E5AB06F8EC /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -164,14 +176,7 @@
 			children = (
 				A2B849E017C75AB2009801D0 /* AppDelegate.h */,
 				A2B849E117C75AB2009801D0 /* AppDelegate.m */,
-				A21AE0E417CBB87200168361 /* import.h */,
-				A21AE0E217CBB50100168361 /* import.m */,
 				A2B849E317C75AB2009801D0 /* Main.storyboard */,
-				A2F5487D17C780F200FB2E5E /* Model */,
-				A2F5487317C7660000FB2E5E /* ViewControllers */,
-				A2ABB77617C8E977002931C9 /* Categories */,
-				A2B84A0D17C7623C009801D0 /* Resources */,
-				A2B849D817C75AB2009801D0 /* Supporting Files */,
 			);
 			path = "Kangxi Radicals";
 			sourceTree = "<group>";
@@ -185,14 +190,16 @@
 				A2B849DF17C75AB2009801D0 /* Kangxi Radicals-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = "Kangxi Radicals";
 			sourceTree = "<group>";
 		};
-		A2B849FD17C75AB3009801D0 /* Kangxi RadicalsTests */ = {
+		A2B849FD17C75AB3009801D0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				A2B84A0317C75AB3009801D0 /* Kangxi_RadicalsTests.m */,
 				A2B849FE17C75AB3009801D0 /* Supporting Files */,
 			);
+			name = Tests;
 			path = "Kangxi RadicalsTests";
 			sourceTree = "<group>";
 		};
@@ -212,7 +219,6 @@
 				A2B84A0E17C7624D009801D0 /* Fonts */,
 			);
 			name = Resources;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		A2B84A0E17C7624D009801D0 /* Fonts */ = {
@@ -234,11 +240,14 @@
 				A2ABB77117C8E768002931C9 /* CharacterViewController.m */,
 			);
 			name = ViewControllers;
+			path = "Kangxi Radicals";
 			sourceTree = "<group>";
 		};
 		A2F5487D17C780F200FB2E5E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A21AE0E417CBB87200168361 /* import.h */,
+				A21AE0E217CBB50100168361 /* import.m */,
 				A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */,
 				A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */,
 				A21AE0DD17CB87C200168361 /* Radical.h */,
@@ -250,6 +259,7 @@
 				A2ABB76F17C8E1C0002931C9 /* Chinese.h */,
 			);
 			name = Model;
+			path = "Kangxi Radicals";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,10 +269,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "Kangxi" */;
 			buildPhases = (
+				BD7375260C434889BD8E76DD /* Check Pods Manifest.lock */,
 				A2B849C817C75AB2009801D0 /* Sources */,
 				A2B849C917C75AB2009801D0 /* Frameworks */,
 				A2B849CA17C75AB2009801D0 /* Resources */,
 				A2835AE017CD2C7000100693 /* ShellScript */,
+				0A5A7D35BB2F4F4584F147D3 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -351,6 +363,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0A5A7D35BB2F4F4584F147D3 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A2835AE017CD2C7000100693 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -363,6 +390,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Crashlytics.framework/run 1e9765b42004724029bbfe36e4c84518c51f7503";
+		};
+		BD7375260C434889BD8E76DD /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -500,6 +542,7 @@
 		};
 		A2B84A0817C75AB3009801D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -518,6 +561,7 @@
 		};
 		A2B84A0917C75AB3009801D0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
