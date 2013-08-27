@@ -31,6 +31,5 @@
 
 -(NSString *)pinyin;
 
-+ (Word *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context;
-
++ (Word *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context  includesPropertyValuesAndSubentities:(BOOL)includesPropertyValuesAndSubentities;
 @end

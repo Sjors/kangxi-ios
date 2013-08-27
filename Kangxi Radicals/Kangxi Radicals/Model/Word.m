@@ -26,12 +26,14 @@
     return pinyin;
 }
 
-+ (Word *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context {
++ (Word *)fetchBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context  includesPropertyValuesAndSubentities:(BOOL)includesPropertyValuesAndSubentities {
     
     NSFetchRequest * fetch = [[NSFetchRequest alloc] init];
     [fetch setEntity:[NSEntityDescription entityForName:kEntityWord inManagedObjectContext:context]];
     
     [fetch setPredicate:[NSPredicate predicateWithFormat:@"simplified = %@", simplified]];
+    fetch.includesPropertyValues = includesPropertyValuesAndSubentities;
+    fetch.includesSubentities = includesPropertyValuesAndSubentities;
     
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:fetch error:&error];

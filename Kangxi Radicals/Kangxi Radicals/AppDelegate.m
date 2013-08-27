@@ -14,7 +14,12 @@
 #import "Radical.h"
 #import "Character.h"
 #import "Word.h"
-//#import "import.h"
+
+//#define DO_IMPORT YES
+
+#ifdef DO_IMPORT
+#import "import.h"
+#endif
 
 @implementation AppDelegate
 
@@ -25,6 +30,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+#ifdef DO_IMPORT
+    if([[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
+        [[NSFileManager defaultManager] removeItemAtPath:[[self storeURL] path] error:NULL];
+        
+        // In case you start using WAL mode again during either import or normal app mode:
+        [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-shm"] error:NULL];
+        [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-wal"] error:NULL];
+
+
+    }
+    [Populator import:self.managedObjectContext];
+#endif
     
     self.window.tintColor = [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1];
     
@@ -36,6 +53,8 @@
     [request setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:self.managedObjectContext]];
     
     [request setIncludesSubentities:NO];
+    
+
     
 //    NSError *err;
 //    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
@@ -203,6 +222,9 @@
     if (coordinator != nil) {
         _managedObjectContext = [[NSManagedObjectContext alloc] init];
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+#ifdef DO_IMPORT
+        [_managedObjectContext setUndoManager:nil];
+#endif
     }
     return _managedObjectContext;
 }
@@ -226,23 +248,30 @@
     if (_persistentStoreCoordinator != nil) {
         return _persistentStoreCoordinator;
     }
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Kangxi_Radicals.sqlite"];
-    
-    if(![storeURL checkResourceIsReachableAndReturnError:nil]) {
+
+#ifndef DO_IMPORT
+    if(![[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
         NSURL *bundleURL =[[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
         
-        [[NSFileManager defaultManager] copyItemAtPath:[bundleURL path] toPath:[storeURL path] error:nil];
+        [[NSFileManager defaultManager] copyItemAtPath:[bundleURL path] toPath:[[self storeURL] path] error:nil];
         
         [self addSkipBackupAttributeToItemAtURL:storeURL];
     }
+#endif
     
-//    NSURL *storeURL = [[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
+#ifdef DO_IMPORT
+    // Don't use WAL mode during import or stuff will be lost.
+    NSDictionary *options = @{NSSQLitePragmasOption : @{ @"journal_mode" :
+                                                             @"DELETE"}};
+#else
+    // WAL mode is not recommended for a read-only database:
+    NSDictionary *options = @{NSReadOnlyPersistentStoreOption : @YES, NSSQLitePragmasOption : @{ @"journal_mode" : @"DELETE"}}
+#endif
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil  error:&error]) {
-        // @{NSReadOnlyPersistentStoreOption : @YES}
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:options  error:&error]) {
+
         /*
          Replace this implementation with code to handle the error appropriately.
          
@@ -286,12 +315,17 @@
     return success;
 }
 
-#pragma mark - Application's Documents directory
+#pragma mark - Paths
 
 // Returns the URL to the application's Documents directory.
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+
+-(NSURL *)storeURL {
+    return [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Kangxi_Radicals.sqlite"];
 }
 
 # pragma mark UI
