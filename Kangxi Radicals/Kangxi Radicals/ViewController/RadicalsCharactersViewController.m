@@ -49,7 +49,7 @@
         NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
                                          initWithKey:@"section" ascending:YES  selector:nil];
         NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"position" ascending:YES  selector:nil];
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
         
         self.sortDescriptors = @[sortSection, sortPostition];
         
@@ -66,7 +66,7 @@
         NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
                                          initWithKey:@"section" ascending:YES  selector:nil];
         NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"position" ascending:YES  selector:nil];
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
         
         self.sortDescriptors = @[sortSection, sortPostition];
         
@@ -75,7 +75,7 @@
         self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@", self.radical];
         
         NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"position" ascending:YES  selector:nil];
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
         
         self.sortDescriptors = @[sortPostition];
         
@@ -261,7 +261,7 @@
     
     [fetchRequest setSortDescriptors:self.sortDescriptors];
     
-    [fetchRequest setFetchBatchSize:20];
+    [fetchRequest setFetchBatchSize:30];
     
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest

@@ -12,7 +12,6 @@
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
 		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
 		A2835AD817CC099100100693 /* Kangxi_Radicals.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */; };
-		A2835ADB17CCDA1A00100693 /* import.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0E217CBB50100168361 /* import.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -356,7 +355,6 @@
 				A212613717CA71500022390D /* Word.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
 				A21AE0DF17CB87C200168361 /* Radical.m in Sources */,
-				A2835ADB17CCDA1A00100693 /* import.m in Sources */,
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
 				A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */,

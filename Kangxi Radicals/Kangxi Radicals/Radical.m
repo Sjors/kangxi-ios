@@ -13,7 +13,7 @@
 
 @implementation Radical
 
-@dynamic position;
+@dynamic rank;
 @dynamic simplified;
 @dynamic section;
 @dynamic isFirstRadical;

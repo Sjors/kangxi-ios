@@ -13,7 +13,7 @@
 
 @implementation Character
 
-@dynamic position;
+@dynamic rank;
 @dynamic simplified;
 @dynamic words;
 

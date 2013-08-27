@@ -280,7 +280,7 @@
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     
-    [fetchRequest setFetchBatchSize:20];
+    [fetchRequest setFetchBatchSize:15];
     
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3394" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Character" representedClassName="Character" syncable="YES">
-        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="rank" attributeType="Integer 32" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
         <relationship name="secondRadicals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Radical" inverseName="characters" inverseEntity="Radical" syncable="YES"/>
         <relationship name="words" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Word" inverseName="characters" inverseEntity="Word" syncable="YES"/>
     </entity>
     <entity name="Radical" representedClassName="Radical" syncable="YES">
-        <attribute name="isFirstRadical" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="position" attributeType="Integer 16" minValueString="0" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="isFirstRadical" attributeType="Boolean" defaultValueString="YES" indexed="YES" syncable="YES"/>
+        <attribute name="rank" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="section" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
         <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="secondRadicals" inverseEntity="Character" syncable="YES"/>
@@ -18,7 +18,7 @@
     <entity name="Word" representedClassName="Word" syncable="YES">
         <attribute name="english" attributeType="String" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
-        <attribute name="wordLength" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="wordLength" attributeType="Integer 16" indexed="YES" syncable="YES"/>
         <relationship name="characters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Character" inverseName="words" inverseEntity="Character" syncable="YES"/>
     </entity>
     <elements>

@@ -39,8 +39,18 @@
         [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-wal"] error:NULL];
 
 
+
     }
     [Populator import:self.managedObjectContext];
+    
+    // Copy to project:
+    NSError *error;
+    NSString *destination = @"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi Radicals/Kangxi Radicals/Kangxi_Radicals.sqlite";
+    [[NSFileManager defaultManager] removeItemAtPath:destination error:NULL];
+    [[NSFileManager defaultManager] copyItemAtPath:[[self storeURL] path] toPath:destination error:&error];
+    if (error) {
+        NSLog(@"Could not copy sqlite file to project directory.");
+    }
 #endif
     
     self.window.tintColor = [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1];
@@ -250,13 +260,13 @@
     }
 
 #ifndef DO_IMPORT
-    if(![[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
-        NSURL *bundleURL =[[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
-        
-        [[NSFileManager defaultManager] copyItemAtPath:[bundleURL path] toPath:[[self storeURL] path] error:nil];
-        
-        [self addSkipBackupAttributeToItemAtURL:storeURL];
-    }
+//    if(![[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
+//        NSURL *bundleURL =[[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
+//        
+//        [[NSFileManager defaultManager] copyItemAtPath:[bundleURL path] toPath:[[self storeURL] path] error:nil];
+//        
+//        [self addSkipBackupAttributeToItemAtURL:[self storeURL]];
+//    }
 #endif
     
 #ifdef DO_IMPORT
@@ -265,7 +275,7 @@
                                                              @"DELETE"}};
 #else
     // WAL mode is not recommended for a read-only database:
-    NSDictionary *options = @{NSReadOnlyPersistentStoreOption : @YES, NSSQLitePragmasOption : @{ @"journal_mode" : @"DELETE"}}
+    NSDictionary *options = @{NSReadOnlyPersistentStoreOption : @YES, NSSQLitePragmasOption : @{ @"journal_mode" : @"DELETE"}};
 #endif
     
     NSError *error = nil;
@@ -325,7 +335,11 @@
 
 
 -(NSURL *)storeURL {
+#ifdef DO_IMPORT
     return [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Kangxi_Radicals.sqlite"];
+#else
+    return [[NSBundle mainBundle] URLForResource:@"Kangxi_Radicals" withExtension:@"sqlite"];
+#endif
 }
 
 # pragma mark UI
