@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <AVFoundation/AVFoundation.h>
 
 #ifndef DEBUG
     #import <Crashlytics/Crashlytics.h>
@@ -78,6 +79,36 @@
     
     [request setIncludesSubentities:NO];
     
+    NSError *activationError = nil;
+    BOOL success = [[AVAudioSession sharedInstance] setActive: NO error: &activationError];
+    if (!success) {
+        NSLog(@"Audio session deactivation error: %@", activationError);
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Audio Session Error" properties:@{@"Method" : @"Deactivate Session",  @"Error" : [activationError description]}];
+#endif
+    }
+    
+    NSError *setCategoryError = nil;
+    success = [[AVAudioSession sharedInstance]
+               setCategory: AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers
+               error: &setCategoryError];
+    
+    if (!success) {
+        NSLog(@"Audio session category error: %@", [setCategoryError description]);
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Audio Session Error" properties:@{@"Method" : @"Set Session Category",  @"Error" : [setCategoryError description]}];
+#endif    
+    }
+    
+    activationError = nil;
+    success = [[AVAudioSession sharedInstance] setActive: NO error: &activationError];
+    if (!success) {
+        NSLog(@"Audio session deactivation error: %@", activationError);
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Audio Session Error" properties:@{@"Method" : @"Activate Session",  @"Error" : [activationError description]}];
+#endif
+    }
+
 
     
 //    NSError *err;
