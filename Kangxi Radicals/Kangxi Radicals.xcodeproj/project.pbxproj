@@ -14,6 +14,7 @@
 		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
 		A2835AD817CC099100100693 /* Kangxi_Radicals.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */; };
 		A2835AE217CD2CAA00100693 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2835AE117CD2CAA00100693 /* Crashlytics.framework */; };
+		A2AA004917D626BD00100722 /* RadicalCharacterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
 		A2B849D017C75AB2009801D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
@@ -60,6 +61,8 @@
 		A21AE0E417CBB87200168361 /* import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = import.h; sourceTree = "<group>"; };
 		A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kangxi_Radicals.sqlite; sourceTree = "<group>"; };
 		A2835AE117CD2CAA00100693 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		A2AA004717D626BD00100722 /* RadicalCharacterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalCharacterCollectionViewCell.h; path = Views/RadicalCharacterCollectionViewCell.h; sourceTree = "<group>"; };
+		A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalCharacterCollectionViewCell.m; path = Views/RadicalCharacterCollectionViewCell.m; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
 		A2ABB77017C8E768002931C9 /* CharacterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CharacterViewController.h; path = ViewController/CharacterViewController.h; sourceTree = "<group>"; };
 		A2ABB77117C8E768002931C9 /* CharacterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CharacterViewController.m; path = ViewController/CharacterViewController.m; sourceTree = "<group>"; };
@@ -121,6 +124,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A2AA004A17D626C700100722 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A2B849E317C75AB2009801D0 /* Main.storyboard */,
+				A2AA004717D626BD00100722 /* RadicalCharacterCollectionViewCell.h */,
+				A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		A2ABB77617C8E977002931C9 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +150,7 @@
 				A2B849D717C75AB2009801D0 /* Kangxi Radicals */,
 				A2F5487D17C780F200FB2E5E /* Model */,
 				A2F5487317C7660000FB2E5E /* ViewControllers */,
+				A2AA004A17D626C700100722 /* Views */,
 				A2ABB77617C8E977002931C9 /* Categories */,
 				A2B84A0D17C7623C009801D0 /* Resources */,
 				A2B849D817C75AB2009801D0 /* Supporting Files */,
@@ -176,7 +190,6 @@
 			children = (
 				A2B849E017C75AB2009801D0 /* AppDelegate.h */,
 				A2B849E117C75AB2009801D0 /* AppDelegate.m */,
-				A2B849E317C75AB2009801D0 /* Main.storyboard */,
 			);
 			path = "Kangxi Radicals";
 			sourceTree = "<group>";
@@ -414,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2B849E217C75AB2009801D0 /* AppDelegate.m in Sources */,
+				A2AA004917D626BD00100722 /* RadicalCharacterCollectionViewCell.m in Sources */,
 				A21AE0DC17CB87C100168361 /* Character.m in Sources */,
 				A212613717CA71500022390D /* Word.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
@@ -459,6 +473,7 @@
 				A2B849E417C75AB2009801D0 /* Base */,
 			);
 			name = Main.storyboard;
+			path = "Kangxi Radicals";
 			sourceTree = "<group>";
 		};
 		A2B84A0017C75AB3009801D0 /* InfoPlist.strings */ = {

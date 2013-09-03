@@ -68,7 +68,7 @@
     }
 #endif
     
-    self.window.tintColor = [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1];
+    self.window.tintColor = TINTCOLOR;
     
     RadicalsCharactersViewController *controller = [((UINavigationController *)((RadicalsCharactersViewController *)self.window.rootViewController)).viewControllers objectAtIndex:0];
     controller.managedObjectContext = self.managedObjectContext;

@@ -8,6 +8,7 @@
 
 #import "RadicalsCharactersViewController.h"
 #import "CharacterViewController.h"
+#import "RadicalCharacterCollectionViewCell.h"
 
 #import "Radical.h"
 #import "Character.h"
@@ -20,6 +21,8 @@
 @property NSString *entityName;
 @property NSPredicate *predicate;
 @property NSString *sectionNameKeyPath;
+@property NSString *cacheSuffix;
+
 @property NSArray *sortDescriptors;
 @end
 
@@ -57,19 +60,24 @@
         
         self.sortDescriptors = @[sortSection, sortPostition];
         
+        self.cacheSuffix = @"FirstRadical";
+        
         self.title = @"Which radical do you recognize?";
     } else if([self.mode isEqualToString:@"Radical"]) {
         self.entityName = kEntityRadical;
         self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND section < 2", self.radical, @NO];
         self.sectionNameKeyPath = @"section";
+        self.cacheSuffix = [NSString stringWithFormat:@"Radical%@", self.radical.rank];
         
         NSString *title;
         NSString *formattedSynonyms = self.radical.formattedSynonyms;
         if ([self.radical.synonyms length] > 3) {
 
             title = [NSString stringWithFormat:@"%@%@", ((Radical *)self.radical).simplified, formattedSynonyms];
+
         } else {
             title = [NSString stringWithFormat:@"%@%@ - Pick one more", ((Radical *)self.radical).simplified, formattedSynonyms];
+
 
         }
         
@@ -95,6 +103,8 @@
         
         self.sortDescriptors = @[sortPostition];
         
+
+        
         NSString *title;
         if(self.radical.firstRadical) {
             NSString *formattedSynonyms = self.radical.formattedSynonyms;
@@ -110,9 +120,11 @@
 #ifndef DEBUG
             [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical 1" : self.radical.firstRadical.simplified, @"Radical 2" : self.radical.simplified}];
 #endif
-
-
+            self.cacheSuffix = [NSString stringWithFormat:@"Character%@-%@",self.radical.firstRadical.rank, self.radical.rank];
         } else if (self.radical) {
+            self.cacheSuffix = [NSString stringWithFormat:@"Character%@", self.radical.rank];
+
+
             NSString *formattedSynonyms = self.radical.formattedSynonyms;
             if ([self.radical.synonyms length] > 3) {
                 title = [NSString stringWithFormat:@"%@%@",self.radical.simplified, formattedSynonyms];
@@ -126,6 +138,8 @@
 #endif
         } else {
             self.title = @"Assorted characters";
+            self.cacheSuffix = [NSString stringWithFormat:@"CharacterAssorted"];
+
 #ifndef DEBUG
             [[Mixpanel sharedInstance] track:@"Lookup Characters"];
 #endif
@@ -241,8 +255,8 @@
 }
 
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell;
+-(RadicalCharacterCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    RadicalCharacterCollectionViewCell *cell;
     
     if([self sectionWithChineseCells:indexPath.section]) {
         static NSString *CellIdentifier = @"chineseCell";
@@ -258,13 +272,18 @@
     return cell;
 }
 
--(void)configureCell:(UICollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+-(void)configureCell:(RadicalCharacterCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    
+    
     id<Chinese> chinese = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSString *title = chinese.simplified;
     
-    UIButton *simplified = (UIButton *)[cell viewWithTag:1];
-    simplified.titleLabel.font = [UIFont fontWithName:@"STKaiti" size:50];
+//    NSArray *theArray = @[@"人",@"口",@"木",@"雨",@"头",@"透",@"阿",@"于",@"鱼",@"预",@"上",@"咳",@"咳",@"木",@"目",@"日",@"馹"];
+//    NSUInteger randomIndex = arc4random() % [theArray count];
+//    NSString *title = [theArray objectAtIndex:randomIndex];
     
-    [simplified setTitle:chinese.simplified forState:UIControlStateNormal];
+    UILabel *simplified = (UILabel *)[cell viewWithTag:1];
+    simplified.text = title;
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -306,7 +325,7 @@
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                         managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeyPath
-                                                   cacheName:nil];
+                                                   cacheName:[NSString stringWithFormat:@"RadicalsCharactersCache%@", self.cacheSuffix]];
     _fetchedResultsController = theFetchedResultsController;
     
     return _fetchedResultsController;
