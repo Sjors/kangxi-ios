@@ -162,9 +162,6 @@
             return NO;
         }
     }
-    if([identifier isEqualToString:@"assortedCharactersSegue"]) {
-        return YES;
-    }
     
     return NO;
 }
@@ -174,13 +171,25 @@
     //        [[segue destinationViewController] setDelegate:self];
     //    }
     
-    
+    NSIndexPath *indexPath =  [self.collectionView.indexPathsForSelectedItems firstObject];
+    if (indexPath.section == 3) {
+        if(indexPath.row == 0) {
+            // Asorted
+            RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
+            controller.managedObjectContext = self.managedObjectContext;
+            controller.mode = @"Character";
+            controller.collectionView.pagingEnabled = NO;
+            return;
+        } else {
+            // About
+            return;
+        }
+    }
     
     if([self.mode isEqualToString:@"Radical"]) {
         RadicalsCharactersViewController *controller = (RadicalsCharactersViewController *)segue.destinationViewController;
         controller.managedObjectContext = self.managedObjectContext;
 
-        NSIndexPath *indexPath =  [self.collectionView.indexPathsForSelectedItems firstObject];
         
         if (indexPath.section < [self.fetchedResultsController.sections count]) {
             Radical *radical =[self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -236,7 +245,11 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
         return [sectionInfo numberOfObjects];
     } else {
-        return 1;
+        if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 }
 
@@ -265,8 +278,22 @@
         
         [self configureCell:cell atIndexPath:indexPath];
     } else {
-        static NSString *CellIdentifier = @"assortedCharactersCell";
+        static NSString *CellIdentifier = @"otherCell";
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+        UILabel *label = (UILabel *)[cell viewWithTag:1];
+        label.textColor = TINTCOLOR;
+        
+        switch (indexPath.row) {
+            case 0:
+                label.text = @"Assorted Characters...";
+                break;
+            case 1:
+                label.text = @"About this app...";
+                break;
+            default:
+                label.text = @"";
+                break;
+        }
     }
     
     return cell;
@@ -332,6 +359,21 @@
     
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 3) {
+        switch (indexPath.row) {
+            case 0:
+                [self performSegueWithIdentifier:@"search" sender:self];
+                break;
+            case 1:
+                [self performSegueWithIdentifier:@"aboutSegue" sender:self];
+                break;
+            default:
+                break;
+        }
+    }
+    
+}
 #pragma mark - Flipside View
 
 //- (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller
