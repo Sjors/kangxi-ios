@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		26230FF8897E46878EE06D3F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CA34C0C0AE45E5AB06F8EC /* libPods.a */; };
+		A210F3D917D78B05004F3E1E /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A210F3D817D78B05004F3E1E /* AboutViewController.m */; };
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
@@ -50,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		A1CA34C0C0AE45E5AB06F8EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A210F3D717D78B05004F3E1E /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ViewController/AboutViewController.h; sourceTree = "<group>"; };
+		A210F3D817D78B05004F3E1E /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ViewController/AboutViewController.m; sourceTree = "<group>"; };
 		A212613517CA71500022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
 		A212613617CA71500022390D /* Word.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Word.m; path = Model/Word.m; sourceTree = "<group>"; };
 		A21AE0D217CB63B900168361 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -251,6 +254,8 @@
 				A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */,
 				A2ABB77017C8E768002931C9 /* CharacterViewController.h */,
 				A2ABB77117C8E768002931C9 /* CharacterViewController.m */,
+				A210F3D717D78B05004F3E1E /* AboutViewController.h */,
+				A210F3D817D78B05004F3E1E /* AboutViewController.m */,
 			);
 			name = ViewControllers;
 			path = "Kangxi Radicals";
@@ -432,6 +437,7 @@
 				A212613717CA71500022390D /* Word.m in Sources */,
 				A2B849DE17C75AB2009801D0 /* main.m in Sources */,
 				A21AE0DF17CB87C200168361 /* Radical.m in Sources */,
+				A210F3D917D78B05004F3E1E /* AboutViewController.m in Sources */,
 				A2B849E817C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld in Sources */,
 				A2B849EE17C75AB2009801D0 /* FlipsideViewController.m in Sources */,
 				A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */,
