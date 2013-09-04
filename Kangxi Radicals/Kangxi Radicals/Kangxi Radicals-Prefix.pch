@@ -17,3 +17,4 @@
 #endif
 
 #define TINTCOLOR [UIColor colorWithRed:170.0 / 255.0 green:56.0/ 255.0 blue:30.0/ 255.0 alpha:1]
+#define IS_WIDESCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )

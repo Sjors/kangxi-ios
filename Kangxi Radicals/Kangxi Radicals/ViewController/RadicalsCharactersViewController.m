@@ -154,7 +154,7 @@
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-    if([identifier isEqualToString:@"search"]) {
+    if([identifier isEqualToString:@"search"] || [identifier isEqualToString:@"searchTall"]) {
         if([self.mode isEqualToString:@"Radical"]) {
             return YES;
         } else if ([self.mode isEqualToString:@"Character"]) {
@@ -260,7 +260,11 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if([self sectionWithChineseCells:indexPath.section]) {
-        return CGSizeMake(70, 70);
+        if(IS_WIDESCREEN && [self.mode isEqualToString:@"Radical"]) {
+            return CGSizeMake(70, 88);
+        } else {
+            return CGSizeMake(70, 70);
+        }
     } else {
         return CGSizeMake(320, 44);
 
@@ -272,8 +276,13 @@
     RadicalCharacterCollectionViewCell *cell;
     
     if([self sectionWithChineseCells:indexPath.section]) {
-        static NSString *CellIdentifier = @"chineseCell";
-
+        static NSString *CellIdentifier;
+        
+        if(IS_WIDESCREEN && [self.mode isEqualToString:@"Radical"]) {
+            CellIdentifier = @"chineseTallCell";
+        } else {
+            CellIdentifier = @"chineseCell";
+        }
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         [self configureCell:cell atIndexPath:indexPath];
@@ -281,7 +290,7 @@
         static NSString *CellIdentifier = @"otherCell";
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         UILabel *label = (UILabel *)[cell viewWithTag:1];
-        label.textColor = TINTCOLOR;
+    //        label.textColor = TINTCOLOR;
         
         switch (indexPath.row) {
             case 0:
@@ -311,6 +320,30 @@
     
     UILabel *simplified = (UILabel *)[cell viewWithTag:1];
     simplified.text = title;
+    
+    
+    if(IS_WIDESCREEN) {
+        UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
+
+        if([chinese isKindOfClass:[Radical class]]) {
+            UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
+            
+            NSString *synonymsString = ((Radical *)chinese).synonyms;
+            
+            // define the range you're interested in
+            NSRange stringRange = {0, MIN([synonymsString length], 5)};
+            
+            // adjust the range to include dependent chars
+            stringRange = [synonymsString rangeOfComposedCharacterSequencesForRange:stringRange];
+            
+            // Now you can create the short string
+            NSString *shortString = [synonymsString substringWithRange:stringRange];
+            
+            synonyms.text = shortString;
+        } else {
+            synonyms.text = @"";
+        }
+    }
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -363,7 +396,11 @@
     if (indexPath.section == 3) {
         switch (indexPath.row) {
             case 0:
-                [self performSegueWithIdentifier:@"search" sender:self];
+                if(IS_WIDESCREEN) {
+                    [self performSegueWithIdentifier:@"searchTall" sender:self];
+                } else {
+                    [self performSegueWithIdentifier:@"search" sender:self];
+                }
                 break;
             case 1:
                 [self performSegueWithIdentifier:@"aboutSegue" sender:self];
