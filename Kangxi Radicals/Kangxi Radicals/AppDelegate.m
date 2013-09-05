@@ -108,6 +108,8 @@
         [[Mixpanel sharedInstance] track:@"Audio Session Error" properties:@{@"Method" : @"Activate Session",  @"Error" : [activationError description]}];
 #endif
     }
+    
+
 
 
     

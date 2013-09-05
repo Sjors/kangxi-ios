@@ -17,7 +17,11 @@
     #import <Mixpanel.h>
 #endif
 
-@interface RadicalsCharactersViewController ()
+@interface RadicalsCharactersViewController () {
+    UIImageView *instructionsTextImageView;
+    UIImageView *instructionsCircleImageView;
+}
+
 @property NSString *entityName;
 @property NSPredicate *predicate;
 @property NSString *sectionNameKeyPath;
@@ -63,6 +67,39 @@
         self.cacheSuffix = @"FirstRadical";
         
         self.title = @"Which radical do you recognize?";
+      
+        
+        if (
+            [[NSUserDefaults standardUserDefaults]
+             objectForKey:@"didCompleteIntro"] == nil ||
+            ![[[NSUserDefaults standardUserDefaults]
+               objectForKey:@"didCompleteIntro"] boolValue] )
+        {
+            // Show instructions:
+            self.collectionView.scrollEnabled = NO;
+            instructionsTextImageView = [[UIImageView alloc]
+                                         initWithImage:[UIImage imageNamed:@"InstructionText"]];
+            instructionsTextImageView.frame = CGRectMake(0, 2, 476 / 2, 152 / 2);
+            instructionsTextImageView.alpha = 0;
+            [self.collectionView.superview addSubview:instructionsTextImageView];
+            [self.collectionView.superview bringSubviewToFront:instructionsTextImageView];
+            
+
+            [UIView animateWithDuration:1 delay:1 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+                instructionsTextImageView.alpha = 1;
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+                    instructionsTextImageView.alpha = 0;
+                } completion:^(BOOL finished) {
+                    self.collectionView.scrollEnabled = YES;
+                }];
+
+            }];
+        }
+
+        
+
+        
     } else if([self.mode isEqualToString:@"Radical"]) {
         self.entityName = kEntityRadical;
         self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND section < 2", self.radical, @NO];
@@ -93,6 +130,8 @@
 #ifndef DEBUG
         [[Mixpanel sharedInstance] track:@"Lookup Radical" properties:@{@"Radical" : self.radical.simplified}];
 #endif
+        
+ 
         
     }else if([self.mode isEqualToString:@"Character"]) {
         self.entityName = kEntityCharacter;
@@ -314,6 +353,9 @@
     id<Chinese> chinese = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSString *title = chinese.simplified;
     
+
+
+    
 //    NSArray *theArray = @[@"人",@"口",@"木",@"雨",@"头",@"透",@"阿",@"于",@"鱼",@"预",@"上",@"咳",@"咳",@"木",@"目",@"日",@"馹"];
 //    NSUInteger randomIndex = arc4random() % [theArray count];
 //    NSString *title = [theArray objectAtIndex:randomIndex];
@@ -321,6 +363,33 @@
     UILabel *simplified = (UILabel *)[cell viewWithTag:1];
     simplified.text = title;
     
+    if (
+        [[NSUserDefaults standardUserDefaults]
+          objectForKey:@"didCompleteIntro"] == nil ||
+        ![[[NSUserDefaults standardUserDefaults]
+              objectForKey:@"didCompleteIntro"] boolValue] )
+    {
+        if([self.mode isEqualToString:@"Radical"]) {
+            Radical *radical = (Radical *)chinese;
+            
+            if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"月"] ) {
+                [self showCircleForCell:cell delay:4];
+            }
+            
+            if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"阝"] ) {
+                [self showCircleForCell:cell delay:2];
+            }
+            
+        } else {
+            if([title isEqualToString:@"阴"]) {
+                [self showCircleForCell:cell delay:0];
+                [[NSUserDefaults standardUserDefaults]
+                 setObject:@YES forKey:@"didCompleteIntro"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    }
+     
     
     if(IS_WIDESCREEN) {
         UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
@@ -346,6 +415,30 @@
     }
 }
 
+-(void)showCircleForCell:(UICollectionViewCell *)cell delay:(NSInteger)delay {
+    
+    // Show circle:
+    instructionsCircleImageView = [[UIImageView alloc]
+                                   initWithImage:[UIImage imageNamed:@"InstructionCircle"]];
+    //        instructionsCircleImageView.frame = CGRectMake(0, 2, 476 / 2, 152 / 2);
+    instructionsCircleImageView.alpha = 0;
+    [cell addSubview:instructionsCircleImageView];
+    
+    self.collectionView.scrollEnabled = NO;
+    
+    [UIView animateWithDuration:1 delay:delay options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+        instructionsCircleImageView.alpha = 0.8;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+            instructionsCircleImageView.alpha = 0;
+        } completion:^(BOOL finished) {
+            self.collectionView.scrollEnabled = YES;
+        }];
+        
+    }];
+
+}
+
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
@@ -356,6 +449,22 @@
         } else {
             [view viewWithTag:1].hidden = NO;
 
+            // Don't show header during intro phase:
+            if (
+                [[NSUserDefaults standardUserDefaults]
+                 objectForKey:@"didCompleteIntro"] == nil ||
+                ![[[NSUserDefaults standardUserDefaults]
+                   objectForKey:@"didCompleteIntro"] boolValue] )
+            {
+
+                [view viewWithTag:1].alpha = 0;
+
+              [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+                [view viewWithTag:1].alpha = 1;
+                } completion:nil
+               ];
+            }
+            
         }
         return view;
 
