@@ -385,8 +385,14 @@
 
 -(void)configureCell:(RadicalCharacterCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
+    UILabel *simplified = (UILabel *)[cell viewWithTag:1];
+    
+    UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
+
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
 
+    
     
     if(indexPath.row < [sectionInfo numberOfObjects]) {
     
@@ -400,7 +406,6 @@
     //    NSUInteger randomIndex = arc4random() % [theArray count];
     //    NSString *title = [theArray objectAtIndex:randomIndex];
         
-        UILabel *simplified = (UILabel *)[cell viewWithTag:1];
         simplified.text = title;
         
         if (
@@ -433,7 +438,6 @@
          
         
         if(IS_WIDESCREEN) {
-            UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
 
             if([chinese isKindOfClass:[Radical class]]) {
                 UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
@@ -453,6 +457,12 @@
             } else {
                 synonyms.text = @"";
             }
+        }
+    } else {
+        simplified.text = @"";
+        
+        if(IS_WIDESCREEN) {
+            synonyms.text = @"";
         }
     }
 }
