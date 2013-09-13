@@ -282,13 +282,26 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if([self sectionWithChineseCells:section]) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    } else {
-        if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
-            return 2;
+//        return [sectionInfo numberOfObjects];
+        if([self.mode isEqualToString:@"Radical"]) {
+            // Always display 20 results in radical mode, to keep pagination working
+            return 20;
         } else {
-            return 1;
+             return [sectionInfo numberOfObjects];
         }
+    } else {
+//        if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
+//            return 2;
+//        } else {
+//            return 1;
+//        }
+        
+        if(IS_WIDESCREEN) {
+            return 10;
+        } else {
+            return 8;
+        }
+        
     }
 }
 
@@ -305,7 +318,19 @@
             return CGSizeMake(70, 70);
         }
     } else {
-        return CGSizeMake(320, 44);
+        if((!IS_WIDESCREEN && indexPath.row < 7) || (IS_WIDESCREEN && indexPath.row < 9)) {
+            return CGSizeMake(320, 44);
+        } else {
+            // Navbar: 10 points
+            // Navigationbar: 44 points
+            // 7 or 9 rows: 44 points
+            // section header : 47 points
+            // vertical margin between rows & headers: ? points
+            // Screen height: 480 / 560 points
+            // Last row should be: .... points
+            
+            return CGSizeMake(320, 20);
+        }
 
     }
 }
@@ -330,16 +355,27 @@
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         UILabel *label = (UILabel *)[cell viewWithTag:1];
     //        label.textColor = TINTCOLOR;
+
+        UIImageView *disclosureIndicator = (UIImageView *)[cell viewWithTag:2];
         
         switch (indexPath.row) {
             case 0:
                 label.text = @"Assorted Characters...";
+                disclosureIndicator.hidden = NO;
                 break;
             case 1:
-                label.text = @"About this app...";
+                if ([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
+                    label.text = @"About this app...";
+                    disclosureIndicator.hidden = NO;
+                } else {
+                    label.text = @"";
+                    disclosureIndicator.hidden = YES;
+
+                }
                 break;
             default:
                 label.text = @"";
+                disclosureIndicator.hidden = YES;
                 break;
         }
     }
@@ -349,68 +385,74 @@
 
 -(void)configureCell:(RadicalCharacterCollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     
-    
-    id<Chinese> chinese = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSString *title = chinese.simplified;
-    
-
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
 
     
-//    NSArray *theArray = @[@"人",@"口",@"木",@"雨",@"头",@"透",@"阿",@"于",@"鱼",@"预",@"上",@"咳",@"咳",@"木",@"目",@"日",@"馹"];
-//    NSUInteger randomIndex = arc4random() % [theArray count];
-//    NSString *title = [theArray objectAtIndex:randomIndex];
+    if(indexPath.row < [sectionInfo numberOfObjects]) {
     
-    UILabel *simplified = (UILabel *)[cell viewWithTag:1];
-    simplified.text = title;
-    
-    if (
-        [[NSUserDefaults standardUserDefaults]
-          objectForKey:@"didCompleteIntro"] == nil ||
-        ![[[NSUserDefaults standardUserDefaults]
-              objectForKey:@"didCompleteIntro"] boolValue] )
-    {
-        if([self.mode isEqualToString:@"Radical"]) {
-            Radical *radical = (Radical *)chinese;
-            
-            if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"月"] ) {
-                [self showCircleForCell:cell delay:4];
+        id<Chinese> chinese = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSString *title = chinese.simplified;
+        
+
+
+        
+    //    NSArray *theArray = @[@"人",@"口",@"木",@"雨",@"头",@"透",@"阿",@"于",@"鱼",@"预",@"上",@"咳",@"咳",@"木",@"目",@"日",@"馹"];
+    //    NSUInteger randomIndex = arc4random() % [theArray count];
+    //    NSString *title = [theArray objectAtIndex:randomIndex];
+        
+        UILabel *simplified = (UILabel *)[cell viewWithTag:1];
+        simplified.text = title;
+        
+        if (
+            [[NSUserDefaults standardUserDefaults]
+              objectForKey:@"didCompleteIntro"] == nil ||
+            ![[[NSUserDefaults standardUserDefaults]
+                  objectForKey:@"didCompleteIntro"] boolValue] )
+        {
+            if([self.mode isEqualToString:@"Radical"]) {
+                Radical *radical = (Radical *)chinese;
+                
+                if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"月"] ) {
+                    [self showCircleForCell:cell delay:4];
+                }
+                
+                if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"阝"] ) {
+                    [self showCircleForCell:cell delay:2];
+                }
+                
+            } else {
+                if([title isEqualToString:@"阴"]) {
+                    [self showCircleForCell:cell delay:0];
+                    [[NSUserDefaults standardUserDefaults]
+                     setObject:@YES forKey:@"didCompleteIntro"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
             }
             
-            if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"阝"] ) {
-                [self showCircleForCell:cell delay:2];
-            }
-            
-        } else {
-            if([title isEqualToString:@"阴"]) {
-                [self showCircleForCell:cell delay:0];
-                [[NSUserDefaults standardUserDefaults]
-                 setObject:@YES forKey:@"didCompleteIntro"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
         }
-    }
-     
-    
-    if(IS_WIDESCREEN) {
-        UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
-
-        if([chinese isKindOfClass:[Radical class]]) {
+         
+        
+        if(IS_WIDESCREEN) {
             UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
-            
-            NSString *synonymsString = ((Radical *)chinese).synonyms;
-            
-            // define the range you're interested in
-            NSRange stringRange = {0, MIN([synonymsString length], 5)};
-            
-            // adjust the range to include dependent chars
-            stringRange = [synonymsString rangeOfComposedCharacterSequencesForRange:stringRange];
-            
-            // Now you can create the short string
-            NSString *shortString = [synonymsString substringWithRange:stringRange];
-            
-            synonyms.text = shortString;
-        } else {
-            synonyms.text = @"";
+
+            if([chinese isKindOfClass:[Radical class]]) {
+                UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
+                
+                NSString *synonymsString = ((Radical *)chinese).synonyms;
+                
+                // define the range you're interested in
+                NSRange stringRange = {0, MIN([synonymsString length], 5)};
+                
+                // adjust the range to include dependent chars
+                stringRange = [synonymsString rangeOfComposedCharacterSequencesForRange:stringRange];
+                
+                // Now you can create the short string
+                NSString *shortString = [synonymsString substringWithRange:stringRange];
+                
+                synonyms.text = shortString;
+            } else {
+                synonyms.text = @"";
+            }
         }
     }
 }
@@ -502,7 +544,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 3) {
+    if (indexPath.section == 3 || ([self.mode isEqualToString:@"Radical"] && self.radical != nil && indexPath.section == 2)) {
         switch (indexPath.row) {
             case 0:
                 if(IS_WIDESCREEN) {
@@ -512,7 +554,9 @@
                 }
                 break;
             case 1:
-                [self performSegueWithIdentifier:@"aboutSegue" sender:self];
+                if ([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
+                    [self performSegueWithIdentifier:@"aboutSegue" sender:self];
+                }
                 break;
             default:
                 break;
@@ -520,6 +564,23 @@
     }
     
 }
+
+#pragma mark - Scrollview delegate
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    // End the demo if the user scrolled down
+    if (
+        [[NSUserDefaults standardUserDefaults]
+         objectForKey:@"didCompleteIntro"] == nil ||
+        ![[[NSUserDefaults standardUserDefaults]
+           objectForKey:@"didCompleteIntro"] boolValue] )
+    {
+        [[NSUserDefaults standardUserDefaults]
+         setObject:@YES forKey:@"didCompleteIntro"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
 #pragma mark - Flipside View
 
 //- (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller

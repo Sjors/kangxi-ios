@@ -44,7 +44,7 @@
     NSURLSessionConfiguration *configuration= [NSURLSessionConfiguration defaultSessionConfiguration];
     self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
-    int n = [[self.fetchedResultsController fetchedObjects] count];
+    NSUInteger n = [[self.fetchedResultsController fetchedObjects] count];
     
     self.players = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
@@ -82,7 +82,7 @@
 }
 
 # pragma mark Tableview and delegates
--(int)numberOfSectionsInTableView:(UITableView *)tableView {
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
@@ -143,7 +143,7 @@
         
         NSString *wordParam = [word.simplified stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        NSString *wordParam = @"%E4%BA%BA"; // 人
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apifree.forvo.com/key/f12f9942d441e46720bcf6543c2d5baa/format/json/action/word-pronunciations/word/%@/language/zh/limit/1/order/rate-desc", wordParam]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apipremium.forvo.com/key/f12f9942d441e46720bcf6543c2d5baa/format/json/action/word-pronunciations/word/%@/language/zh/limit/1/order/rate-desc", wordParam]];
         
         // Debugging:
 //        url = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/wnfwekbxwc59nse/forvo-result.json?token_hash=AAEyqM_pOKAsJ5Cjqx3mhuYRfZwV9jJb0RDXgOYHaQWqLg&dl=1"];
