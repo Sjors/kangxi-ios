@@ -79,7 +79,7 @@
             self.collectionView.scrollEnabled = NO;
             instructionsTextImageView = [[UIImageView alloc]
                                          initWithImage:[UIImage imageNamed:@"InstructionText"]];
-            instructionsTextImageView.frame = CGRectMake(0, 2, 476 / 2, 152 / 2);
+            instructionsTextImageView.frame = CGRectMake(0, -5, 476 / 2, 152 / 2);
             instructionsTextImageView.alpha = 0;
             [self.collectionView.superview addSubview:instructionsTextImageView];
             [self.collectionView.superview bringSubviewToFront:instructionsTextImageView];
@@ -421,12 +421,12 @@
                     [self showCircleForCell:cell delay:4];
                 }
                 
-                if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"阝"] ) {
+                if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"日"] ) {
                     [self showCircleForCell:cell delay:2];
                 }
                 
             } else {
-                if([title isEqualToString:@"阴"]) {
+                if([title isEqualToString:@"明"]) {
                     [self showCircleForCell:cell delay:0];
                     [[NSUserDefaults standardUserDefaults]
                      setObject:@YES forKey:@"didCompleteIntro"];
@@ -512,7 +512,7 @@
                 [view viewWithTag:1].alpha = 0;
 
               [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-                [view viewWithTag:1].alpha = 1;
+                [view viewWithTag:1].alpha = 0.8;
                 } completion:nil
                ];
             }
