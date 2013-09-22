@@ -20,6 +20,7 @@
 @interface RadicalsCharactersViewController () {
     UIImageView *instructionsTextImageView;
     UIImageView *instructionsCircleImageView;
+    
 }
 
 @property NSString *entityName;
@@ -28,6 +29,8 @@
 @property NSString *cacheSuffix;
 
 @property NSArray *sortDescriptors;
+
+@property BOOL justLoaded;
 @end
 
 @implementation RadicalsCharactersViewController
@@ -53,6 +56,35 @@
     [super viewDidLoad];
     
     
+    if ([self.mode isEqualToString:@"Radical"] &&
+        ([[NSUserDefaults standardUserDefaults]
+         objectForKey:@"didCompleteIntro"] == nil ||
+        ![[[NSUserDefaults standardUserDefaults]
+           objectForKey:@"didCompleteIntro"] boolValue]) )
+    {
+        // Show instructions:
+        self.collectionView.scrollEnabled = NO;
+        instructionsTextImageView = [[UIImageView alloc]
+                                     initWithImage:[UIImage imageNamed:@"InstructionText"]];
+        instructionsTextImageView.frame = CGRectMake(0, -5, 476 / 2, 152 / 2);
+        instructionsTextImageView.alpha = 0;
+        [self.collectionView.superview addSubview:instructionsTextImageView];
+        [self.collectionView.superview bringSubviewToFront:instructionsTextImageView];
+        
+        if(self.radical == nil) {
+            [self flashInstructions:1];
+        } else {
+            [self flashInstructions:0];
+        }
+    }
+    
+    if([self.mode isEqualToString:@"Radical"]) {
+        self.collectionView.pagingEnabled = YES;
+    } else {
+        self.collectionView.pagingEnabled = NO;
+    }
+    
+    
     if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
         self.entityName = kEntityRadical;
         self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@ OR section == 2", @YES];
@@ -68,34 +100,7 @@
         
         self.title = @"Which radical do you recognize?";
       
-        
-        if (
-            [[NSUserDefaults standardUserDefaults]
-             objectForKey:@"didCompleteIntro"] == nil ||
-            ![[[NSUserDefaults standardUserDefaults]
-               objectForKey:@"didCompleteIntro"] boolValue] )
-        {
-            // Show instructions:
-            self.collectionView.scrollEnabled = NO;
-            instructionsTextImageView = [[UIImageView alloc]
-                                         initWithImage:[UIImage imageNamed:@"InstructionText"]];
-            instructionsTextImageView.frame = CGRectMake(0, -5, 476 / 2, 152 / 2);
-            instructionsTextImageView.alpha = 0;
-            [self.collectionView.superview addSubview:instructionsTextImageView];
-            [self.collectionView.superview bringSubviewToFront:instructionsTextImageView];
-            
 
-            [UIView animateWithDuration:1 delay:1 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-                instructionsTextImageView.alpha = 1;
-            } completion:^(BOOL finished) {
-                [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-                    instructionsTextImageView.alpha = 0;
-                } completion:^(BOOL finished) {
-                    self.collectionView.scrollEnabled = YES;
-                }];
-
-            }];
-        }
 
         
 
@@ -190,6 +195,35 @@
     }
     
     [self.fetchedResultsController performFetch:nil];
+    
+    self.justLoaded = YES;
+}
+
+- (void)flashInstructions:(NSInteger)delay {
+    [UIView animateWithDuration:1 delay:delay options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+        instructionsTextImageView.alpha = 1;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+            instructionsTextImageView.alpha = 0;
+        } completion:^(BOOL finished) {
+            self.collectionView.scrollEnabled = YES;
+        }];
+        
+    }];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    if (
+        !self.justLoaded && ([[NSUserDefaults standardUserDefaults]
+         objectForKey:@"didCompleteIntro"] == nil ||
+        ![[[NSUserDefaults standardUserDefaults]
+           objectForKey:@"didCompleteIntro"] boolValue] ))
+    {
+        [self flashInstructions:0];
+        [self.collectionView reloadData];
+    }
+    
+    self.justLoaded = NO;
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
