@@ -17,6 +17,7 @@
 @interface CharacterViewController ()
 @property NSURLSession *session;
 @property NSMutableArray *players;
+@property NSMutableArray *utterances;
 @property NSMutableArray *hasPronunciation;
 @property NSMutableArray *alreadyPlayed;
 @end
@@ -42,19 +43,24 @@
     [self.fetchedResultsController performFetch:nil];
 
     NSURLSessionConfiguration *configuration= [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    // Fall back to speech synthesiser if connection is too slow:
+    configuration.timeoutIntervalForRequest = 2;
+    
     self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
     NSUInteger n = [[self.fetchedResultsController fetchedObjects] count];
     
     self.players = [[NSMutableArray alloc] initWithCapacity:n];
-    self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
+    self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
     self.alreadyPlayed = [[NSMutableArray alloc] initWithCapacity:n];
-
+    self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
     
     for(int i=0; i < n; i++) {
         [self.players addObject:@""];
-        [self.hasPronunciation addObject:@YES];
+        [self.utterances addObject:@""];
         [self.alreadyPlayed addObject:@NO];
+        [self.hasPronunciation addObject:@YES];
     }
 #ifndef DEBUG
     [[Mixpanel sharedInstance] track:@"Lookup Words" properties:@{@"Character" : self.character.simplified}];
@@ -77,6 +83,8 @@
     }
     
     [self.players removeAllObjects];
+    [self.utterances removeAllObjects]; // Can't stop them a.f.a.i.k.
+
     
     [self.session invalidateAndCancel];
 }
@@ -120,7 +128,7 @@
     
     UIImageView *play = (UIImageView *)[cell viewWithTag:3];
     play.image = [play.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    play.hidden = ![[self.hasPronunciation objectAtIndex:indexPath.row] boolValue];
+    play.hidden = NO;
 }
 
 # pragma mark Playback
@@ -135,12 +143,14 @@
     
     AVAudioPlayer *player = [self.players objectAtIndex:indexPath.row];
     
+    Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    
     if([player isKindOfClass:[AVAudioPlayer class]]) {
         [player play];
+    } else if ( ![[self.hasPronunciation objectAtIndex:indexPath.row] boolValue] ) {
+        [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
     } else {
-        Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        
-        
         NSString *wordParam = [word.simplified stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        NSString *wordParam = @"%E4%BA%BA"; // 人
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apipremium.forvo.com/key/f12f9942d441e46720bcf6543c2d5baa/format/json/action/word-pronunciations/word/%@/language/zh/limit/1/order/rate-desc", wordParam]];
@@ -183,7 +193,7 @@
                         
                     } else {
                         [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
-                        [self errorMessage:@"No pronunciation." indexPath:indexPath disablePlayButton:YES];
+                        [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
 #ifndef DEBUG
                         [[Mixpanel sharedInstance] track:@"Pronunciation Missing" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
 #endif
@@ -206,17 +216,25 @@
                     }
                     
                     if (limitReached) {
-                        [self errorMessage:@"Try again tomorrow" indexPath:indexPath disablePlayButton:YES];
+                        [self playPronunciationUsingVoiceSynthesiser:word  indexPath:indexPath];
+
+//                        [self errorMessage:@"Try again tomorrow" indexPath:indexPath disablePlayButton:YES];
+                        [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
+
                     } else {
-                        [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+                        [self playPronunciationUsingVoiceSynthesiser:word  indexPath:indexPath];
+
+//                        [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
                         #ifndef DEBUG
                         [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"NSJSONSerialization",  @"Error" : [error description]}];
                         #endif
                     }
                 }
             } else {
+                [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
+
                 // Deal with error in download
-                [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+//                [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
 #ifndef DEBUG
                 [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download JSON",  @"Error" : [error description]}];
 #endif
@@ -229,18 +247,24 @@
 
 -(void)downloadAndPlayMP3:(NSURL *)url indexPath:(NSIndexPath *)indexPath {
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:YES];
+    
+    Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
     [[self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
         [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:NO];
 
         if(error == nil) {
             NSError *error;
             AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:data error:&error];
-   
+
             if(error == nil) {
                 player.delegate = self;
                 [self.players setObject:player atIndexedSubscript:indexPath.row];
                 [player play];
             } else {
+
+                [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
+
                 // Deal with audio file load error
                 if ([error code] == 1954115647) { //  Unsupported File Type
                     // http://stackoverflow.com/questions/4901709/iphone-avaudioplayer-unsupported-file-type
@@ -255,11 +279,15 @@
 #endif
                 }
                 
-                [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
+//                [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
+                [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
+
             }
         } else {
             // Deal with MP3 download error
-            [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+//            [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+            [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
+
 #ifndef DEBUG
             [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download MP3",  @"Error" : [error description]}];
 #endif
@@ -283,11 +311,26 @@
     }
 }
 
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
+    
+    NSIndexPath *indexPath = [self indexPathForUtterance:utterance];
+    [self restorePlayButton:indexPath];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance {
+    
+}
+
 -(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error {
     NSIndexPath *indexPath = [self indexPathForPlayer:player];
+    Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     [self.players removeObject:player];
-    [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
+    
+    [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
+    [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
+    
+//    [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
 #ifndef DEBUG
     [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"audioPlayerDecodeErrorDidOccur",  @"Error" : [error description]}];
 #endif
@@ -295,6 +338,10 @@
 
 -(NSIndexPath *)indexPathForPlayer:(AVAudioPlayer *)player {
     return [NSIndexPath indexPathForRow:[self.players indexOfObject:player] inSection:0];
+}
+
+-(NSIndexPath *)indexPathForUtterance:(AVSpeechUtterance *)utterance {
+    return [NSIndexPath indexPathForRow:[self.utterances indexOfObject:utterance] inSection:0];
 }
 
 -(void)restorePlayButton:(NSIndexPath *)indexPath {
@@ -307,25 +354,25 @@
 }
 
 #pragma mark - Error handling
-- (void)errorMessage:(NSString *)message indexPath:(NSIndexPath *)indexPath disablePlayButton:(BOOL)disablePlayButton {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell viewWithTag:4];
-    [spinner stopAnimating];
-    
-    UILabel *errorLabel = (UILabel *)[cell viewWithTag:5];
-    errorLabel.text = message;
-    errorLabel.hidden = NO;
-    errorLabel.alpha = 0.9;
-    
-    [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-        errorLabel.alpha = 0;
-    } completion:^(BOOL finished) {
-        errorLabel.hidden = YES;
-        if (!disablePlayButton) {
-            [self restorePlayButton:indexPath];
-        }
-    }];
-}
+//- (void)errorMessage:(NSString *)message indexPath:(NSIndexPath *)indexPath disablePlayButton:(BOOL)disablePlayButton {
+//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+//    UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell viewWithTag:4];
+//    [spinner stopAnimating];
+//    
+//    UILabel *errorLabel = (UILabel *)[cell viewWithTag:5];
+//    errorLabel.text = message;
+//    errorLabel.hidden = NO;
+//    errorLabel.alpha = 0.9;
+//    
+//    [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+//        errorLabel.alpha = 0;
+//    } completion:^(BOOL finished) {
+//        errorLabel.hidden = YES;
+//        if (!disablePlayButton) {
+//            [self restorePlayButton:indexPath];
+//        }
+//    }];
+//}
 
  
 
@@ -363,6 +410,19 @@
     
     return _fetchedResultsController;
     
+}
+
+-(void)playPronunciationUsingVoiceSynthesiser:(Word *)word indexPath:(NSIndexPath *)indexPath {
+    
+    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]  init];
+    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:word.simplified ];
+    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-cn"];
+    utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
+    [synthesizer speakUtterance:utterance];
+    
+    synthesizer.delegate = self;
+    
+    [self.utterances setObject:utterance atIndexedSubscript:indexPath.row];
 }
 
 
