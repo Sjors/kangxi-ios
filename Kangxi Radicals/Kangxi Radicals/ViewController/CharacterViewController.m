@@ -194,7 +194,9 @@
                     } else {
                         [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
                         [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
-#ifndef DEBUG
+#ifdef DEBUG
+                        NSLog(@"Pronunciation Missing");
+#else
                         [[Mixpanel sharedInstance] track:@"Pronunciation Missing" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
 #endif
                     }
@@ -264,44 +266,50 @@
     
     Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    [[self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:NO];
 
+    [[self.session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:NO];
+        
         if(error == nil) {
             NSError *error;
-            AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:data error:&error];
-
+//            AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:data error:&error];
+            AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:location fileTypeHint:AVFileTypeMPEGLayer3 error:&error];
+            
             if(error == nil) {
                 player.delegate = self;
                 [self.players setObject:player atIndexedSubscript:indexPath.row];
                 [player play];
             } else {
-
+                
                 [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
-
+                
                 // Deal with audio file load error
                 if ([error code] == 1954115647) { //  Unsupported File Type
                     // http://stackoverflow.com/questions/4901709/iphone-avaudioplayer-unsupported-file-type
-#ifndef DEBUG
-
+#ifdef DEBUG
+                    NSLog(@"Pronunciation Unsupported File Type: %@", url);
+#else
+                    
                     [[Mixpanel sharedInstance] track:@"Pronunciation Unsupported File Type" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
 #endif
-
+                    
                 } else {
-#ifndef DEBUG
+#ifdef DEBUG
+                    NSLog(@"Pronunciation Error: %@ for %@", error, url);
+#else
                     [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"AVAudioPlayer initWithData",  @"Error" : [error description]}];
 #endif
                 }
                 
-//                [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
+                //                [self errorMessage:@"Audio file broken" indexPath:indexPath disablePlayButton:YES];
                 [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
-
+                
             }
         } else {
             // Deal with MP3 download error
-//            [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+            //            [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
             [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
-
+            
             if(error.code == NSURLErrorTimedOut) {
 #ifdef DEBUG
                 NSLog(@"Download Timeout for MP3");
@@ -313,14 +321,15 @@
 #ifdef DEBUG
                 NSLog(@"MP3 download error: %@", [error description]);
 #else
-            [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download MP3",  @"Error" : [error description]}];
+                [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download MP3",  @"Error" : [error description]}];
 #endif
             }
-
-
+            
+            
         }
         
     }] resume];
+ 
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
