@@ -20,6 +20,7 @@
 @property NSMutableArray *utterances;
 @property NSMutableArray *hasPronunciation;
 @property NSMutableArray *alreadyPlayed;
+@property NSMutableArray *hasMultiplePronunciations;
 @end
 
 @implementation CharacterViewController
@@ -55,12 +56,15 @@
     self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
     self.alreadyPlayed = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
+    self.hasMultiplePronunciations = [[NSMutableArray alloc] initWithCapacity:n];
+
     
     for(int i=0; i < n; i++) {
         [self.players addObject:@""];
         [self.utterances addObject:@""];
         [self.alreadyPlayed addObject:@NO];
         [self.hasPronunciation addObject:@YES];
+        [self.hasMultiplePronunciations addObject:@NO];
     }
 #ifndef DEBUG
     [[Mixpanel sharedInstance] track:@"Lookup Words" properties:@{@"Character" : self.character.simplified}];
@@ -153,7 +157,7 @@
     } else {
         NSString *wordParam = [word.simplified stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        NSString *wordParam = @"%E4%BA%BA"; // 人
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apipremium.forvo.com/key/f12f9942d441e46720bcf6543c2d5baa/format/json/action/word-pronunciations/word/%@/language/zh/limit/1/order/rate-desc", wordParam]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://apipremium.forvo.com/key/f12f9942d441e46720bcf6543c2d5baa/format/json/action/word-pronunciations/word/%@/language/zh/limit/10/order/rate-desc", wordParam]];
         
         // Debugging:
 //        url = [NSURL URLWithString:@"https://dl.dropboxusercontent.com/s/wnfwekbxwc59nse/forvo-result.json?token_hash=AAEyqM_pOKAsJ5Cjqx3mhuYRfZwV9jJb0RDXgOYHaQWqLg&dl=1"];
@@ -182,7 +186,8 @@
                 NSDictionary *result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                 
                 if (error == nil && [result respondsToSelector:@selector(objectForKey:)] && [result objectForKey:@"items"]) {
-                    if ([[result valueForKey:@"items"] count] > 0) {
+                    NSArray *items = [result valueForKey:@"items"];
+                    if ([items count] == 1) {
                         NSString *pathmp3 = [[[result valueForKey:@"items"] firstObject] valueForKey:@"pathmp3"];
                         
                         // Debug:
@@ -190,7 +195,17 @@
                         
 //                        NSLog(@"MP3: %@", pathmp3);
                         [self downloadAndPlayMP3:[NSURL URLWithString:pathmp3] indexPath:indexPath];
+                        [self.hasMultiplePronunciations setObject:@NO atIndexedSubscript:indexPath.row];
+                    } else if ([items count] > 1) {
+                        // Pick one at random and don't cache it:
+                        [self.hasMultiplePronunciations setObject:@YES atIndexedSubscript:indexPath.row];
+#ifdef DEBUG
+                        NSLog(@"%d pronunciations", [items count]);
+#endif
+
+                        NSString *pathmp3 = [[items objectAtIndex:arc4random_uniform([items count])] valueForKey:@"pathmp3"];
                         
+                        [self downloadAndPlayMP3:[NSURL URLWithString:pathmp3] indexPath:indexPath];
                     } else {
                         [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
                         [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
@@ -337,11 +352,17 @@
     
     [self restorePlayButton:indexPath];
     
-    if(![[self.alreadyPlayed objectAtIndex:indexPath.row] boolValue]) {
+    if(![[self.alreadyPlayed objectAtIndex:indexPath.row] boolValue] ) {
 #ifndef DEBUG
         [[Mixpanel sharedInstance] track:@"Play Pronunciation" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
 #endif
         [self.alreadyPlayed setObject:@YES atIndexedSubscript:indexPath.row];
+    }
+    
+    // Cache audio player if playback was succesful, but not if there were multiple pronunciations available at Forvo.
+
+    if([[self.hasMultiplePronunciations objectAtIndex:indexPath.row] boolValue]) {
+        [self.players setObject:@"" atIndexedSubscript:indexPath.row];
     }
 }
 
@@ -359,7 +380,7 @@
     NSIndexPath *indexPath = [self indexPathForPlayer:player];
     Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    [self.players removeObject:player];
+    [self.players setObject:@"" atIndexedSubscript:indexPath.row];
     
     [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
     [self.hasPronunciation setObject:@NO atIndexedSubscript:indexPath.row];
