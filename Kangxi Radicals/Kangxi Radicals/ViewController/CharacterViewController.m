@@ -233,12 +233,26 @@
             } else {
                 [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
 
-                // Deal with error in download
-//                [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
-#ifndef DEBUG
-                [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download JSON",  @"Error" : [error description]}];
+                if(error.code == NSURLErrorTimedOut) {
+                    // Timeout for JSON download
+#ifdef DEBUG
+                    NSLog(@"Download Timeout for JSON");
+#else
+                    [[Mixpanel sharedInstance] track:@"Download Timeout for JSON" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
 #endif
-            }
+                } else {
+                    NSLog(@"%@", [error description]);
+
+                    // Other JSON download error
+                    //                [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
+#ifdef DEBUG
+                    NSLog(@"Download error for JSON: %@", error);
+#else
+                    [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download JSON",  @"Error" : [error description]}];
+#endif
+
+                }
+             }
         }] resume];
     }
     
@@ -288,9 +302,20 @@
 //            [self errorMessage:@"Connection error." indexPath:indexPath disablePlayButton:NO];
             [self playPronunciationUsingVoiceSynthesiser:word indexPath:indexPath];
 
-#ifndef DEBUG
+            if(error.code == NSURLErrorTimedOut) {
+#ifdef DEBUG
+                NSLog(@"Download Timeout for MP3");
+#else
+                [[Mixpanel sharedInstance] track:@"Download Timeout for MP3" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified}];
+#endif
+            } else {
+                // Other MP3 downlnoad error
+#ifdef DEBUG
+                NSLog(@"MP3 download error: %@", [error description]);
+#else
             [[Mixpanel sharedInstance] track:@"Pronunciation Error" properties:@{@"Word" : ((Word *)[self.fetchedResultsController objectAtIndexPath:indexPath]).simplified,@"Method" : @"Download MP3",  @"Error" : [error description]}];
 #endif
+            }
 
 
         }

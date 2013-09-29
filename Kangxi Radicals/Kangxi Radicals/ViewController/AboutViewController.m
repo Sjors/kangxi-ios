@@ -7,6 +7,7 @@
 //
 
 #import "AboutViewController.h"
+#import "Mixpanel.h"
 
 @interface AboutViewController ()
 
@@ -101,6 +102,9 @@
     }
     
     if(url!=nil) {
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Follow Link" properties:@{@"URL" : url}];
+#endif
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
  
     }
