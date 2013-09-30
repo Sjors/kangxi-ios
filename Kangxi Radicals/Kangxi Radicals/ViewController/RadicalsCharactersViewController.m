@@ -56,11 +56,7 @@
     [super viewDidLoad];
     
     
-    if ([self.mode isEqualToString:@"Radical"] &&
-        ([[NSUserDefaults standardUserDefaults]
-         objectForKey:@"didCompleteIntro"] == nil ||
-        ![[[NSUserDefaults standardUserDefaults]
-           objectForKey:@"didCompleteIntro"] boolValue]) )
+    if ([self shouldShowInstructions] )
     {
         // Show instructions:
         self.collectionView.scrollEnabled = NO;
@@ -455,16 +451,20 @@
                     [self showCircleForCell:cell delay:4];
                 }
                 
-                if ( ![radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"日"] ) {
+                if (
+                    ![radical.isFirstRadical boolValue] &&
+                    (
+//                        ([radical.simplified isEqualToString:@"日"] && [radical.firstRadical.simplified isEqualToString:@"月"]) ||
+                        ([radical.simplified isEqualToString:@"巳"] && [radical.firstRadical.simplified isEqualToString:@"月"])
+                    )
+                )
+                {
                     [self showCircleForCell:cell delay:2];
                 }
                 
             } else {
-                if([title isEqualToString:@"明"]) {
+                if([title isEqualToString:@"肥"]) {
                     [self showCircleForCell:cell delay:0];
-                    [[NSUserDefaults standardUserDefaults]
-                     setObject:@YES forKey:@"didCompleteIntro"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
                 }
             }
             
@@ -523,6 +523,15 @@
         
     }];
 
+}
+
+-(BOOL)shouldShowInstructions {
+    return ([self.mode isEqualToString:@"Radical"] &&
+    ([[NSUserDefaults standardUserDefaults]
+      objectForKey:@"didCompleteIntro"] == nil ||
+     ![[[NSUserDefaults standardUserDefaults]
+        objectForKey:@"didCompleteIntro"] boolValue]) &&
+            (self.radical == nil || [self.radical.simplified isEqualToString:@"月"] || [self.radical.simplified isEqualToString:@"巴"] ));
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {

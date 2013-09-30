@@ -38,6 +38,12 @@
 {
     [super viewDidLoad];
     
+    if([self.character.simplified isEqualToString:@"肥"]) {
+        [[NSUserDefaults standardUserDefaults]
+         setObject:@YES forKey:@"didCompleteIntro"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     NSString *titleText = [NSString stringWithFormat:@"%@ %@",self.character.simplified, self.character.pinyin];
     self.navigationItem.titleView = [self titleViewWithText:titleText numberOfChineseCharacters:1];
     
