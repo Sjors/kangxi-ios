@@ -199,11 +199,12 @@
                     } else if ([items count] > 1) {
                         // Pick one at random and don't cache it:
                         [self.hasMultiplePronunciations setObject:@YES atIndexedSubscript:indexPath.row];
+                        NSUInteger length = (unsigned long)[items count];
 #ifdef DEBUG
-                        NSLog(@"%d pronunciations", [items count]);
+                        NSLog(@"%lu pronunciations", length);
 #endif
 
-                        NSString *pathmp3 = [[items objectAtIndex:arc4random_uniform([items count])] valueForKey:@"pathmp3"];
+                        NSString *pathmp3 = [[items objectAtIndex:random() % length] valueForKey:@"pathmp3"];
                         
                         [self downloadAndPlayMP3:[NSURL URLWithString:pathmp3] indexPath:indexPath];
                     } else {

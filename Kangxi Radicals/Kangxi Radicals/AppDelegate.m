@@ -34,6 +34,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//#ifdef DEBUG
+//    // Test randomness:
+//    for(int i=0; i < 10; i++) {
+//        NSInteger length = (unsigned long)10;
+//        
+//        NSInteger rand = (unsigned long)(random() % length);
+//        NSLog(@"Random: %lu", rand);
+//    }
+//#endif
+    
 #ifndef DEBUG
     [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     [[Mixpanel sharedInstance] track:@"Launch"];

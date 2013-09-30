@@ -25,10 +25,12 @@ int __pyStderrWrite(void *inFD, const char *buffer, int size)
 
 int main(int argc, char * argv[])
 {
-#ifdef DEBUG // https://devforums.apple.com/message/880348#880348
-    _oldStdWrite = stderr->_write;
-    stderr->_write = __pyStderrWrite;
-#endif
+//#ifdef DEBUG // https://devforums.apple.com/message/880348#880348
+//    _oldStdWrite = stderr->_write;
+//    stderr->_write = __pyStderrWrite;
+//#endif
+    int32_t seed=(int32_t)(time(NULL) & 0xff);
+    srandom(seed);
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
