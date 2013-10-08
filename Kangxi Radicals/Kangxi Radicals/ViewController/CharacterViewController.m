@@ -15,12 +15,14 @@
 #endif
 
 @interface CharacterViewController ()
+@property NSMutableArray *utterances;
+#ifndef LITE
 @property NSURLSession *session;
 @property NSMutableArray *players;
-@property NSMutableArray *utterances;
 @property NSMutableArray *hasPronunciation;
 @property NSMutableArray *alreadyPlayed;
 @property NSMutableArray *hasMultiplePronunciations;
+#endif
 @end
 
 @implementation CharacterViewController
@@ -48,6 +50,11 @@
     self.navigationItem.titleView = [self titleViewWithText:titleText numberOfChineseCharacters:1];
     
     [self.fetchedResultsController performFetch:nil];
+    
+    NSUInteger n = [[self.fetchedResultsController fetchedObjects] count];
+    self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
+
+#ifndef LITE
 
     NSURLSessionConfiguration *configuration= [NSURLSessionConfiguration defaultSessionConfiguration];
     
@@ -56,21 +63,20 @@
     
     self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
-    NSUInteger n = [[self.fetchedResultsController fetchedObjects] count];
-    
     self.players = [[NSMutableArray alloc] initWithCapacity:n];
-    self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
     self.alreadyPlayed = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasMultiplePronunciations = [[NSMutableArray alloc] initWithCapacity:n];
-
-    
+#endif
     for(int i=0; i < n; i++) {
-        [self.players addObject:@""];
         [self.utterances addObject:@""];
+#ifndef LITE
+        [self.players addObject:@""];
         [self.alreadyPlayed addObject:@NO];
         [self.hasPronunciation addObject:@YES];
         [self.hasMultiplePronunciations addObject:@NO];
+#endif
+
     }
 #ifndef DEBUG
     [[Mixpanel sharedInstance] track:@"Lookup Words" properties:@{@"Character" : self.character.simplified}];
@@ -84,6 +90,7 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+#ifndef LITE
     for(AVAudioPlayer *player in self.players) {
         if ([player isKindOfClass:[AVAudioPlayer class]]) {
             if(player.isPlaying) {
@@ -93,10 +100,10 @@
     }
     
     [self.players removeAllObjects];
-    [self.utterances removeAllObjects]; // Can't stop them a.f.a.i.k.
-
     
     [self.session invalidateAndCancel];
+#endif
+    [self.utterances removeAllObjects]; // Can't stop them a.f.a.i.k.
 }
 
 # pragma mark Tableview and delegates
@@ -150,10 +157,14 @@
     
     play.hidden = YES;
     [spinner startAnimating];
-    
-    AVAudioPlayer *player = [self.players objectAtIndex:indexPath.row];
-    
+
     Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+#ifdef LITE
+    [self playPronunciationUsingVoiceSynthesiser:word  indexPath:indexPath];
+#else
+
+    AVAudioPlayer *player = [self.players objectAtIndex:indexPath.row];
 
     
     if([player isKindOfClass:[AVAudioPlayer class]]) {
@@ -207,7 +218,7 @@
                         [self.hasMultiplePronunciations setObject:@YES atIndexedSubscript:indexPath.row];
                         NSUInteger length = (unsigned long)[items count];
 #ifdef DEBUG
-                        NSLog(@"%lu pronunciations", length);
+                        NSLog(@"%lu pronunciations", (unsigned long)length);
 #endif
 
                         NSString *pathmp3 = [[items objectAtIndex:random() % length] valueForKey:@"pathmp3"];
@@ -280,9 +291,11 @@
         }] resume];
     }
     
+#endif
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#ifndef LITE
 -(void)downloadAndPlayMP3:(NSURL *)url indexPath:(NSIndexPath *)indexPath {
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:YES];
     
@@ -373,15 +386,6 @@
     }
 }
 
-- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
-    
-    NSIndexPath *indexPath = [self indexPathForUtterance:utterance];
-    [self restorePlayButton:indexPath];
-}
-
-- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance {
-    
-}
 
 -(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error {
     NSIndexPath *indexPath = [self indexPathForPlayer:player];
@@ -400,6 +404,33 @@
 
 -(NSIndexPath *)indexPathForPlayer:(AVAudioPlayer *)player {
     return [NSIndexPath indexPathForRow:[self.players indexOfObject:player] inSection:0];
+}
+
+#endif
+
+#pragma mark Speech Synthesiser
+
+-(void)playPronunciationUsingVoiceSynthesiser:(Word *)word indexPath:(NSIndexPath *)indexPath {
+    
+    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]  init];
+    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:word.simplified ];
+    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-cn"];
+    utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
+    [synthesizer speakUtterance:utterance];
+    
+    synthesizer.delegate = self;
+    
+    [self.utterances setObject:utterance atIndexedSubscript:indexPath.row];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
+    
+    NSIndexPath *indexPath = [self indexPathForUtterance:utterance];
+    [self restorePlayButton:indexPath];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance {
+    
 }
 
 -(NSIndexPath *)indexPathForUtterance:(AVSpeechUtterance *)utterance {
@@ -474,18 +505,7 @@
     
 }
 
--(void)playPronunciationUsingVoiceSynthesiser:(Word *)word indexPath:(NSIndexPath *)indexPath {
-    
-    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]  init];
-    AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:word.simplified ];
-    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-cn"];
-    utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
-    [synthesizer speakUtterance:utterance];
-    
-    synthesizer.delegate = self;
-    
-    [self.utterances setObject:utterance atIndexedSubscript:indexPath.row];
-}
+
 
 
 @end

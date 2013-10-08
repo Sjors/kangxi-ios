@@ -17,12 +17,16 @@
 #import "RadicalsCharactersViewController.h"
 
 
-//#define DO_IMPORT YES
+#define DO_IMPORT YES
 
 #define MIXPANEL_TOKEN @"205327faee0efccec16b37c2db34d98d"
 
 #ifdef DO_IMPORT
-#import "import.h"
+#ifdef LITE
+    #import "import_lite.h"
+#else
+    #import "import.h"
+#endif
 #endif
 
 @implementation AppDelegate
@@ -46,6 +50,9 @@
     
 #ifndef DEBUG
     [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
+    #ifdef LITE
+        [[Mixpanel sharedInstance] registerSuperProperties:@{@"Lite": @YES}];
+    #endif
     [[Mixpanel sharedInstance] track:@"Launch"];
 #endif
     

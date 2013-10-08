@@ -11,9 +11,15 @@
 #import "UIViewController+Additions.h"
 #import <AVFoundation/AVFoundation.h>
 
+#ifdef LITE
+@interface CharacterViewController : UITableViewController <AVSpeechSynthesizerDelegate> {
+    NSFetchedResultsController *_fetchedResultsController;
+}
+#else
 @interface CharacterViewController : UITableViewController <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate> {
     NSFetchedResultsController *_fetchedResultsController;
 }
+#endif
 
 @property NSManagedObjectContext *managedObjectContext;
 @property (readonly) NSFetchedResultsController *fetchedResultsController;

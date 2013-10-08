@@ -1,4 +1,6 @@
 import.h
 import.m
+import_lite.h
+import_lite.m
 *.zip
 *.sqlite

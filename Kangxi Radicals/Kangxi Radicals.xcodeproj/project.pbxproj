@@ -8,6 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		26230FF8897E46878EE06D3F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CA34C0C0AE45E5AB06F8EC /* libPods.a */; };
+		A20094CC18040E9F000B1F87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B849E117C75AB2009801D0 /* AppDelegate.m */; };
+		A20094CD18040E9F000B1F87 /* RadicalCharacterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */; };
+		A20094CE18040E9F000B1F87 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
+		A20094CF18040E9F000B1F87 /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
+		A20094D018040E9F000B1F87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B849DD17C75AB2009801D0 /* main.m */; };
+		A20094D118040E9F000B1F87 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
+		A20094D218040E9F000B1F87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A210F3D817D78B05004F3E1E /* AboutViewController.m */; };
+		A20094D318040E9F000B1F87 /* Kangxi_Radicals.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */; };
+		A20094D418040E9F000B1F87 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
+		A20094D518040E9F000B1F87 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
+		A20094D618040E9F000B1F87 /* RadicalsCharactersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */; };
+		A20094D818040E9F000B1F87 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
+		A20094D918040E9F000B1F87 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849D117C75AB2009801D0 /* CoreGraphics.framework */; };
+		A20094DA18040E9F000B1F87 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849D517C75AB2009801D0 /* CoreData.framework */; };
+		A20094DB18040E9F000B1F87 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849D317C75AB2009801D0 /* UIKit.framework */; };
+		A20094DC18040E9F000B1F87 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2835AE117CD2CAA00100693 /* Crashlytics.framework */; };
+		A20094DD18040E9F000B1F87 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B849CF17C75AB2009801D0 /* Foundation.framework */; };
+		A20094DE18040E9F000B1F87 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CA34C0C0AE45E5AB06F8EC /* libPods.a */; };
+		A20094E018040E9F000B1F87 /* Kangxi_Radicals.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */; };
+		A20094E118040E9F000B1F87 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2B849EF17C75AB2009801D0 /* Images.xcassets */; };
+		A20094E218040E9F000B1F87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2B849DA17C75AB2009801D0 /* InfoPlist.strings */; };
+		A20094E318040E9F000B1F87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B849E317C75AB2009801D0 /* Main.storyboard */; };
+		A20094E418040E9F000B1F87 /* 华文楷体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0F17C76281009801D0 /* 华文楷体.TTF */; };
+		A20094EE18041129000B1F87 /* import_lite.m in Sources */ = {isa = PBXBuildFile; fileRef = A20094EC18041129000B1F87 /* import_lite.m */; };
 		A210F3D917D78B05004F3E1E /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A210F3D817D78B05004F3E1E /* AboutViewController.m */; };
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
@@ -50,6 +74,10 @@
 
 /* Begin PBXFileReference section */
 		A1CA34C0C0AE45E5AB06F8EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20094EA18040E9F000B1F87 /* Kangxi Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kangxi Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20094EB18040EA0000B1F87 /* Kangxi Lite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Kangxi Lite-Info.plist"; path = "/Users/sjors/Dropbox/Kangxi/iOs/Kangxi Radicals/Kangxi Lite-Info.plist"; sourceTree = "<absolute>"; };
+		A20094EC18041129000B1F87 /* import_lite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = import_lite.m; sourceTree = "<group>"; };
+		A20094ED18041129000B1F87 /* import_lite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = import_lite.h; sourceTree = "<group>"; };
 		A210F3D717D78B05004F3E1E /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ViewController/AboutViewController.h; sourceTree = "<group>"; };
 		A210F3D817D78B05004F3E1E /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ViewController/AboutViewController.m; sourceTree = "<group>"; };
 		A212613517CA71500022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
@@ -98,6 +126,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A20094D718040E9F000B1F87 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20094D818040E9F000B1F87 /* AVFoundation.framework in Frameworks */,
+				A20094D918040E9F000B1F87 /* CoreGraphics.framework in Frameworks */,
+				A20094DA18040E9F000B1F87 /* CoreData.framework in Frameworks */,
+				A20094DB18040E9F000B1F87 /* UIKit.framework in Frameworks */,
+				A20094DC18040E9F000B1F87 /* Crashlytics.framework in Frameworks */,
+				A20094DD18040E9F000B1F87 /* Foundation.framework in Frameworks */,
+				A20094DE18040E9F000B1F87 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B849C917C75AB2009801D0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,6 +210,7 @@
 			children = (
 				A2B849CC17C75AB2009801D0 /* Kangxi.app */,
 				A2B849F517C75AB3009801D0 /* Kangxi RadicalsTests.xctest */,
+				A20094EA18040E9F000B1F87 /* Kangxi Lite.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -200,6 +243,7 @@
 			isa = PBXGroup;
 			children = (
 				A2B849D917C75AB2009801D0 /* Kangxi Radicals-Info.plist */,
+				A20094EB18040EA0000B1F87 /* Kangxi Lite-Info.plist */,
 				A2B849DA17C75AB2009801D0 /* InfoPlist.strings */,
 				A2B849DD17C75AB2009801D0 /* main.m */,
 				A2B849DF17C75AB2009801D0 /* Kangxi Radicals-Prefix.pch */,
@@ -265,6 +309,8 @@
 			children = (
 				A21AE0E417CBB87200168361 /* import.h */,
 				A21AE0E217CBB50100168361 /* import.m */,
+				A20094EC18041129000B1F87 /* import_lite.m */,
+				A20094ED18041129000B1F87 /* import_lite.h */,
 				A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */,
 				A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */,
 				A21AE0DD17CB87C200168361 /* Radical.h */,
@@ -282,6 +328,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A20094C918040E9F000B1F87 /* Kangxi Lite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A20094E718040E9F000B1F87 /* Build configuration list for PBXNativeTarget "Kangxi Lite" */;
+			buildPhases = (
+				A20094CA18040E9F000B1F87 /* Check Pods Manifest.lock */,
+				A20094CB18040E9F000B1F87 /* Sources */,
+				A20094D718040E9F000B1F87 /* Frameworks */,
+				A20094DF18040E9F000B1F87 /* Resources */,
+				A20094E518040E9F000B1F87 /* ShellScript */,
+				A20094E618040E9F000B1F87 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Kangxi Lite";
+			productName = "Kangxi Radicals";
+			productReference = A20094EA18040E9F000B1F87 /* Kangxi Lite.app */;
+			productType = "com.apple.product-type.application";
+		};
 		A2B849CB17C75AB2009801D0 /* Kangxi */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A2B84A0717C75AB3009801D0 /* Build configuration list for PBXNativeTarget "Kangxi" */;
@@ -351,12 +417,25 @@
 			projectRoot = "";
 			targets = (
 				A2B849CB17C75AB2009801D0 /* Kangxi */,
+				A20094C918040E9F000B1F87 /* Kangxi Lite */,
 				A2B849F417C75AB3009801D0 /* Kangxi RadicalsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A20094DF18040E9F000B1F87 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20094E018040E9F000B1F87 /* Kangxi_Radicals.sqlite in Resources */,
+				A20094E118040E9F000B1F87 /* Images.xcassets in Resources */,
+				A20094E218040E9F000B1F87 /* InfoPlist.strings in Resources */,
+				A20094E318040E9F000B1F87 /* Main.storyboard in Resources */,
+				A20094E418040E9F000B1F87 /* 华文楷体.TTF in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B849CA17C75AB2009801D0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,6 +460,49 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		0A5A7D35BB2F4F4584F147D3 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A20094CA18040E9F000B1F87 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A20094E518040E9F000B1F87 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 1e9765b42004724029bbfe36e4c84518c51f7503";
+		};
+		A20094E618040E9F000B1F87 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -426,6 +548,25 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A20094CB18040E9F000B1F87 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20094CC18040E9F000B1F87 /* AppDelegate.m in Sources */,
+				A20094CD18040E9F000B1F87 /* RadicalCharacterCollectionViewCell.m in Sources */,
+				A20094CE18040E9F000B1F87 /* Character.m in Sources */,
+				A20094CF18040E9F000B1F87 /* Word.m in Sources */,
+				A20094D018040E9F000B1F87 /* main.m in Sources */,
+				A20094D118040E9F000B1F87 /* Radical.m in Sources */,
+				A20094D218040E9F000B1F87 /* AboutViewController.m in Sources */,
+				A20094D318040E9F000B1F87 /* Kangxi_Radicals.xcdatamodeld in Sources */,
+				A20094EE18041129000B1F87 /* import_lite.m in Sources */,
+				A20094D418040E9F000B1F87 /* CharacterViewController.m in Sources */,
+				A20094D518040E9F000B1F87 /* UIViewController+Additions.m in Sources */,
+				A20094D618040E9F000B1F87 /* RadicalsCharactersViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2B849C817C75AB2009801D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -491,6 +632,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A20094E818040E9F000B1F87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi\\ Radicals",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kangxi Radicals/Kangxi Radicals-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"LITE=1",
+					"COCOAPODS=1",
+				);
+				INFOPLIST_FILE = "Kangxi Lite-Info.plist";
+				PRODUCT_NAME = "Kangxi Lite";
+				PROVISIONING_PROFILE = "7AE6A9CA-DFCE-41E4-9233-B97237599CC5";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		A20094E918040E9F000B1F87 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi\\ Radicals",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kangxi Radicals/Kangxi Radicals-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"LITE=1",
+				);
+				INFOPLIST_FILE = "Kangxi Lite-Info.plist";
+				PRODUCT_NAME = "Kangxi Lite";
+				PROVISIONING_PROFILE = "6EFD716A-B673-4459-AF77-2926AB0BDF56";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		A2B84A0517C75AB3009801D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -646,6 +841,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A20094E718040E9F000B1F87 /* Build configuration list for PBXNativeTarget "Kangxi Lite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A20094E818040E9F000B1F87 /* Debug */,
+				A20094E918040E9F000B1F87 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A2B849C717C75AB2009801D0 /* Build configuration list for PBXProject "Kangxi Radicals" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
