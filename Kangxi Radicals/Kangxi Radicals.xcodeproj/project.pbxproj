@@ -31,7 +31,6 @@
 		A20094E218040E9F000B1F87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2B849DA17C75AB2009801D0 /* InfoPlist.strings */; };
 		A20094E318040E9F000B1F87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2B849E317C75AB2009801D0 /* Main.storyboard */; };
 		A20094E418040E9F000B1F87 /* 华文楷体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0F17C76281009801D0 /* 华文楷体.TTF */; };
-		A20094EE18041129000B1F87 /* import_lite.m in Sources */ = {isa = PBXBuildFile; fileRef = A20094EC18041129000B1F87 /* import_lite.m */; };
 		A210F3D917D78B05004F3E1E /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A210F3D817D78B05004F3E1E /* AboutViewController.m */; };
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
@@ -60,6 +59,8 @@
 		A2B84A0417C75AB3009801D0 /* Kangxi_RadicalsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B84A0317C75AB3009801D0 /* Kangxi_RadicalsTests.m */; };
 		A2B84A1017C76281009801D0 /* 华文楷体.TTF in Resources */ = {isa = PBXBuildFile; fileRef = A2B84A0F17C76281009801D0 /* 华文楷体.TTF */; };
 		A2F5488017C7815F00FB2E5E /* RadicalsCharactersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */; };
+		A2F5E0AE1804241D0026831F /* LiteImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F5E0AD1804241D0026831F /* LiteImages.xcassets */; };
+		A2F5E0B0180424750026831F /* PaidImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F5E0AF180424750026831F /* PaidImages.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,8 @@
 		A2B84A0F17C76281009801D0 /* 华文楷体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "华文楷体.TTF"; sourceTree = "<group>"; };
 		A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalsCharactersViewController.h; path = ViewController/RadicalsCharactersViewController.h; sourceTree = "<group>"; };
 		A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalsCharactersViewController.m; path = ViewController/RadicalsCharactersViewController.m; sourceTree = "<group>"; };
+		A2F5E0AD1804241D0026831F /* LiteImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = LiteImages.xcassets; path = "Kangxi Radicals/LiteImages.xcassets"; sourceTree = "<group>"; };
+		A2F5E0AF180424750026831F /* PaidImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = PaidImages.xcassets; path = "Kangxi Radicals/PaidImages.xcassets"; sourceTree = "<group>"; };
 		D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -275,6 +278,8 @@
 			isa = PBXGroup;
 			children = (
 				A2B849EF17C75AB2009801D0 /* Images.xcassets */,
+				A2F5E0AD1804241D0026831F /* LiteImages.xcassets */,
+				A2F5E0AF180424750026831F /* PaidImages.xcassets */,
 				A2B84A0E17C7624D009801D0 /* Fonts */,
 			);
 			name = Resources;
@@ -433,6 +438,7 @@
 				A20094E218040E9F000B1F87 /* InfoPlist.strings in Resources */,
 				A20094E318040E9F000B1F87 /* Main.storyboard in Resources */,
 				A20094E418040E9F000B1F87 /* 华文楷体.TTF in Resources */,
+				A2F5E0AE1804241D0026831F /* LiteImages.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +449,7 @@
 				A2835AD817CC099100100693 /* Kangxi_Radicals.sqlite in Resources */,
 				A2B849F017C75AB2009801D0 /* Images.xcassets in Resources */,
 				A2B849DC17C75AB2009801D0 /* InfoPlist.strings in Resources */,
+				A2F5E0B0180424750026831F /* PaidImages.xcassets in Resources */,
 				A2B849E517C75AB2009801D0 /* Main.storyboard in Resources */,
 				A2B84A1017C76281009801D0 /* 华文楷体.TTF in Resources */,
 			);
@@ -560,7 +567,6 @@
 				A20094D118040E9F000B1F87 /* Radical.m in Sources */,
 				A20094D218040E9F000B1F87 /* AboutViewController.m in Sources */,
 				A20094D318040E9F000B1F87 /* Kangxi_Radicals.xcdatamodeld in Sources */,
-				A20094EE18041129000B1F87 /* import_lite.m in Sources */,
 				A20094D418040E9F000B1F87 /* CharacterViewController.m in Sources */,
 				A20094D518040E9F000B1F87 /* UIViewController+Additions.m in Sources */,
 				A20094D618040E9F000B1F87 /* RadicalsCharactersViewController.m in Sources */,
@@ -681,7 +687,7 @@
 				);
 				INFOPLIST_FILE = "Kangxi Lite-Info.plist";
 				PRODUCT_NAME = "Kangxi Lite";
-				PROVISIONING_PROFILE = "6EFD716A-B673-4459-AF77-2926AB0BDF56";
+				PROVISIONING_PROFILE = "7322BE8B-3560-4E1F-AED5-35ADB9DF2868";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
