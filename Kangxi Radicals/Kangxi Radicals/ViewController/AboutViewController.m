@@ -10,7 +10,7 @@
 #import "Mixpanel.h"
 
 @interface AboutViewController ()
-
+@property NSArray *menu;
 @end
 
 @implementation AboutViewController
@@ -27,8 +27,98 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
+#ifdef LITE
+    self.title = @"Kangxi Radicals Lite";
+#endif
     
-    fontLink.font = [UIFont fontWithName:@"STKaiti" size:18.0f];
+    self.menu = @[
+#ifdef LITE
+      @{
+          @"header": @"Purchase",
+          @"rows" :  @[
+                  @{
+                      @"title" : @"Complete Edition",
+                      @"subtitle" : @"More characters & human pronunciations",
+                      @"url": @"itms-apps://itunes.apple.com/app/kangxi-radicals/id701591926?mt=8",
+                      @"AppStore" : @YES
+                      }
+                  ]
+          },
+      
+#endif
+      @{
+          @"header": @"Learning Resources",
+          @"rows" :  @[
+              @{
+                  @"title" : @"Radicals List (PDF)",
+                  @"subtitle" : @"Print, hang on your wall and memorize them",
+                  @"url": @"http://mandarinposter.com/resources/simplified-radicals-list-free-printable-reference/"
+              }
+            ]
+        },
+        @{
+          @"header": @"Contact",
+          @"rows" :  @[
+              @{
+                  @"title" : @"Sjors Provoost",
+                  @"subtitle" : @"sjors@kangxiradicals.com",
+                  @"url": @"mailto:sjors@kangxiradicals.com"
+                  },
+              
+              @{
+                  @"title" : @"Purple Dunes",
+                  @"subtitle" : @"http://purpledunes.com/",
+                  @"url": @"http://purpledunes.com/"
+                  },
+              @{
+                  @"title" : @"Personal Blog",
+                  @"subtitle" : @"http://sprovoost.nl/",
+                  @"url": @"http://sprovoost.nl/"
+                  },
+              ]
+          },
+      @{
+          @"header": @"Sources",
+          @"rows" :  @[
+              @{
+                  @"title" : @"Wiktionary.org",
+                  @"subtitle" : @"Creative Commons dictionary",
+                  @"url": @"http://en.m.wiktionary.org/"
+                  },
+              @{
+                  @"title" : @"CE-DICT",
+                  @"subtitle" : @"Creative Commons Chinese dictionary database",
+                  @"url": @"http://www.cc-cedict.org/"
+                  },
+              @{
+                  @"title" : @"Wiki Commons",
+                  @"subtitle" : @"Character decomposition database",
+                  @"url": @"http://commons.wikimedia.org/wiki/Commons:Chinese_characters_decomposition"
+                  },
+              @{
+                  @"title" : @"HSK (Hànyǔ Shuǐpíng Kǎoshì)",
+                  @"subtitle" : @"Word list compiled by Lingomi.com",
+                  @"url": @"http://lingomi.com/blog/hsk-lists-2010/",
+                  },
+              @{
+                  @"title" : @"华文楷体",
+                  @"subtitle" : @"This gorgeous font is called STKaiti",
+                  @"url": @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts",
+                  @"useSpecialFont" : @YES
+                  }
+            #ifndef LITE
+              ,
+              @{
+                  @"title" : @"Forvo",
+                  @"subtitle" : @"All the words in world. Pronounced.",
+                  @"url": @"http://www.forvo.com/languages/zh/"
+                  }
+            #endif
+        ],
+        }
+    ];
+    
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -43,83 +133,57 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [self.menu count];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0) {
-        return 1;
-    } else if (section == 1) {
-        return 3;
-    } else  {
-#ifdef LITE
-        return 5;
-#else
-        return 6;
-#endif
+    return [[[self.menu objectAtIndex:section] objectForKey:@"rows"] count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [[self.menu objectAtIndex:section] objectForKey:@"header"];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    static NSString *CellIdentifier = @"linkCell";
+    
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
+-(void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *item = [[[self.menu objectAtIndex:indexPath.section] objectForKey:@"rows"] objectAtIndex:indexPath.row];
+    
+    
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
+    UILabel *subTitleLabel = (UILabel *)[cell viewWithTag:2];
+
+    titleLabel.text = [item valueForKey:@"title"];
+    subTitleLabel.text = [item valueForKey:@"subtitle"];
+
+    
+    if ([item objectForKey:@"useSpecialFont"] != nil && [[item objectForKey:@"useSpecialFont"] boolValue]) {
+        titleLabel.font = [UIFont fontWithName:@"STKaiti" size:18.0f];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *url;
+    NSDictionary *item = [[[self.menu objectAtIndex:indexPath.section] objectForKey:@"rows"] objectAtIndex:indexPath.row];
     
-    switch (indexPath.section) {
-    case 0:
-        switch (indexPath.row) {
-        case 0:
-            url = @"http://mandarinposter.com/resources/simplified-radicals-list-free-printable-reference/";
-        break;
-        
-        default:
-        break;
-        }
-        break;
-            
-    case 1:
-        switch (indexPath.row) {
-        case 0:
-            url = @"mailto:sjors@kangxiradicals.com";
-            break;
-        case 1:
-            url = @"http://purpledunes.com/";
-            break;
-        case 2:
-            url = @"http://sprovoost.nl/";
-            break;
-        default:
-            break;
-        }
-        break;
-    case 2:
-        switch (indexPath.row) {
-        case 0:
-            url = @"http://en.m.wiktionary.org/";
-            break;
-        case 1:
-            url = @"http://www.cc-cedict.org/";
-            break;
-        case 2:
-            url = @"http://commons.wikimedia.org/wiki/Commons:Chinese_characters_decomposition";
-            break;
-        case 3:
-            url = @"http://lingomi.com/blog/hsk-lists-2010/";
-            break;
-        case 4:
-            url = @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts";
-            break;
-        #ifndef LITE
-        case 5:
-            url = @"http://www.forvo.com/languages/zh/";
-            break;
-        #endif
-        default:
-            break;
-        }
-        break;
-    default:
-        break;
-    }
+    NSString *url = [item objectForKey:@"url"];
     
     if(url!=nil) {
 #ifndef DEBUG
-        [[Mixpanel sharedInstance] track:@"Follow Link" properties:@{@"URL" : url}];
+        if ([item objectForKey:@"AppStore"] != nil && [[item objectForKey:@"AppStore"] boolValue]) {
+            [[Mixpanel sharedInstance] track:@"App Store"];
+        } else {
+            [[Mixpanel sharedInstance] track:@"Follow Link" properties:@{@"URL" : url}];
+        }
 #endif
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
  

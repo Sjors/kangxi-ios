@@ -17,17 +17,6 @@
     #import <Mixpanel.h>
 #endif
 
-// Configure tutorial
-#ifdef LITE
-#define kTutorialFirstRadical @"日"
-#define kTutorialSecondRadical @"疋"
-#define kTutorialCharacter @"是"
-#else
-#define kTutorialFirstRadical @"月"
-#define kTutorialSecondRadical @"巳"
-#define kTutorialCharacter @"肥"
-#endif
-
 @interface RadicalsCharactersViewController () {
     UIImageView *instructionsTextImageView;
     UIImageView *instructionsCircleImageView;
@@ -545,10 +534,10 @@
     navigationCircleImageView.alpha = 0;
     [self.navigationController.view addSubview:navigationCircleImageView];
     
-    [UIView animateWithDuration:1 delay:0.3 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+    [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
         navigationCircleImageView.alpha = 0.8;
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+        [UIView animateWithDuration:1 delay:2 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
             navigationCircleImageView.alpha = 0;
         } completion:^(BOOL finished) {
         }];

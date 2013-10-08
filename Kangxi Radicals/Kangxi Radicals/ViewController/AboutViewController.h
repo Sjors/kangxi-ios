@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface AboutViewController : UITableViewController {
-    IBOutlet UILabel *fontLink;
 }
 
 @end

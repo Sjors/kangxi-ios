@@ -400,6 +400,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Purple Dunes";
 				TargetAttributes = {
+					A20094C918040E9F000B1F87 = {
+						DevelopmentTeam = 227MFQPYQ4;
+					};
 					A2B849CB17C75AB2009801D0 = {
 						DevelopmentTeam = 227MFQPYQ4;
 					};
@@ -660,7 +663,7 @@
 				);
 				INFOPLIST_FILE = "Kangxi Lite-Info.plist";
 				PRODUCT_NAME = "Kangxi Lite";
-				PROVISIONING_PROFILE = "7AE6A9CA-DFCE-41E4-9233-B97237599CC5";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -672,8 +675,8 @@
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi\\ Radicals",
@@ -687,7 +690,7 @@
 				);
 				INFOPLIST_FILE = "Kangxi Lite-Info.plist";
 				PRODUCT_NAME = "Kangxi Lite";
-				PROVISIONING_PROFILE = "7322BE8B-3560-4E1F-AED5-35ADB9DF2868";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

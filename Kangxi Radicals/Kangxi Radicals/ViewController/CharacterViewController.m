@@ -40,7 +40,7 @@
 {
     [super viewDidLoad];
     
-    if([self.character.simplified isEqualToString:@"肥"]) {
+    if([self.character.simplified isEqualToString:kTutorialCharacter]) {
         [[NSUserDefaults standardUserDefaults]
          setObject:@YES forKey:@"didCompleteIntro"];
         [[NSUserDefaults standardUserDefaults] synchronize];
