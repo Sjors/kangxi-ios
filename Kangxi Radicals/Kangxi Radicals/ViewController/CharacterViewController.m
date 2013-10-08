@@ -15,6 +15,7 @@
 #endif
 
 @interface CharacterViewController ()
+@property AVSpeechSynthesizer *synthesizer;
 @property NSMutableArray *utterances;
 #ifndef LITE
 @property NSURLSession *session;
@@ -52,6 +53,9 @@
     [self.fetchedResultsController performFetch:nil];
     
     NSUInteger n = [[self.fetchedResultsController fetchedObjects] count];
+    
+    self.synthesizer = [[AVSpeechSynthesizer alloc]  init];
+
     self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
 
 #ifndef LITE
@@ -103,6 +107,7 @@
     
     [self.session invalidateAndCancel];
 #endif
+    self.synthesizer.delegate = nil;
     [self.utterances removeAllObjects]; // Can't stop them a.f.a.i.k.
 }
 
@@ -412,13 +417,12 @@
 
 -(void)playPronunciationUsingVoiceSynthesiser:(Word *)word indexPath:(NSIndexPath *)indexPath {
     
-    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]  init];
     AVSpeechUtterance *utterance = [AVSpeechUtterance speechUtteranceWithString:word.simplified ];
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-cn"];
     utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
-    [synthesizer speakUtterance:utterance];
+    [self.synthesizer speakUtterance:utterance];
     
-    synthesizer.delegate = self;
+    self.synthesizer.delegate = self;
     
     [self.utterances setObject:utterance atIndexedSubscript:indexPath.row];
 }
