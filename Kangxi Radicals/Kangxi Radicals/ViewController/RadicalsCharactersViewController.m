@@ -17,6 +17,17 @@
     #import <Mixpanel.h>
 #endif
 
+// Configure tutorial
+#ifdef LITE
+#define kTutorialFirstRadical @"日"
+#define kTutorialSecondRadical @"疋"
+#define kTutorialCharacter @"是"
+#else
+#define kTutorialFirstRadical @"月"
+#define kTutorialSecondRadical @"巳"
+#define kTutorialCharacter @"肥"
+#endif
+
 @interface RadicalsCharactersViewController () {
     UIImageView *instructionsTextImageView;
     UIImageView *instructionsCircleImageView;
@@ -71,6 +82,7 @@
             [self flashInstructions:1];
         } else {
             [self flashInstructions:0];
+            [self showCircleInNavigation];
         }
     }
     
@@ -447,15 +459,14 @@
             if([self.mode isEqualToString:@"Radical"]) {
                 Radical *radical = (Radical *)chinese;
                 
-                if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:@"月"] ) {
+                if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:kTutorialFirstRadical] ) {
                     [self showCircleForCell:cell delay:4];
                 }
                 
                 if (
                     ![radical.isFirstRadical boolValue] &&
                     (
-//                        ([radical.simplified isEqualToString:@"日"] && [radical.firstRadical.simplified isEqualToString:@"月"]) ||
-                        ([radical.simplified isEqualToString:@"巳"] && [radical.firstRadical.simplified isEqualToString:@"月"])
+                        ([radical.simplified isEqualToString:kTutorialSecondRadical] && [radical.firstRadical.simplified isEqualToString:kTutorialFirstRadical])
                     )
                 )
                 {
@@ -463,7 +474,7 @@
                 }
                 
             } else {
-                if([title isEqualToString:@"肥"]) {
+                if([title isEqualToString:kTutorialCharacter]) {
                     [self showCircleForCell:cell delay:0];
                 }
             }
@@ -525,13 +536,34 @@
 
 }
 
+-(void)showCircleInNavigation {
+    
+    // Show circle:
+    UIImageView *navigationCircleImageView = [[UIImageView alloc]
+                                   initWithImage:[UIImage imageNamed:@"InstructionCircle"]];
+    navigationCircleImageView.frame = CGRectMake(77, 28, 147 / 2 * 0.4, 147 / 2 * 0.4);
+    navigationCircleImageView.alpha = 0;
+    [self.navigationController.view addSubview:navigationCircleImageView];
+    
+    [UIView animateWithDuration:1 delay:0.3 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+        navigationCircleImageView.alpha = 0.8;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
+            navigationCircleImageView.alpha = 0;
+        } completion:^(BOOL finished) {
+        }];
+        
+    }];
+    
+}
+
 -(BOOL)shouldShowInstructions {
     return ([self.mode isEqualToString:@"Radical"] &&
     ([[NSUserDefaults standardUserDefaults]
       objectForKey:@"didCompleteIntro"] == nil ||
      ![[[NSUserDefaults standardUserDefaults]
         objectForKey:@"didCompleteIntro"] boolValue]) &&
-            (self.radical == nil || [self.radical.simplified isEqualToString:@"月"] || [self.radical.simplified isEqualToString:@"巴"] ));
+            (self.radical == nil || [self.radical.simplified isEqualToString:kTutorialFirstRadical] || [self.radical.simplified isEqualToString:kTutorialSecondRadical] ));
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
