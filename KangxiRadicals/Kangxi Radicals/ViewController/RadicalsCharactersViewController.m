@@ -30,7 +30,6 @@
 
 @property NSArray *sortDescriptors;
 
-@property BOOL justLoaded;
 @end
 
 @implementation RadicalsCharactersViewController
@@ -54,26 +53,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
-    if ([self shouldShowInstructions] )
-    {
-        // Show instructions:
-        self.collectionView.scrollEnabled = NO;
-        instructionsTextImageView = [[UIImageView alloc]
-                                     initWithImage:[UIImage imageNamed:@"InstructionText"]];
-        instructionsTextImageView.frame = CGRectMake(0, -5, 476 / 2, 152 / 2);
-        instructionsTextImageView.alpha = 0;
-        [self.collectionView.superview addSubview:instructionsTextImageView];
-        [self.collectionView.superview bringSubviewToFront:instructionsTextImageView];
-        
-        if(self.radical == nil) {
-            [self flashInstructions:1];
-        } else {
-            [self flashInstructions:0];
-            [self showCircleInNavigation];
-        }
-    }
     
     if([self.mode isEqualToString:@"Radical"]) {
         self.collectionView.pagingEnabled = YES;
@@ -192,8 +171,6 @@
     }
     
     [self.fetchedResultsController performFetch:nil];
-    
-    self.justLoaded = YES;
 }
 
 - (void)flashInstructions:(NSInteger)delay {
@@ -207,20 +184,6 @@
         }];
         
     }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    if (
-        !self.justLoaded && ([[NSUserDefaults standardUserDefaults]
-         objectForKey:@"didCompleteIntro"] == nil ||
-        ![[[NSUserDefaults standardUserDefaults]
-           objectForKey:@"didCompleteIntro"] boolValue] ))
-    {
-        [self flashInstructions:0];
-        [self.collectionView reloadData];
-    }
-    
-    self.justLoaded = NO;
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
@@ -439,37 +402,6 @@
         
         simplified.text = title;
         
-        if (
-            [[NSUserDefaults standardUserDefaults]
-              objectForKey:@"didCompleteIntro"] == nil ||
-            ![[[NSUserDefaults standardUserDefaults]
-                  objectForKey:@"didCompleteIntro"] boolValue] )
-        {
-            if([self.mode isEqualToString:@"Radical"]) {
-                Radical *radical = (Radical *)chinese;
-                
-                if ( [radical.isFirstRadical boolValue] && [radical.simplified isEqualToString:kTutorialFirstRadical] ) {
-                    [self showCircleForCell:cell delay:4];
-                }
-                
-                if (
-                    ![radical.isFirstRadical boolValue] &&
-                    (
-                        ([radical.simplified isEqualToString:kTutorialSecondRadical] && [radical.firstRadical.simplified isEqualToString:kTutorialFirstRadical])
-                    )
-                )
-                {
-                    [self showCircleForCell:cell delay:2];
-                }
-                
-            } else {
-                if([title isEqualToString:kTutorialCharacter]) {
-                    [self showCircleForCell:cell delay:0];
-                }
-            }
-            
-        }
-         
         
         if(IS_WIDESCREEN) {
 
@@ -546,15 +478,6 @@
     
 }
 
--(BOOL)shouldShowInstructions {
-    return ([self.mode isEqualToString:@"Radical"] &&
-    ([[NSUserDefaults standardUserDefaults]
-      objectForKey:@"didCompleteIntro"] == nil ||
-     ![[[NSUserDefaults standardUserDefaults]
-        objectForKey:@"didCompleteIntro"] boolValue]) &&
-            (self.radical == nil || [self.radical.simplified isEqualToString:kTutorialFirstRadical] || [self.radical.simplified isEqualToString:kTutorialSecondRadical] ));
-}
-
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
@@ -564,23 +487,6 @@
             [view viewWithTag:1].hidden = YES;
         } else {
             [view viewWithTag:1].hidden = NO;
-
-            // Don't show header during intro phase:
-            if (
-                [[NSUserDefaults standardUserDefaults]
-                 objectForKey:@"didCompleteIntro"] == nil ||
-                ![[[NSUserDefaults standardUserDefaults]
-                   objectForKey:@"didCompleteIntro"] boolValue] )
-            {
-
-                [view viewWithTag:1].alpha = 0;
-
-              [UIView animateWithDuration:1 delay:10 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-                [view viewWithTag:1].alpha = 0.8;
-                } completion:nil
-               ];
-            }
-            
         }
         return view;
 
@@ -637,22 +543,6 @@
         }
     }
     
-}
-
-#pragma mark - Scrollview delegate
-
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    // End the demo if the user scrolled down
-    if (
-        [[NSUserDefaults standardUserDefaults]
-         objectForKey:@"didCompleteIntro"] == nil ||
-        ![[[NSUserDefaults standardUserDefaults]
-           objectForKey:@"didCompleteIntro"] boolValue] )
-    {
-        [[NSUserDefaults standardUserDefaults]
-         setObject:@YES forKey:@"didCompleteIntro"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 }
 
 #pragma mark - Flipside View
