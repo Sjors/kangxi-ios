@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIViewController (Additions)
--(UIView *)titleViewWithText:(NSString *)title numberOfChineseCharacters:(int)n;
+-(UIView *)titleViewWithText:(NSString *)title numberOfChineseCharacters:(NSInteger)n;
 @end

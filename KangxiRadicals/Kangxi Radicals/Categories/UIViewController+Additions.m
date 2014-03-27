@@ -9,7 +9,7 @@
 #import "UIViewController+Additions.h"
 
 @implementation UIViewController (Additions)
--(UIView *)titleViewWithText:(NSString *)title numberOfChineseCharacters:(int)n {
+-(UIView *)titleViewWithText:(NSString *)title numberOfChineseCharacters:(NSInteger)n {
     NSMutableAttributedString *attString=[[NSMutableAttributedString alloc] initWithString:title];
     
     UIFont *font=[UIFont fontWithName:@"STKaiti" size:20.0f];
