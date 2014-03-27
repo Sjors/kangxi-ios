@@ -27,26 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
-#ifdef LITE
-    self.title = @"Kangxi Radicals Lite";
-#endif
     
     self.menu = @[
-#ifdef LITE
-      @{
-          @"header": @"Purchase",
-          @"rows" :  @[
-                  @{
-                      @"title" : @"Complete Edition",
-                      @"subtitle" : @"More characters & human pronunciations",
-                      @"url": @"itms-apps://itunes.apple.com/app/kangxi-radicals/id701591926?mt=8",
-                      @"AppStore" : @YES
-                      }
-                  ]
-          },
-      
-#endif
       @{
           @"header": @"Learning Resources",
           @"rows" :  @[
@@ -107,14 +89,12 @@
                   @"url": @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts",
                   @"useSpecialFont" : @YES
                   }
-            #ifndef LITE
               ,
               @{
                   @"title" : @"Forvo",
                   @"subtitle" : @"All the words in world. Pronounced.",
                   @"url": @"http://www.forvo.com/languages/zh/"
                   }
-            #endif
         ],
         }
     ];

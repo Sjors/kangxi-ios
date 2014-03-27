@@ -17,13 +17,11 @@
 @interface CharacterViewController ()
 @property AVSpeechSynthesizer *synthesizer;
 @property NSMutableArray *utterances;
-#ifndef LITE
 @property NSURLSession *session;
 @property NSMutableArray *players;
 @property NSMutableArray *hasPronunciation;
 @property NSMutableArray *alreadyPlayed;
 @property NSMutableArray *hasMultiplePronunciations;
-#endif
 @end
 
 @implementation CharacterViewController
@@ -58,8 +56,6 @@
 
     self.utterances = [[NSMutableArray alloc] initWithCapacity:n];
 
-#ifndef LITE
-
     NSURLSessionConfiguration *configuration= [NSURLSessionConfiguration defaultSessionConfiguration];
     
     // Fall back to speech synthesiser if connection is too slow:
@@ -71,16 +67,12 @@
     self.alreadyPlayed = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasPronunciation = [[NSMutableArray alloc] initWithCapacity:n];
     self.hasMultiplePronunciations = [[NSMutableArray alloc] initWithCapacity:n];
-#endif
     for(int i=0; i < n; i++) {
         [self.utterances addObject:@""];
-#ifndef LITE
         [self.players addObject:@""];
         [self.alreadyPlayed addObject:@NO];
         [self.hasPronunciation addObject:@YES];
         [self.hasMultiplePronunciations addObject:@NO];
-#endif
-
     }
 #ifndef DEBUG
     [[Mixpanel sharedInstance] track:@"Lookup Words" properties:@{@"Character" : self.character.simplified}];
@@ -94,7 +86,6 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-#ifndef LITE
     for(AVAudioPlayer *player in self.players) {
         if ([player isKindOfClass:[AVAudioPlayer class]]) {
             if(player.isPlaying) {
@@ -106,7 +97,6 @@
     [self.players removeAllObjects];
     
     [self.session invalidateAndCancel];
-#endif
     self.synthesizer.delegate = nil;
     [self.utterances removeAllObjects]; // Can't stop them a.f.a.i.k.
 }
@@ -165,9 +155,7 @@
 
     Word *word = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
-#ifdef LITE
     [self playPronunciationUsingVoiceSynthesiser:word  indexPath:indexPath];
-#else
 
     AVAudioPlayer *player = [self.players objectAtIndex:indexPath.row];
 
@@ -294,11 +282,9 @@
         }] resume];
     }
     
-#endif
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#ifndef LITE
 -(void)downloadAndPlayMP3:(NSURL *)url indexPath:(NSIndexPath *)indexPath {
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setNetworkActivityIndicatorVisible:YES];
     
@@ -408,8 +394,6 @@
 -(NSIndexPath *)indexPathForPlayer:(AVAudioPlayer *)player {
     return [NSIndexPath indexPathForRow:[self.players indexOfObject:player] inSection:0];
 }
-
-#endif
 
 #pragma mark Speech Synthesiser
 

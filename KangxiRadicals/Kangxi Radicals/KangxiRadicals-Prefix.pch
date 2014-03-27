@@ -20,12 +20,6 @@
 #define IS_WIDESCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
 // Configure tutorial
-#ifdef LITE
-#define kTutorialFirstRadical @"日"
-#define kTutorialSecondRadical @"疋"
-#define kTutorialCharacter @"是"
-#else
 #define kTutorialFirstRadical @"月"
 #define kTutorialSecondRadical @"巳"
 #define kTutorialCharacter @"肥"
-#endif
