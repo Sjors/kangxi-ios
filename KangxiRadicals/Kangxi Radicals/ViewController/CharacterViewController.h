@@ -11,7 +11,7 @@
 #import "UIViewController+Additions.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface CharacterViewController : UITableViewController <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate> {
+@interface CharacterViewController : UITableViewController <AVSpeechSynthesizerDelegate> {
     NSFetchedResultsController *_fetchedResultsController;
 }
 

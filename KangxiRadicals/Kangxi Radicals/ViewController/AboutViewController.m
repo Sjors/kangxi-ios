@@ -89,12 +89,6 @@
                   @"url": @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts",
                   @"useSpecialFont" : @YES
                   }
-              ,
-              @{
-                  @"title" : @"Forvo",
-                  @"subtitle" : @"All the words in world. Pronounced.",
-                  @"url": @"http://www.forvo.com/languages/zh/"
-                  }
         ],
         }
     ];
