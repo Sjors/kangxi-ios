@@ -60,7 +60,7 @@
 
     // Copy to project:
     NSError *error;
-    NSString *destination = @"/Users/sjors/Dropbox/Kangxi/iOs/Kangxi Radicals/Kangxi Radicals/Kangxi_Radicals.sqlite";
+    NSString *destination = @"/Users/sjors/Dropbox/Kangxi/iOs/KangxiRadicals/Kangxi Radicals/Kangxi_Radicals.sqlite";
     [[NSFileManager defaultManager] removeItemAtPath:destination error:NULL];
     [[NSFileManager defaultManager] copyItemAtPath:[[self storeURL] path] toPath:destination error:&error];
     if (error) {

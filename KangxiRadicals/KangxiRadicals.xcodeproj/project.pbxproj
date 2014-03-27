@@ -14,6 +14,7 @@
 		A21AE0DC17CB87C100168361 /* Character.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DB17CB87C100168361 /* Character.m */; };
 		A21AE0DF17CB87C200168361 /* Radical.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0DE17CB87C200168361 /* Radical.m */; };
 		A2835AD817CC099100100693 /* Kangxi_Radicals.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */; };
+		A28DF50018E4C9020039C426 /* import.m in Sources */ = {isa = PBXBuildFile; fileRef = A21AE0E217CBB50100168361 /* import.m */; };
 		A2AA004917D626BD00100722 /* RadicalCharacterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */; };
 		A2ABB77217C8E768002931C9 /* CharacterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77117C8E768002931C9 /* CharacterViewController.m */; };
 		A2ABB77517C8E93F002931C9 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2ABB77417C8E93F002931C9 /* UIViewController+Additions.m */; };
@@ -63,6 +64,7 @@
 		A21AE0E217CBB50100168361 /* import.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = import.m; sourceTree = "<group>"; };
 		A21AE0E417CBB87200168361 /* import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = import.h; sourceTree = "<group>"; };
 		A2835AD717CC099100100693 /* Kangxi_Radicals.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kangxi_Radicals.sqlite; sourceTree = "<group>"; };
+		A28DF4FF18E4C84E0039C426 /* Kangxi 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kangxi 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		A2AA004717D626BD00100722 /* RadicalCharacterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalCharacterCollectionViewCell.h; path = Views/RadicalCharacterCollectionViewCell.h; sourceTree = "<group>"; };
 		A2AA004817D626BD00100722 /* RadicalCharacterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalCharacterCollectionViewCell.m; path = Views/RadicalCharacterCollectionViewCell.m; sourceTree = "<group>"; };
 		A2ABB76F17C8E1C0002931C9 /* Chinese.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Chinese.h; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A28DF50018E4C9020039C426 /* import.m in Sources */,
 				A2B849E217C75AB2009801D0 /* AppDelegate.m in Sources */,
 				A2AA004917D626BD00100722 /* RadicalCharacterCollectionViewCell.m in Sources */,
 				A21AE0DC17CB87C100168361 /* Character.m in Sources */,
@@ -671,9 +674,10 @@
 		A2B849E617C75AB2009801D0 /* Kangxi_Radicals.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A28DF4FF18E4C84E0039C426 /* Kangxi 1.1.xcdatamodel */,
 				A2B849E717C75AB2009801D0 /* Kangxi_Radicals.xcdatamodel */,
 			);
-			currentVersion = A2B849E717C75AB2009801D0 /* Kangxi_Radicals.xcdatamodel */;
+			currentVersion = A28DF4FF18E4C84E0039C426 /* Kangxi 1.1.xcdatamodel */;
 			path = Kangxi_Radicals.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

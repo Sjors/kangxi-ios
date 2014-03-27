@@ -22,6 +22,7 @@
 @property (nonatomic, retain) Radical *firstRadical;
 @property (nonatomic, retain) NSSet *characters;
 @property (nonatomic, retain) NSString * synonyms;
+@property (nonatomic, retain) NSNumber * trial;
 
 @end
 

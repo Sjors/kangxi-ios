@@ -16,6 +16,8 @@
 @dynamic rank;
 @dynamic simplified;
 @dynamic words;
+@dynamic trial;
+
 
 -(NSString *)pinyin {
     NSMutableString *pinyin = [self.simplified mutableCopy];

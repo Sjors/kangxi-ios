@@ -21,6 +21,7 @@
 @dynamic firstRadical;
 @dynamic characters;
 @dynamic synonyms;
+@dynamic trial;
 
 - (NSString *)formattedSynonyms {
     if (self.synonyms) {

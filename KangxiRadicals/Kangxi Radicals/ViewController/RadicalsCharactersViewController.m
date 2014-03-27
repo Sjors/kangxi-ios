@@ -54,16 +54,12 @@
 {
     [super viewDidLoad];
     
-    if([self.mode isEqualToString:@"Radical"]) {
-        self.collectionView.pagingEnabled = YES;
-    } else {
-        self.collectionView.pagingEnabled = NO;
-    }
+    self.collectionView.pagingEnabled = NO;
     
     
     if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
         self.entityName = kEntityRadical;
-        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@ OR section == 2", @YES];
+        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@", @YES];
         self.sectionNameKeyPath = @"section";
         NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
                                          initWithKey:@"section" ascending:YES  selector:nil];
@@ -83,7 +79,7 @@
         
     } else if([self.mode isEqualToString:@"Radical"]) {
         self.entityName = kEntityRadical;
-        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND section < 2", self.radical, @NO];
+        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@", self.radical, @NO];
         self.sectionNameKeyPath = @"section";
         self.cacheSuffix = [NSString stringWithFormat:@"Radical%@", self.radical.rank];
         
@@ -213,9 +209,6 @@
             controller.mode = @"Character";
             controller.collectionView.pagingEnabled = NO;
             return;
-        } else {
-            // About
-            return;
         }
     }
     
@@ -276,26 +269,13 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if([self sectionWithChineseCells:section]) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-//        return [sectionInfo numberOfObjects];
-        if([self.mode isEqualToString:@"Radical"]) {
-            // Always display 20 results in radical mode, to keep pagination working
-            return 20;
-        } else {
-             return [sectionInfo numberOfObjects];
-        }
+        return [sectionInfo numberOfObjects];
     } else {
-//        if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
-//            return 2;
-//        } else {
-//            return 1;
-//        }
-        
-        if(IS_WIDESCREEN) {
-            return 10;
+        if ([self.mode isEqualToString:@"Radical"] && !self.radical) {
+            return 0;
         } else {
-            return 8;
+            return 1;
         }
-        
     }
 }
 
@@ -356,16 +336,6 @@
             case 0:
                 label.text = @"Assorted Characters...";
                 disclosureIndicator.hidden = NO;
-                break;
-            case 1:
-                if ([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
-                    label.text = @"About this app...";
-                    disclosureIndicator.hidden = NO;
-                } else {
-                    label.text = @"";
-                    disclosureIndicator.hidden = YES;
-
-                }
                 break;
             default:
                 label.text = @"";
@@ -482,13 +452,7 @@
     if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
     } else {
-        UICollectionReusableView *view =[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"footer" forIndexPath:indexPath];
-        if([self.mode isEqualToString:@"Character"] || indexPath.section == [self.fetchedResultsController.sections count] || (self.radical && [self.radical.section intValue] == 1)) {
-            [view viewWithTag:1].hidden = YES;
-        } else {
-            [view viewWithTag:1].hidden = NO;
-        }
-        return view;
+        return nil;
 
     }
 }
@@ -531,11 +495,6 @@
                     [self performSegueWithIdentifier:@"searchTall" sender:self];
                 } else {
                     [self performSegueWithIdentifier:@"search" sender:self];
-                }
-                break;
-            case 1:
-                if ([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
-                    [self performSegueWithIdentifier:@"aboutSegue" sender:self];
                 }
                 break;
             default:

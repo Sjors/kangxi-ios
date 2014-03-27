@@ -18,6 +18,7 @@
 @interface Character : NSManagedObject <Chinese>
 
 @property (nonatomic, retain) NSSet *words;
+@property (nonatomic, retain) NSNumber * trial;
 @end
 
 @interface Character (CoreDataGeneratedAccessors)
