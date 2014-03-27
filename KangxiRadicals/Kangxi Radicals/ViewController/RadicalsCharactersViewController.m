@@ -152,15 +152,7 @@
 #ifndef DEBUG
             [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical" : self.radical.simplified}];
 #endif
-        } else {
-            self.title = @"Assorted characters";
-            self.cacheSuffix = [NSString stringWithFormat:@"CharacterAssorted"];
-
-#ifndef DEBUG
-            [[Mixpanel sharedInstance] track:@"Lookup Characters"];
-#endif
         }
-
         
     } else {
         NSLog(@"Unknown mode, not good...");
@@ -252,31 +244,12 @@
 #pragma mark - UICollectionView and delegates
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if([self.mode isEqualToString:@"Radical"]) {
-        if (self.radical && [self.radical.section intValue] == 1) {
-            // Second screen radicals do not have assorter characters
-            return [self.fetchedResultsController.sections count];
-
-        } else {
-            return [self.fetchedResultsController.sections count] + 1;
-        }
-    } else {
-        return [self.fetchedResultsController.sections count];
-
-    }
+    return [self.fetchedResultsController.sections count];
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if([self sectionWithChineseCells:section]) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-        return [sectionInfo numberOfObjects];
-    } else {
-        if ([self.mode isEqualToString:@"Radical"] && !self.radical) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
 }
 
 -(BOOL)sectionWithChineseCells:(NSInteger)section {
@@ -324,26 +297,7 @@
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         [self configureCell:cell atIndexPath:indexPath];
-    } else {
-        static NSString *CellIdentifier = @"otherCell";
-        cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-        UILabel *label = (UILabel *)[cell viewWithTag:1];
-    //        label.textColor = TINTCOLOR;
-
-        UIImageView *disclosureIndicator = (UIImageView *)[cell viewWithTag:2];
-        
-        switch (indexPath.row) {
-            case 0:
-                label.text = @"Assorted Characters...";
-                disclosureIndicator.hidden = NO;
-                break;
-            default:
-                label.text = @"";
-                disclosureIndicator.hidden = YES;
-                break;
-        }
-    }
-    
+    }     
     return cell;
 }
 
@@ -487,29 +441,6 @@
     
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 3 || ([self.mode isEqualToString:@"Radical"] && self.radical != nil && indexPath.section == 2)) {
-        switch (indexPath.row) {
-            case 0:
-                if(IS_WIDESCREEN) {
-                    [self performSegueWithIdentifier:@"searchTall" sender:self];
-                } else {
-                    [self performSegueWithIdentifier:@"search" sender:self];
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    
-}
-
 #pragma mark - Flipside View
-
-//- (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller
-//{
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
-//
 
 @end
