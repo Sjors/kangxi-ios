@@ -250,8 +250,6 @@
                             NSRange range;
                             range = [message rangeOfString:@"limit"];
                             if (range.location != NSNotFound) { limitReached = YES;  }
-                            range = [message rangeOfString:@"Limit"];
-                            if (range.location != NSNotFound) { limitReached = YES;  }
                         }
                     }
                     
