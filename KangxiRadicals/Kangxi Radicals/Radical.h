@@ -28,6 +28,8 @@
 
 @interface Radical (CoreDataGeneratedAccessors)
 
++ (NSArray *)findAllBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context;
+
 - (void)addSecondRadicalsObject:(Radical *)value;
 - (void)removeSecondRadicalsObject:(Radical *)value;
 - (void)addSecondRadicals:(NSSet *)values;

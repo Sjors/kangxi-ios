@@ -1,6 +1,5 @@
-import.h
-import.m
-import_lite.h
-import_lite.m
 *.zip
 *.sqlite
+characters_words.json
+radicals_characters.json
+synonyms.json

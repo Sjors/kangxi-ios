@@ -16,9 +16,6 @@
 
 #import "RadicalsCharactersViewController.h"
 
-
-//#define DO_IMPORT YES
-
 #define MIXPANEL_TOKEN @"205327faee0efccec16b37c2db34d98d"
 
 #ifdef DO_IMPORT
@@ -55,8 +52,9 @@
         [[NSFileManager defaultManager] removeItemAtPath:[[[self storeURL] path] stringByAppendingString:@"-wal"] error:NULL];
 
     }
-    [Populator import:self.managedObjectContext];
-    [Populator synonyms:self.managedObjectContext];
+    [Populator importRadicalsCharacters:self.managedObjectContext];
+    [Populator importCharactersWords:self.managedObjectContext];
+    [Populator importSynonyms:self.managedObjectContext];
 
     // Copy to project:
     NSError *error;

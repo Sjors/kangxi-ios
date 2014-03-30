@@ -9,7 +9,7 @@
     </entity>
     <entity name="Radical" representedClassName="Radical" syncable="YES">
         <attribute name="isFirstRadical" attributeType="Boolean" defaultValueString="YES" indexed="YES" syncable="YES"/>
-        <attribute name="rank" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="rank" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="section" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="simplified" attributeType="String" syncable="YES"/>
         <attribute name="synonyms" optional="YES" attributeType="String" syncable="YES"/>

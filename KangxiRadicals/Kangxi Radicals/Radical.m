@@ -31,6 +31,26 @@
     }
 }
 
++ (NSArray *)findAllBySimplified:(NSString *)simplified inManagedObjectContext:(NSManagedObjectContext *)context  {
+    
+    NSFetchRequest * fetch = [[NSFetchRequest alloc] init];
+    [fetch setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:context]];
+    
+    [fetch setPredicate:[NSPredicate predicateWithFormat:@"simplified = %@", simplified]];
+    
+    NSError *error = nil;
+    NSArray *array = [context executeFetchRequest:fetch error:&error];
+    
+    
+    if (array != nil) {
+        return array;
+    } else {
+        NSLog(@"%@",error);
+        // Deal with error.
+        return nil;
+    }
+}
+
 + (NSArray *)all:(NSManagedObjectContext *)context {
     NSFetchRequest * fetch = [[NSFetchRequest alloc] init];
     [fetch setEntity:[NSEntityDescription entityForName:kEntityRadical inManagedObjectContext:context]];
