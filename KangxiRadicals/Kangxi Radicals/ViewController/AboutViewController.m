@@ -55,8 +55,8 @@
                   },
               @{
                   @"title" : @"Personal Blog",
-                  @"subtitle" : @"http://sprovoost.nl/",
-                  @"url": @"http://sprovoost.nl/"
+                  @"subtitle" : @"http://provoost.tumblr.com",
+                  @"url": @"http://provoost.tumblr.com"
                   },
               ]
           },
