@@ -28,82 +28,111 @@
 {
     [super viewDidLoad];
     
-    self.menu = @[
-      @{
-          @"header": @"Learning Resources",
-          @"rows" :  @[
-              @{
-                  @"title" : @"App Tutorial  (PDF)",
-                  @"subtitle" : @"Print, fold and practice using this app.",
-                  @"url": @"http://kangxiradicals.com/tutorial.pdf"
-                  },
-              @{
-                  @"title" : @"Radicals List (PDF)",
-                  @"subtitle" : @"Print, hang on your wall and memorize them",
-                  @"url": @"http://mandarinposter.com/resources/simplified-radicals-list-free-printable-reference/"
-              }
-            ]
-        },
-        @{
-          @"header": @"Contact",
-          @"rows" :  @[
-              @{
-                  @"title" : @"Sjors Provoost",
-                  @"subtitle" : @"sjors@kangxiradicals.com",
-                  @"url": @"mailto:sjors@kangxiradicals.com"
-                  },
-              
-              @{
-                  @"title" : @"Purple Dunes",
-                  @"subtitle" : @"http://purpledunes.com/",
-                  @"url": @"http://purpledunes.com/"
-                  },
-              @{
-                  @"title" : @"Personal Blog",
-                  @"subtitle" : @"http://provoost.tumblr.com",
-                  @"url": @"http://provoost.tumblr.com"
-                  },
-              ]
-          },
-      @{
-          @"header": @"Sources",
-          @"rows" :  @[
-              @{
-                  @"title" : @"Wiktionary.org",
-                  @"subtitle" : @"Creative Commons dictionary",
-                  @"url": @"http://en.m.wiktionary.org/"
-                  },
-              @{
-                  @"title" : @"CE-DICT",
-                  @"subtitle" : @"Creative Commons Chinese dictionary database",
-                  @"url": @"http://www.cc-cedict.org/"
-                  },
-              @{
-                  @"title" : @"Wiki Commons",
-                  @"subtitle" : @"Character decomposition database",
-                  @"url": @"http://commons.wikimedia.org/wiki/Commons:Chinese_characters_decomposition"
-                  },
-              @{
-                  @"title" : @"HSK (Hànyǔ Shuǐpíng Kǎoshì)",
-                  @"subtitle" : @"Word list compiled by Lingomi.com",
-                  @"url": @"http://lingomi.com/blog/hsk-lists-2010/",
-                  },
-              @{
-                  @"title" : @"华文楷体",
-                  @"subtitle" : @"This gorgeous font is called STKaiti",
-                  @"url": @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts",
-                  @"useSpecialFont" : @YES
-                  }
-        ],
-        }
-    ];
     
+    [self populateTable];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)populateTable {
+    NSDictionary *upgradeMenuItem;
+
+    if([[[NSUserDefaults standardUserDefaults]
+         stringForKey:@"fullVersion"] isEqualToString:@"paid"]) {
+        upgradeMenuItem =  @{
+                             @"title" : @"Full version",
+                             @"subtitle" : @"Thank you for your support.",
+                             @"url": @""
+                             };
+    } else {
+        upgradeMenuItem =  @{
+                             @"title" : @"Buy full version",
+                             @"subtitle" : @"Find many more characters.",
+                             @"url": @"upgrade"
+                             };
+    }
+    
+    self.menu = @[
+                  @{
+                      @"header": @"Learning Resources",
+                      @"rows" :  @[
+                              @{
+                                  @"title" : @"App Tutorial  (PDF)",
+                                  @"subtitle" : @"Print, fold and practice using this app.",
+                                  @"url": @"http://kangxiradicals.com/tutorial.pdf"
+                                  },
+                              @{
+                                  @"title" : @"Radicals List (PDF)",
+                                  @"subtitle" : @"Print, hang on your wall and memorize them",
+                                  @"url": @"http://mandarinposter.com/resources/simplified-radicals-list-free-printable-reference/"
+                                  }
+                              ]
+                      },
+                  @{
+                      @"header": @"Full Version",
+                      @"rows" :  @[
+                              upgradeMenuItem,
+#ifdef DEBUG
+                              @{
+                                  @"title" : @"Downgrade",
+                                  @"subtitle" : @"Debug mode only",
+                                  @"url": @"downgrade"
+                                  },
+#endif
+                              ]
+                      },
+                  @{
+                      @"header": @"Contact",
+                      @"rows" :  @[
+                              @{
+                                  @"title" : @"Sjors Provoost",
+                                  @"subtitle" : @"sjors@kangxiradicals.com",
+                                  @"url": @"mailto:sjors@kangxiradicals.com"
+                                  },
+                              
+                              @{
+                                  @"title" : @"Purple Dunes",
+                                  @"subtitle" : @"http://purpledunes.com/",
+                                  @"url": @"http://purpledunes.com/"
+                                  },
+                              @{
+                                  @"title" : @"Personal Blog",
+                                  @"subtitle" : @"http://provoost.tumblr.com",
+                                  @"url": @"http://provoost.tumblr.com"
+                                  },
+                              ]
+                      },
+                  @{
+                      @"header": @"Sources",
+                      @"rows" :  @[
+                              @{
+                                  @"title" : @"Wiktionary.org",
+                                  @"subtitle" : @"Creative Commons dictionary",
+                                  @"url": @"http://en.m.wiktionary.org/"
+                                  },
+                              @{
+                                  @"title" : @"CE-DICT",
+                                  @"subtitle" : @"Creative Commons Chinese dictionary database",
+                                  @"url": @"http://www.cc-cedict.org/"
+                                  },
+                              @{
+                                  @"title" : @"Wiki Commons",
+                                  @"subtitle" : @"Character decomposition database",
+                                  @"url": @"http://commons.wikimedia.org/wiki/Commons:Chinese_characters_decomposition"
+                                  },
+                              @{
+                                  @"title" : @"HSK (Hànyǔ Shuǐpíng Kǎoshì)",
+                                  @"subtitle" : @"Word list compiled by Lingomi.com",
+                                  @"url": @"http://lingomi.com/blog/hsk-lists-2010/",
+                                  },
+                              @{
+                                  @"title" : @"华文楷体",
+                                  @"subtitle" : @"This gorgeous font is called STKaiti",
+                                  @"url": @"http://en.m.wikipedia.org/wiki/List_of_CJK_fonts",
+                                  @"useSpecialFont" : @YES
+                                  }
+                              ],
+                      }
+                  ];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,7 +185,23 @@
     
     NSString *url = [item objectForKey:@"url"];
     
-    if(url!=nil) {
+    if ([url isEqualToString:@"upgrade"]) {
+        [[NSUserDefaults standardUserDefaults]
+         setObject:@"paid" forKey:@"fullVersion"];
+        
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        [self populateTable];
+        [self.tableView reloadData]; }
+#ifdef DEBUG
+    else if ([url isEqualToString:@"downgrade"]) {
+        [[NSUserDefaults standardUserDefaults]
+         setObject:@"unpaid" forKey:@"fullVersion"];
+        
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        [self populateTable];
+        [self.tableView reloadData];
+#endif
+    } else {
 #ifndef DEBUG
         if ([item objectForKey:@"AppStore"] != nil && [[item objectForKey:@"AppStore"] boolValue]) {
             [[Mixpanel sharedInstance] track:@"App Store"];
