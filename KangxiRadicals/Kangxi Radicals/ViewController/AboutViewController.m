@@ -33,6 +33,11 @@
           @"header": @"Learning Resources",
           @"rows" :  @[
               @{
+                  @"title" : @"App Tutorial  (PDF)",
+                  @"subtitle" : @"Print, fold and practice using this app.",
+                  @"url": @"http://kangxiradicals.com/tutorial.pdf"
+                  },
+              @{
                   @"title" : @"Radicals List (PDF)",
                   @"subtitle" : @"Print, hang on your wall and memorize them",
                   @"url": @"http://mandarinposter.com/resources/simplified-radicals-list-free-printable-reference/"
