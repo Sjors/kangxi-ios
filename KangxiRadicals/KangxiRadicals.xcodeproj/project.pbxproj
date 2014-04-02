@@ -96,7 +96,6 @@
 		A2B84A0F17C76281009801D0 /* 华文楷体.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "华文楷体.TTF"; sourceTree = "<group>"; };
 		A2F5487E17C7815F00FB2E5E /* RadicalsCharactersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadicalsCharactersViewController.h; path = ViewController/RadicalsCharactersViewController.h; sourceTree = "<group>"; };
 		A2F5487F17C7815F00FB2E5E /* RadicalsCharactersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadicalsCharactersViewController.m; path = ViewController/RadicalsCharactersViewController.m; sourceTree = "<group>"; };
-		A2F5E0AD1804241D0026831F /* LiteImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = LiteImages.xcassets; path = "Kangxi Radicals/LiteImages.xcassets"; sourceTree = "<group>"; };
 		A2F5E0AF180424750026831F /* PaidImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = PaidImages.xcassets; path = "Kangxi Radicals/PaidImages.xcassets"; sourceTree = "<group>"; };
 		D4B5B9ED0D0944A5BB8FDAF2 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = ../Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -234,7 +233,6 @@
 			isa = PBXGroup;
 			children = (
 				A2B849EF17C75AB2009801D0 /* Images.xcassets */,
-				A2F5E0AD1804241D0026831F /* LiteImages.xcassets */,
 				A2F5E0AF180424750026831F /* PaidImages.xcassets */,
 				A2B84A0E17C7624D009801D0 /* Fonts */,
 			);

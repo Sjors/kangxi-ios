@@ -69,12 +69,7 @@
         self.sortDescriptors = @[sortSection, sortPostition];
         
         self.cacheSuffix = @"FirstRadical";
-        
-        self.title = @"Which radical do you recognize?";
-      
 
-
-        
 
         
     } else if([self.mode isEqualToString:@"Radical"]) {
