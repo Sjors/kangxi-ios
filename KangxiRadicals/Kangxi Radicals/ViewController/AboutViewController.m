@@ -201,6 +201,10 @@
     NSString *url = [item objectForKey:@"url"];
     
     if ([url isEqualToString:@"upgrade"]) {
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Tap Upgrade"];
+#endif
+        
         [[NSUserDefaults standardUserDefaults] setObject:@"pending" forKey:@"fullVersion"];
         // Intentionally not synchronising.
         [self validateProductIdentifiers:@[@"1000characters"]];
@@ -216,15 +220,13 @@
         [self populateTable];
         [self.tableView reloadData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"didDowngrade" object:nil];
+    }
 
 #endif
-    } else {
+    else {
 #ifndef DEBUG
-        if ([item objectForKey:@"AppStore"] != nil && [[item objectForKey:@"AppStore"] boolValue]) {
-            [[Mixpanel sharedInstance] track:@"App Store"];
-        } else {
-            [[Mixpanel sharedInstance] track:@"Follow Link" properties:@{@"URL" : url}];
-        }
+
+        [[Mixpanel sharedInstance] track:@"Follow Link" properties:@{@"URL" : url}];
 #endif
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
  

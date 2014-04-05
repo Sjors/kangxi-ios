@@ -318,6 +318,9 @@
                 // Call the appropriate custom method.
             case SKPaymentTransactionStatePurchased:
                 [self completeTransaction:transaction];
+#ifndef DEBUG
+                [[Mixpanel sharedInstance] track:@"Complete Upgrade"];
+#endif
                 break;
             case SKPaymentTransactionStateFailed:
                 [self failedTransaction:transaction];
