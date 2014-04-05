@@ -27,6 +27,7 @@
         r.simplified = [firstRadical valueForKey:@"simplified"];
         r.rank = [firstRadical valueForKey:@"rank"];
         r.section = @0;
+        r.trial = [firstRadical valueForKey:@"demo"];
         
         for(NSDictionary *secondRadical in [firstRadical valueForKey:@"second_radicals"]) {
             Radical* r2;
@@ -38,7 +39,7 @@
             r2.section = @0;
             r2.simplified = [secondRadical valueForKey:@"simplified"];
             r2.rank = [secondRadical valueForKey:@"rank"];
-        
+            r2.trial = [secondRadical valueForKey:@"demo"];
         
             for(NSDictionary *character in [secondRadical valueForKey:@"characters"]) {
                 NSString *simplified = [character valueForKey:@"simplified"];
@@ -48,6 +49,8 @@
                   c = [NSEntityDescription insertNewObjectForEntityForName:kEntityCharacter inManagedObjectContext:managedObjectContext];
                   c.simplified = simplified;
                   c.rank = [character valueForKey:@"rank"];
+                  c.trial = [character valueForKey:@"demo"];
+
 
                 }
                 [c addSecondRadicalsObject:r2];
@@ -80,45 +83,43 @@
         NSLog(@"Error parsing JSON: %@", [jsonError description]);
     }
     
-    
-    NSInteger i = 0;
-    for(NSDictionary *character  in characters) {
+    for (int k = 0; k < [characters count]; k = k + 50) {
         
         @autoreleasepool {
-            Character* c;
-            c = [Character fetchBySimplified:[character valueForKey:@"simplified"] inManagedObjectContext:managedObjectContext includesPropertyValuesAndSubentities:NO];
-            
-            for (NSDictionary *word in [character valueForKey:@"words"]) {
-                Word *w = [Word fetchBySimplified:[word valueForKey:@"simplified"] inManagedObjectContext:managedObjectContext includesPropertyValuesAndSubentities:NO];
+            for(NSDictionary *character  in [characters subarrayWithRange:NSMakeRange(k, MIN(50, [characters count] - k))]) {
+
+
+                Character* c;
+                c = [Character fetchBySimplified:[character valueForKey:@"simplified"] inManagedObjectContext:managedObjectContext includesPropertyValuesAndSubentities:NO];
                 
-                if( w==nil ) {
-                    w = [NSEntityDescription insertNewObjectForEntityForName:kEntityWord inManagedObjectContext:managedObjectContext];
-                    w.simplified = [word valueForKey:@"simplified"];
-                    w.english = [word valueForKey:@"english"];
-                    w.wordLength = [NSNumber numberWithInt:[w.simplified length]];
+                for (NSDictionary *word in [character valueForKey:@"words"]) {
+                    Word *w = [Word fetchBySimplified:[word valueForKey:@"simplified"] inManagedObjectContext:managedObjectContext includesPropertyValuesAndSubentities:NO];
+                    
+                    if( w==nil ) {
+                        w = [NSEntityDescription insertNewObjectForEntityForName:kEntityWord inManagedObjectContext:managedObjectContext];
+                        w.simplified = [word valueForKey:@"simplified"];
+                        w.english = [word valueForKey:@"english"];
+                        w.wordLength = [NSNumber numberWithInt:[w.simplified length]];
+                    }
+                    
+                    [c addWordsObject:w];
                 }
                 
-                [c addWordsObject:w];
+
             }
             
-            // Save context:
-            NSError *error;
-            [managedObjectContext save:&error];
-            if(error) { NSLog(@"%@",error); abort();}
+
         }
+        // Save context:
+        NSError *error;
+        [managedObjectContext save:&error];
+        if(error) { NSLog(@"%@",error); abort();}
         
-        i++;
-        if (i % 100 == 0) {
-            NSLog(@"%d characters processed", i);
-        }
-
+        NSLog(@"%d characters processed", k + 50);
     }
-    
-
-    
 
 }
-    
+
 //*********** 
 // Synonyms * 
 //*********** 

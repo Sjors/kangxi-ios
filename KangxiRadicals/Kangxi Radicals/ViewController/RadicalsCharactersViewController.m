@@ -27,8 +27,11 @@
 @property NSPredicate *predicate;
 @property NSString *sectionNameKeyPath;
 @property NSString *cacheSuffix;
+@property NSString *cacheVersionSuffix;
 
 @property NSArray *sortDescriptors;
+
+@property BOOL paidVersion;
 
 @end
 
@@ -57,104 +60,60 @@
     self.collectionView.pagingEnabled = NO;
     
     
-    if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
-        self.entityName = kEntityRadical;
-        self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@", @YES];
-        self.sectionNameKeyPath = @"section";
-        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
-                                         initWithKey:@"section" ascending:YES  selector:nil];
-        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"rank" ascending:YES  selector:nil];
-        
-        self.sortDescriptors = @[sortSection, sortPostition];
-        
-        self.cacheSuffix = @"FirstRadical";
 
-
-        
-    } else if([self.mode isEqualToString:@"Radical"]) {
-        self.entityName = kEntityRadical;
-        self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@", self.radical, @NO];
-        self.sectionNameKeyPath = @"section";
-        self.cacheSuffix = [NSString stringWithFormat:@"Radical%@", self.radical.rank];
-        
-        NSString *title;
-        NSString *formattedSynonyms = self.radical.formattedSynonyms;
-        if ([self.radical.synonyms length] > 3) {
-
-            title = [NSString stringWithFormat:@"%@%@", ((Radical *)self.radical).simplified, formattedSynonyms];
-
-        } else {
-            title = [NSString stringWithFormat:@"%@%@ - Pick one more", ((Radical *)self.radical).simplified, formattedSynonyms];
-
-
-        }
-        
-        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
-
-        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
-                                         initWithKey:@"section" ascending:YES  selector:nil];
-        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"rank" ascending:YES  selector:nil];
-        
-        self.sortDescriptors = @[sortSection, sortPostition];
-        
-#ifndef DEBUG
-        [[Mixpanel sharedInstance] track:@"Lookup Radical" properties:@{@"Radical" : self.radical.simplified}];
-#endif
-        
- 
-        
-    }else if([self.mode isEqualToString:@"Character"]) {
-        self.entityName = kEntityCharacter;
-        self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@", self.radical];
-        
-        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
-                                           initWithKey:@"rank" ascending:YES  selector:nil];
-        
-        self.sortDescriptors = @[sortPostition];
-        
-
-        
-        NSString *title;
-        if(self.radical.firstRadical) {
-            NSString *formattedSynonyms = self.radical.formattedSynonyms;
-
-            if ([self.radical.synonyms length] > 3) {
-                title = [NSString stringWithFormat:@"%@ %@%@", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
-            } else {
-                title = [NSString stringWithFormat:@"%@ %@%@ characters", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
-
-            }
-            
-            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3 + [formattedSynonyms length]];
-#ifndef DEBUG
-            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical 1" : self.radical.firstRadical.simplified, @"Radical 2" : self.radical.simplified}];
-#endif
-            self.cacheSuffix = [NSString stringWithFormat:@"Character%@-%@",self.radical.firstRadical.rank, self.radical.rank];
-        } else if (self.radical) {
-            self.cacheSuffix = [NSString stringWithFormat:@"Character%@", self.radical.rank];
-
-
-            NSString *formattedSynonyms = self.radical.formattedSynonyms;
-            if ([self.radical.synonyms length] > 3) {
-                title = [NSString stringWithFormat:@"%@%@",self.radical.simplified, formattedSynonyms];
-
-            } else {
-                title = [NSString stringWithFormat:@"%@%@ characters",self.radical.simplified, formattedSynonyms];
-            }
-            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
-#ifndef DEBUG
-            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical" : self.radical.simplified}];
-#endif
-        }
-        
+    
+    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(paidVersion)) options:0 context:NULL];
+    
+    if([[[NSUserDefaults standardUserDefaults]
+         stringForKey:@"fullVersion"] isEqualToString:@"paid"]) {
+        self.paidVersion = YES;
     } else {
-        NSLog(@"Unknown mode, not good...");
+        self.paidVersion = NO;
     }
+    
+    [self configureFetchRequest];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpgrade:) name:@"didUpgrade" object:nil];
+    
+#ifdef DEBUG
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didDowngrade:) name:@"didDowngrade" object:nil];
+#endif
+
     
     [self.fetchedResultsController performFetch:nil];
 }
+
+-(void)dealloc {
+    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(paidVersion))];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(paidVersion))]) {
+        if (self.paidVersion) {
+            self.cacheVersionSuffix = @"1.1.0 Paid";
+        } else {
+            self.cacheVersionSuffix = @"1.1.0 Free";
+        }
+    }
+}
+
+- (void)didUpgrade:(id)sender {
+    self.paidVersion = YES;
+    [self configureFetchRequest];
+    _fetchedResultsController = nil;
+    [self.fetchedResultsController performFetch:nil];
+    [self.collectionView reloadData];
+}
+
+#ifdef DEBUG
+- (void)didDowngrade:(id)sender {
+    self.paidVersion = NO;
+    [self configureFetchRequest];
+    _fetchedResultsController = nil;
+    [self.fetchedResultsController performFetch:nil];
+    [self.collectionView reloadData];
+}
+#endif
 
 - (void)flashInstructions:(NSInteger)delay {
     [UIView animateWithDuration:1 delay:delay options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
@@ -235,8 +194,118 @@
 
 
 
-
 #pragma mark - UICollectionView and delegates
+
+- (void)configureFetchRequest {
+    if([self.mode isEqualToString:@"Radical"] && self.radical == nil) {
+        self.entityName = kEntityRadical;
+        
+        if(self.paidVersion) {
+            self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@", @YES];
+        } else {
+            self.predicate = [NSPredicate predicateWithFormat:@"isFirstRadical = %@ AND trial = %@", @YES, @YES];
+        }
+        self.sectionNameKeyPath = @"section";
+        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
+                                         initWithKey:@"section" ascending:YES  selector:nil];
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
+        
+        self.sortDescriptors = @[sortSection, sortPostition];
+        
+        self.cacheSuffix = @"FirstRadical";
+        
+        
+        
+    } else if([self.mode isEqualToString:@"Radical"]) {
+        self.entityName = kEntityRadical;
+        if(self.paidVersion) {
+            self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@", self.radical, @NO];
+        } else {
+            self.predicate =[NSPredicate predicateWithFormat:@"firstRadical = %@ AND isFirstRadical = %@ AND trial = %@", self.radical, @NO, @YES];
+        }
+        self.sectionNameKeyPath = @"section";
+        self.cacheSuffix = [NSString stringWithFormat:@"Radical%@", self.radical.rank];
+        
+        NSString *title;
+        NSString *formattedSynonyms = self.radical.formattedSynonyms;
+        if ([self.radical.synonyms length] > 3) {
+            
+            title = [NSString stringWithFormat:@"%@%@", ((Radical *)self.radical).simplified, formattedSynonyms];
+            
+        } else {
+            title = [NSString stringWithFormat:@"%@%@ - Pick one more", ((Radical *)self.radical).simplified, formattedSynonyms];
+            
+            
+        }
+        
+        self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
+        
+        NSSortDescriptor *sortSection = [[NSSortDescriptor alloc]
+                                         initWithKey:@"section" ascending:YES  selector:nil];
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
+        
+        self.sortDescriptors = @[sortSection, sortPostition];
+        
+#ifndef DEBUG
+        [[Mixpanel sharedInstance] track:@"Lookup Radical" properties:@{@"Radical" : self.radical.simplified}];
+#endif
+        
+        
+        
+    }else if([self.mode isEqualToString:@"Character"]) {
+        self.entityName = kEntityCharacter;
+        if(self.paidVersion) {
+            self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@", self.radical];
+        } else {
+            self.predicate =[NSPredicate predicateWithFormat:@"ANY secondRadicals = %@ AND trial = %@", self.radical, @YES];
+        }
+        
+        NSSortDescriptor *sortPostition = [[NSSortDescriptor alloc]
+                                           initWithKey:@"rank" ascending:YES  selector:nil];
+        
+        self.sortDescriptors = @[sortPostition];
+        
+        
+        
+        NSString *title;
+        if(self.radical.firstRadical) {
+            NSString *formattedSynonyms = self.radical.formattedSynonyms;
+            
+            if ([self.radical.synonyms length] > 3) {
+                title = [NSString stringWithFormat:@"%@ %@%@", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
+            } else {
+                title = [NSString stringWithFormat:@"%@ %@%@ characters", self.radical.firstRadical.simplified, self.radical.simplified, formattedSynonyms];
+                
+            }
+            
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:3 + [formattedSynonyms length]];
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical 1" : self.radical.firstRadical.simplified, @"Radical 2" : self.radical.simplified}];
+#endif
+            self.cacheSuffix = [NSString stringWithFormat:@"Character%@-%@",self.radical.firstRadical.rank, self.radical.rank];
+        } else if (self.radical) {
+            self.cacheSuffix = [NSString stringWithFormat:@"Character%@", self.radical.rank];
+            
+            
+            NSString *formattedSynonyms = self.radical.formattedSynonyms;
+            if ([self.radical.synonyms length] > 3) {
+                title = [NSString stringWithFormat:@"%@%@",self.radical.simplified, formattedSynonyms];
+                
+            } else {
+                title = [NSString stringWithFormat:@"%@%@ characters",self.radical.simplified, formattedSynonyms];
+            }
+            self.navigationItem.titleView = [self titleViewWithText:title numberOfChineseCharacters:1 + [formattedSynonyms length]];
+#ifndef DEBUG
+            [[Mixpanel sharedInstance] track:@"Lookup Characters" properties:@{@"Radical" : self.radical.simplified}];
+#endif
+        }
+        
+    } else {
+        NSLog(@"Unknown mode, not good...");
+    }
+}
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [self.fetchedResultsController.sections count];
@@ -429,7 +498,7 @@
     NSFetchedResultsController *theFetchedResultsController =
     [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                         managedObjectContext:self.managedObjectContext sectionNameKeyPath:self.sectionNameKeyPath
-                                                   cacheName:[NSString stringWithFormat:@"RadicalsCharactersCache%@", self.cacheSuffix]];
+                                                   cacheName:[NSString stringWithFormat:@"RadicalsCharactersCache%@ %@", self.cacheSuffix, self.cacheVersionSuffix]];
     _fetchedResultsController = theFetchedResultsController;
     
     return _fetchedResultsController;

@@ -191,7 +191,9 @@
         
         [[NSUserDefaults standardUserDefaults]synchronize];
         [self populateTable];
-        [self.tableView reloadData]; }
+        [self.tableView reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpgrade" object:nil];
+    }
 #ifdef DEBUG
     else if ([url isEqualToString:@"downgrade"]) {
         [[NSUserDefaults standardUserDefaults]
@@ -200,6 +202,8 @@
         [[NSUserDefaults standardUserDefaults]synchronize];
         [self populateTable];
         [self.tableView reloadData];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didDowngrade" object:nil];
+
 #endif
     } else {
 #ifndef DEBUG
