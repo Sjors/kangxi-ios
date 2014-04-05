@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		26230FF8897E46878EE06D3F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1CA34C0C0AE45E5AB06F8EC /* libPods.a */; };
+		A201E86C18F0860600E013CD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A201E86B18F0860600E013CD /* StoreKit.framework */; };
 		A210F3D917D78B05004F3E1E /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A210F3D817D78B05004F3E1E /* AboutViewController.m */; };
 		A212613717CA71500022390D /* Word.m in Sources */ = {isa = PBXBuildFile; fileRef = A212613617CA71500022390D /* Word.m */; };
 		A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AE0D217CB63B900168361 /* AVFoundation.framework */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		A1CA34C0C0AE45E5AB06F8EC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20094EB18040EA0000B1F87 /* Kangxi Lite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Kangxi Lite-Info.plist"; path = "/Users/sjors/Dropbox/Kangxi/iOs/Kangxi Radicals/Kangxi Lite-Info.plist"; sourceTree = "<absolute>"; };
+		A201E86B18F0860600E013CD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A210F3D717D78B05004F3E1E /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ViewController/AboutViewController.h; sourceTree = "<group>"; };
 		A210F3D817D78B05004F3E1E /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ViewController/AboutViewController.m; sourceTree = "<group>"; };
 		A212613517CA71500022390D /* Word.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Word.h; path = Model/Word.h; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A21AE0D317CB63B900168361 /* AVFoundation.framework in Frameworks */,
+				A201E86C18F0860600E013CD /* StoreKit.framework in Frameworks */,
 				A2B849D217C75AB2009801D0 /* CoreGraphics.framework in Frameworks */,
 				A2B849D617C75AB2009801D0 /* CoreData.framework in Frameworks */,
 				A2B849D417C75AB2009801D0 /* UIKit.framework in Frameworks */,
@@ -177,6 +180,7 @@
 		A2B849CE17C75AB2009801D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A201E86B18F0860600E013CD /* StoreKit.framework */,
 				A21AE0D217CB63B900168361 /* AVFoundation.framework */,
 				A2B849CF17C75AB2009801D0 /* Foundation.framework */,
 				A2B849D117C75AB2009801D0 /* CoreGraphics.framework */,
@@ -333,6 +337,11 @@
 				TargetAttributes = {
 					A2B849CB17C75AB2009801D0 = {
 						DevelopmentTeam = 227MFQPYQ4;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 					A2B849F417C75AB3009801D0 = {
 						TestTargetID = A2B849CB17C75AB2009801D0;
@@ -567,7 +576,7 @@
 				GCC_PREFIX_HEADER = "Kangxi Radicals/KangxiRadicals-Prefix.pch";
 				INFOPLIST_FILE = "Kangxi Radicals/KangxiRadicals-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3FE6B72E-A1FD-4A71-969A-1F8E9CD1BE4F";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -580,7 +589,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/sjors/Dropbox/Kangxi/iOs/KangxiRadicals,
@@ -590,7 +599,7 @@
 				GCC_PREFIX_HEADER = "Kangxi Radicals/KangxiRadicals-Prefix.pch";
 				INFOPLIST_FILE = "Kangxi Radicals/KangxiRadicals-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6EFD716A-B673-4459-AF77-2926AB0BDF56";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

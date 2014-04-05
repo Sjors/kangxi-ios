@@ -115,6 +115,10 @@
 #endif
     }
     
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    
+    [self checkIfUserPurchasedTheApp];
+    
     return YES;
 }
 
@@ -306,5 +310,167 @@
     // Display the indicator as long as our static counter is > 0.
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:(NumberOfCallsToSetVisible > 0)];
 }
+
+#pragma mark In App Purchases
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+    for (SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+                // Call the appropriate custom method.
+            case SKPaymentTransactionStatePurchased:
+                [self completeTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateFailed:
+                [self failedTransaction:transaction];
+                break;
+            case SKPaymentTransactionStateRestored:
+                [self restoreTransaction:transaction];
+            default:
+                break;
+        }
+    }
+}
+
+-(void)completeTransaction:(SKPaymentTransaction *)transaction {
+    [self performUpgrade];
+    
+    [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+}
+
+-(void)failedTransaction:(SKPaymentTransaction *)transaction {
+    [[[UIAlertView alloc ]initWithTitle:@"Upgrade error" message:[NSString stringWithFormat:@"Something went wrong with the upgrade. Please contact support and mention 'Failed transaction: %@'", [transaction.error localizedDescription]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    
+}
+
+-(void)restoreTransaction:(SKPaymentTransaction *)transaction {
+    [self completeTransaction:transaction];
+}
+
+-(void)checkIfUserPurchasedTheApp {
+    // Before version 1.1 this was a paid app. Those users should receive the in-app purchase functionality free of charge.
+    
+    // Debug:
+//    [[NSUserDefaults standardUserDefaults] setObject:@NO forKey:@"didCheckIfUserPurchasedTheApp"];
+//    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    if([[[NSUserDefaults standardUserDefaults]  objectForKey:@"didCheckIfUserPurchasedTheApp"] boolValue]) {
+        // Nothing to do
+    } else if ([[[NSUserDefaults standardUserDefaults] stringForKey:@"fullVersion"] isEqualToString:@"paid"]) {
+        // Already paid for an upgrade, so no need to check receipt of app purchase:
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"didCheckIfUserPurchasedTheApp"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    } else {
+    
+        
+        // http://fjsaorin.com/how-to-check-an-app-store-receipt-on-ios-7/
+        // This is just a convenience for users who downloaded version before 1.1. It does not provide any protection against piracy.
+        
+        //Get the receipt URL
+        NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+        
+        //Check if it exists
+        if (![[NSFileManager defaultManager] fileExistsAtPath:receiptURL.path]) {
+            // No receipt found, assume this mean the user didn't buy the original version.
+            [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"didCheckIfUserPurchasedTheApp"];
+            [[NSUserDefaults standardUserDefaults]synchronize];
+        } else {
+        
+            //Encapsulate the base64 encoded receipt on NSData
+            NSData *receiptData = [NSData dataWithContentsOfFile:receiptURL.path];
+            NSString *base64Receipt = [self base64forData:receiptData];
+            
+            //Prepare the request to send "receipt-data:[the receipt]" via POST method as json object
+            
+#ifdef DEBUG
+#define serverURL @"https://sandbox.itunes.apple.com/verifyReceipt"
+#else
+#define serverURL @"https://buy.itunes.apple.com/verifyReceipt"
+#endif
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:serverURL]];
+            [request setHTTPMethod:@"POST"];
+            
+            NSDictionary *requestDic = [NSDictionary dictionaryWithObject:base64Receipt forKey:@"receipt-data"];
+            
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestDic options:0 error:nil];
+            [request setHTTPBody:jsonData];
+            
+            //Send the request
+            
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            
+            [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
+                
+                if (connectionError) {
+                    return; //A connection error ocurred
+                }
+                
+                //Get a NSDictionary from the json object
+                
+                NSError *parseError;
+                
+                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
+                
+                if (parseError) {
+                    return; //Unable to parse the json object
+                }
+                
+                //Get the purchased version by the user
+                
+                float version = [[[responseDic objectForKey:@"receipt"] objectForKey:@"application_version"] floatValue];
+                
+                if (version < 1.1f) {
+                    //User purchased a previous version. Perform upgrade on main thread
+                    // just in case:
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+                        [self performUpgrade];
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"didCheckIfUserPurchasedTheApp"];
+                        [[NSUserDefaults standardUserDefaults]synchronize];
+                    }];
+                }
+                
+            }];
+            
+        }
+    }
+}
+                       
+-(void)performUpgrade {
+    [[NSUserDefaults standardUserDefaults] setObject:@"paid" forKey:@"fullVersion"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpgrade" object:nil];
+}
+
+- (NSString*)base64forData:(NSData*)theData {
+    const uint8_t* input = (const uint8_t*)[theData bytes];
+    NSInteger length = [theData length];
+    
+    static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    
+    NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+    uint8_t* output = (uint8_t*)data.mutableBytes;
+    
+    NSInteger i;
+    for (i=0; i < length; i += 3) {
+        NSInteger value = 0;
+        NSInteger j;
+        for (j = i; j < (i + 3); j++) {
+            value <<= 8;
+            
+            if (j < length) {
+                value |= (0xFF & input[j]);
+            }
+        }
+        
+        NSInteger theIndex = (i / 3) * 4;
+        output[theIndex + 0] =                    table[(value >> 18) & 0x3F];
+        output[theIndex + 1] =                    table[(value >> 12) & 0x3F];
+        output[theIndex + 2] = (i + 1) < length ? table[(value >> 6)  & 0x3F] : '=';
+        output[theIndex + 3] = (i + 2) < length ? table[(value >> 0)  & 0x3F] : '=';
+    }
+    
+    return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+}
+
 
 @end

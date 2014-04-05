@@ -8,9 +8,11 @@
 
 #import "AboutViewController.h"
 #import "Mixpanel.h"
+#import <StoreKit/StoreKit.h>
 
-@interface AboutViewController ()
+@interface AboutViewController  () <SKProductsRequestDelegate>
 @property NSArray *menu;
+@property NSArray *products;
 @end
 
 @implementation AboutViewController
@@ -30,7 +32,13 @@
     
     
     [self populateTable];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpgrade:) name:@"didUpgrade" object:nil];
+    
+}
 
+-(void)dealloc {
+    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(didUpgrade:))];
 }
 
 - (void)populateTable {
@@ -41,6 +49,13 @@
         upgradeMenuItem =  @{
                              @"title" : @"Full version",
                              @"subtitle" : @"Thank you for your support.",
+                             @"url": @""
+                             };
+    } else if ([[[NSUserDefaults standardUserDefaults]
+                 stringForKey:@"fullVersion"] isEqualToString:@"pending"]) {
+        upgradeMenuItem =  @{
+                             @"title" : @"Purchasing full version...",
+                             @"subtitle" : @"Please wait and follow the instructions.",
                              @"url": @""
                              };
     } else {
@@ -186,13 +201,11 @@
     NSString *url = [item objectForKey:@"url"];
     
     if ([url isEqualToString:@"upgrade"]) {
-        [[NSUserDefaults standardUserDefaults]
-         setObject:@"paid" forKey:@"fullVersion"];
-        
-        [[NSUserDefaults standardUserDefaults]synchronize];
+        [[NSUserDefaults standardUserDefaults] setObject:@"pending" forKey:@"fullVersion"];
+        // Intentionally not synchronising.
+        [self validateProductIdentifiers:@[@"1000characters"]];
         [self populateTable];
         [self.tableView reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpgrade" object:nil];
     }
 #ifdef DEBUG
     else if ([url isEqualToString:@"downgrade"]) {
@@ -220,4 +233,40 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
+
+#pragma mark In App Purchase
+- (void)validateProductIdentifiers:(NSArray *)productIdentifiers
+{
+    SKProductsRequest *productsRequest = [[SKProductsRequest alloc]
+                                          initWithProductIdentifiers:[NSSet setWithArray:productIdentifiers]];
+    productsRequest.delegate = self;
+    [productsRequest start];
+}
+// SKProductsRequestDelegate protocol method
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    self.products = response.products;
+    for (NSString *invalidIdentifier in response.invalidProductIdentifiers) {
+        // Handle any invalid product identifiers.
+        [[[UIAlertView alloc ]initWithTitle:@"Upgrade error" message:[NSString stringWithFormat:@"Something went wrong with the upgrade. Please contact support and mention 'Invalid Product Identifier %@'", invalidIdentifier] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+    
+    [self displayStoreUI];
+}
+
+- (void)displayStoreUI {
+  // We only have one possible purchase, so no need to display additional UI.
+    [self requestPayment:[self.products firstObject]];
+}
+
+-(void)requestPayment:(SKProduct *)product {
+    SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+    [[SKPaymentQueue defaultQueue] addPayment:payment];
+}
+
+- (void)didUpgrade:(id)sender {
+    [self populateTable];
+    [self.tableView reloadData];
+}
+
 @end
