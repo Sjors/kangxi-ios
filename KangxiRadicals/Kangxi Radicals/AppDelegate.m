@@ -115,7 +115,16 @@
 #endif
     }
     
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    if([[[NSUserDefaults standardUserDefaults] stringForKey:@"fullVersion"] isEqualToString:@"pending"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"unpaid" forKey:@"fullVersion"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    
+    if(![[[NSUserDefaults standardUserDefaults] stringForKey:@"fullVersion"] isEqualToString:@"paid"]) {
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restorePurchases:) name:@"restorePurchases" object:nil];
     
     [self checkIfUserPurchasedTheApp];
     
@@ -342,6 +351,9 @@
 -(void)failedTransaction:(SKPaymentTransaction *)transaction {
     [[[UIAlertView alloc ]initWithTitle:@"Upgrade error" message:[NSString stringWithFormat:@"Something went wrong with the upgrade. Please contact support and mention 'Failed transaction: %@'", [transaction.error localizedDescription]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     
+    [[NSUserDefaults standardUserDefaults] setObject:@"unpaid" forKey:@"fullVersion"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
 }
 
 -(void)restoreTransaction:(SKPaymentTransaction *)transaction {
@@ -444,6 +456,26 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpgrade" object:nil];
 }
 
+-(void)restorePurchases:(NSNotification *)notification {
+    SKReceiptRefreshRequest *request = [[SKReceiptRefreshRequest alloc] initWithReceiptProperties:nil];
+    request.delegate = self;
+    [request start];
+}
+
+-(void)requestDidFinish:(SKRequest *)request {
+    if ([request class] == [SKReceiptRefreshRequest class]) {
+//        SKReceiptRefreshRequest *receiptRefreshRequest = (SKReceiptRefreshRequest *)request;
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    }
+}
+
+-(void)request:(SKRequest *)request didFailWithError:(NSError *)error {
+    [[[UIAlertView alloc ]initWithTitle:@"Purchase restore error" message:[NSString stringWithFormat:@"Something went wrong trying to find your previous purchase. Please contact support and mention: %@'", [error localizedDescription]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@"unpaid" forKey:@"fullVersion"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
 - (NSString*)base64forData:(NSData*)theData {
     const uint8_t* input = (const uint8_t*)[theData bytes];
     NSInteger length = [theData length];
@@ -474,6 +506,5 @@
     
     return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 }
-
 
 @end

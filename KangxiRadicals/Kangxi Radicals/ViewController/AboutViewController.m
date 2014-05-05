@@ -42,28 +42,42 @@
 }
 
 - (void)populateTable {
-    NSDictionary *upgradeMenuItem;
+    NSArray *upgradeMenuItems;
 
     if([[[NSUserDefaults standardUserDefaults]
          stringForKey:@"fullVersion"] isEqualToString:@"paid"]) {
-        upgradeMenuItem =  @{
+        upgradeMenuItems =  @[@{
                              @"title" : @"Full version",
                              @"subtitle" : @"Thank you for your support.",
                              @"url": @""
-                             };
+                             }
+#ifdef DEBUG
+                            ,@{
+                                @"title" : @"Downgrade",
+                                @"subtitle" : @"Debug mode only",
+                                @"url": @"downgrade"
+                                },
+#endif
+                            
+                             ];
     } else if ([[[NSUserDefaults standardUserDefaults]
                  stringForKey:@"fullVersion"] isEqualToString:@"pending"]) {
-        upgradeMenuItem =  @{
+        upgradeMenuItems =  @[@{
                              @"title" : @"Purchasing full version...",
                              @"subtitle" : @"Please wait and follow the instructions.",
                              @"url": @""
-                             };
+                             }];
     } else {
-        upgradeMenuItem =  @{
+        upgradeMenuItems =  @[@{
                              @"title" : @"Buy full version",
                              @"subtitle" : @"Find many more characters.",
                              @"url": @"upgrade"
-                             };
+                             },@{
+                              @"title" : @"Restore Previous Purchase",
+                              @"subtitle" : @"If you bought the full version before on any device.",
+                              @"url": @"restore"
+                              }
+                            ];
     }
     
     self.menu = @[
@@ -84,17 +98,8 @@
                       },
                   @{
                       @"header": @"Full Version",
-                      @"rows" :  @[
-                              upgradeMenuItem,
-#ifdef DEBUG
-                              @{
-                                  @"title" : @"Downgrade",
-                                  @"subtitle" : @"Debug mode only",
-                                  @"url": @"downgrade"
-                                  },
-#endif
-                              ]
-                      },
+                      @"rows" :  upgradeMenuItems,
+                    },
                   @{
                       @"header": @"Contact",
                       @"rows" :  @[
@@ -204,10 +209,14 @@
 #ifndef DEBUG
         [[Mixpanel sharedInstance] track:@"Tap Upgrade"];
 #endif
-        
+        // Intentionally not synchronising:
         [[NSUserDefaults standardUserDefaults] setObject:@"pending" forKey:@"fullVersion"];
-        // Intentionally not synchronising.
         [self validateProductIdentifiers:@[@"1000characters"]];
+        [self populateTable];
+        [self.tableView reloadData];
+    } else if ([url isEqualToString:@"restore"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"restorePurchases" object:nil];
+        [[NSUserDefaults standardUserDefaults] setObject:@"pending" forKey:@"fullVersion"];
         [self populateTable];
         [self.tableView reloadData];
     }
