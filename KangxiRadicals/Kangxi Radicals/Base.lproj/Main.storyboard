@@ -218,7 +218,7 @@
         <scene sceneID="Dau-Ql-XPf">
             <objects>
                 <tabBarController definesPresentationContext="YES" id="IrA-Uw-XlO" sceneMemberID="viewController">
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="9sw-ty-YtE">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
