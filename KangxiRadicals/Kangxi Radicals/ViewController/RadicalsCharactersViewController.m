@@ -410,51 +410,6 @@
     }
 }
 
--(void)showCircleForCell:(UICollectionViewCell *)cell delay:(NSInteger)delay {
-    
-    // Show circle:
-    instructionsCircleImageView = [[UIImageView alloc]
-                                   initWithImage:[UIImage imageNamed:@"InstructionCircle"]];
-    //        instructionsCircleImageView.frame = CGRectMake(0, 2, 476 / 2, 152 / 2);
-    instructionsCircleImageView.alpha = 0;
-    [cell addSubview:instructionsCircleImageView];
-    
-    self.collectionView.scrollEnabled = NO;
-    
-    [UIView animateWithDuration:1 delay:delay options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-        instructionsCircleImageView.alpha = 0.8;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:1 delay:5 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-            instructionsCircleImageView.alpha = 0;
-        } completion:^(BOOL finished) {
-            self.collectionView.scrollEnabled = YES;
-        }];
-        
-    }];
-
-}
-
--(void)showCircleInNavigation {
-    
-    // Show circle:
-    UIImageView *navigationCircleImageView = [[UIImageView alloc]
-                                   initWithImage:[UIImage imageNamed:@"InstructionCircle"]];
-    navigationCircleImageView.frame = CGRectMake(77, 28, 147 / 2 * 0.4, 147 / 2 * 0.4);
-    navigationCircleImageView.alpha = 0;
-    [self.navigationController.view addSubview:navigationCircleImageView];
-    
-    [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-        navigationCircleImageView.alpha = 0.8;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:1 delay:2 options:UIViewAnimationTransitionNone | UIViewAnimationOptionCurveLinear animations:^{
-            navigationCircleImageView.alpha = 0;
-        } completion:^(BOOL finished) {
-        }];
-        
-    }];
-    
-}
-
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if([kind isEqualToString:@"UICollectionElementKindSectionHeader"]) {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
