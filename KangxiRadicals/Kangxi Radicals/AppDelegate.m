@@ -10,7 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 
 #ifndef DEBUG
-    #import <Crashlytics/Crashlytics.h>
     #import <Mixpanel/Mixpanel.h>
 #endif
 
@@ -35,13 +34,6 @@
     [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     [[Mixpanel sharedInstance] track:@"Launch"];
 #endif
-    
-#ifndef DEBUG
-    // This should be at the top but after all other 3rd party SDK code.
-    [Crashlytics startWithAPIKey:@"1e9765b42004724029bbfe36e4c84518c51f7503"];
-#endif
-    
-    
 
 #ifdef DO_IMPORT
     if([[self storeURL] checkResourceIsReachableAndReturnError:nil]) {
