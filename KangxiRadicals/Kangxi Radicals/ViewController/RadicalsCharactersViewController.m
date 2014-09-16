@@ -129,7 +129,7 @@
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
-    if([identifier isEqualToString:@"search"] || [identifier isEqualToString:@"searchTall"]) {
+    if([identifier isEqualToString:@"search"]) {
         if([self.mode isEqualToString:@"Radical"]) {
             return YES;
         } else if ([self.mode isEqualToString:@"Character"]) {
@@ -323,13 +323,13 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if([self sectionWithChineseCells:indexPath.section]) {
-        if(IS_WIDESCREEN && [self.mode isEqualToString:@"Radical"]) {
+        if([self.mode isEqualToString:@"Radical"]) {
             return CGSizeMake(70, 88);
         } else {
             return CGSizeMake(70, 70);
         }
     } else {
-        if((!IS_WIDESCREEN && indexPath.row < 7) || (IS_WIDESCREEN && indexPath.row < 9)) {
+        if(indexPath.row < 9) {
             return CGSizeMake(320, 44);
         } else {
             // Navbar: 10 points
@@ -351,13 +351,7 @@
     RadicalCharacterCollectionViewCell *cell;
     
     if([self sectionWithChineseCells:indexPath.section]) {
-        static NSString *CellIdentifier;
-        
-        if(IS_WIDESCREEN && [self.mode isEqualToString:@"Radical"]) {
-            CellIdentifier = @"chineseTallCell";
-        } else {
-            CellIdentifier = @"chineseCell";
-        }
+        static NSString *CellIdentifier = @"chineseCell";
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
         
         [self configureCell:cell atIndexPath:indexPath];
@@ -391,33 +385,27 @@
         simplified.text = title;
         
         
-        if(IS_WIDESCREEN) {
 
-            if([chinese isKindOfClass:[Radical class]]) {
-                UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
-                
-                NSString *synonymsString = ((Radical *)chinese).synonyms;
-                
-                // define the range you're interested in
-                NSRange stringRange = {0, MIN([synonymsString length], 5)};
-                
-                // adjust the range to include dependent chars
-                stringRange = [synonymsString rangeOfComposedCharacterSequencesForRange:stringRange];
-                
-                // Now you can create the short string
-                NSString *shortString = [synonymsString substringWithRange:stringRange];
-                
-                synonyms.text = shortString;
-            } else {
-                synonyms.text = @"";
-            }
-        }
+        if([chinese isKindOfClass:[Radical class]]) {
+            UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
+            
+            NSString *synonymsString = ((Radical *)chinese).synonyms;
+            
+            // define the range you're interested in
+            NSRange stringRange = {0, MIN([synonymsString length], 5)};
+            
+            // adjust the range to include dependent chars
+            stringRange = [synonymsString rangeOfComposedCharacterSequencesForRange:stringRange];
+            
+            // Now you can create the short string
+            NSString *shortString = [synonymsString substringWithRange:stringRange];
+            
+            synonyms.text = shortString;
+         }
     } else {
         simplified.text = @"";
         
-        if(IS_WIDESCREEN) {
-            synonyms.text = @"";
-        }
+        synonyms.text = @"";
     }
 }
 

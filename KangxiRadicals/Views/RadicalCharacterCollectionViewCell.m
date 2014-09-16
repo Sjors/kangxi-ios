@@ -24,11 +24,9 @@
     simplified.textColor =  TINTCOLOR;
     simplified.font = [UIFont fontWithName:@"STKaiti" size:50];
     
-    if(IS_WIDESCREEN) {
-        UILabel *synonyms = (UILabel *)[self viewWithTag:2];
-        synonyms.font = [UIFont fontWithName:@"STKaiti" size:20];
-        synonyms.alpha = 0.7;
-    }
+    UILabel *synonyms = (UILabel *)[self viewWithTag:2];
+    synonyms.font = [UIFont fontWithName:@"STKaiti" size:20];
+    synonyms.alpha = 0.7;
 }
 
 /*
@@ -44,10 +42,8 @@
     UILabel *simplified = (UILabel *)[self viewWithTag:1];
     simplified.text = @"";
     
-    if(IS_WIDESCREEN) {
-        UILabel *synonyms = (UILabel *)[self viewWithTag:2];
-        synonyms.text = @"";
-    }
+    UILabel *synonyms = (UILabel *)[self viewWithTag:2];
+    synonyms.text = @"";
 
 }
 
