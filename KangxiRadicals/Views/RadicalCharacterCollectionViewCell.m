@@ -21,12 +21,7 @@
 
 - (void)awakeFromNib {
     UILabel *simplified = (UILabel *)[self viewWithTag:1];
-    simplified.textColor =  TINTCOLOR;
-    simplified.font = [UIFont fontWithName:@"STKaiti" size:50];
-    
-    UILabel *synonyms = (UILabel *)[self viewWithTag:2];
-    synonyms.font = [UIFont fontWithName:@"STKaiti" size:20];
-    synonyms.alpha = 0.7;
+    simplified.textColor =  TINTCOLOR;    
 }
 
 /*

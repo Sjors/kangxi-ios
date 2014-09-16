@@ -364,7 +364,8 @@
     UILabel *simplified = (UILabel *)[cell viewWithTag:1];
     
     UILabel *synonyms = (UILabel *)[cell viewWithTag:2];
-
+    
+    synonyms.text = nil;
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
 

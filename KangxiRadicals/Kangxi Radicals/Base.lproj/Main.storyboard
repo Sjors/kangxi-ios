@@ -4,6 +4,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="华文楷体.TTF">
+            <string>STKaiti</string>
+            <string>STKaiti</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Which radical do you recognize?-->
         <scene sceneID="rwT-8n-zr1">
@@ -28,16 +34,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="70" height="88"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="广 疒" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rcU-U8-T0p">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="广 疒" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rcU-U8-T0p">
                                             <rect key="frame" x="0.0" y="64" width="70" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <fontDescription key="fontDescription" name="STKaiti" family="STKaiti" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="厂" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpG-5n-nnR">
                                             <rect key="frame" x="3" y="0.0" width="65" height="65"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="45"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" name="STKaiti" family="STKaiti" pointSize="50"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -144,43 +149,58 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="left" misplaced="YES" text="答 (dá)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apy-Af-yZj">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apy-Af-yZj">
                                             <rect key="frame" x="15" y="3" width="541" height="22"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="答">
+                                                    <attributes>
+                                                        <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <font key="NSFont" size="20" name="STKaiti"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment content=" (dá)">
+                                                    <attributes>
+                                                        <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <font key="NSFont" size="18" name="HelveticaNeue"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="15" y="3" width="349" height="22"/>
                                             </variation>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="left" misplaced="YES" text="answer, reply; return; assent to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJ3-cr-DQz">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="left" text="answer, reply; return; assent to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tJ3-cr-DQz">
                                             <rect key="frame" x="15" y="25" width="541" height="15"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="15" id="cJ1-Y4-bPh"/>
+                                                <constraint firstAttribute="height" constant="15" id="DtN-uv-qET"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <activityIndicatorView hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gxU-SU-kuO">
+                                        <activityIndicatorView hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gxU-SU-kuO">
                                             <rect key="frame" x="572" y="12" width="20" height="20"/>
                                             <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <variation key="widthClass=compact" fixedFrame="YES">
-                                                <rect key="frame" x="372" y="12" width="20" height="20"/>
-                                            </variation>
                                         </activityIndicatorView>
                                         <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="Pyv-cU-oSz">
                                             <rect key="frame" x="564" y="8" width="28" height="28"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="tJ3-cr-DQz" secondAttribute="bottom" constant="-4.5" id="3oK-cC-iVZ"/>
-                                        <constraint firstItem="Apy-Af-yZj" firstAttribute="top" secondItem="UVq-l1-ARD" secondAttribute="topMargin" constant="-5" id="BcM-Ac-l5J"/>
-                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="trailing" secondItem="UVq-l1-ARD" secondAttribute="trailingMargin" id="BdK-nX-dqi"/>
-                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="top" secondItem="UVq-l1-ARD" secondAttribute="topMargin" id="OKx-xt-Zpw"/>
-                                        <constraint firstItem="tJ3-cr-DQz" firstAttribute="top" secondItem="Apy-Af-yZj" secondAttribute="bottom" id="Pf5-2C-Cqe"/>
-                                        <constraint firstItem="tJ3-cr-DQz" firstAttribute="leading" secondItem="Apy-Af-yZj" secondAttribute="leading" id="TwE-TY-uHV"/>
-                                        <constraint firstItem="Apy-Af-yZj" firstAttribute="leading" secondItem="UVq-l1-ARD" secondAttribute="leadingMargin" constant="7" id="ptE-3F-TJd"/>
+                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="centerY" secondItem="gxU-SU-kuO" secondAttribute="centerY" id="9Q8-wF-F0F"/>
+                                        <constraint firstItem="Apy-Af-yZj" firstAttribute="leading" secondItem="UVq-l1-ARD" secondAttribute="leadingMargin" constant="7" id="J7U-46-7OV"/>
+                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="trailing" secondItem="UVq-l1-ARD" secondAttribute="trailingMargin" id="XoI-50-UTr"/>
+                                        <constraint firstItem="tJ3-cr-DQz" firstAttribute="leading" secondItem="Apy-Af-yZj" secondAttribute="leading" id="YlV-27-ErU"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="tJ3-cr-DQz" secondAttribute="bottom" constant="-4.5" id="ZWu-fr-v7f"/>
+                                        <constraint firstItem="tJ3-cr-DQz" firstAttribute="top" secondItem="Apy-Af-yZj" secondAttribute="bottom" id="d2g-cq-I87"/>
+                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="leading" secondItem="tJ3-cr-DQz" secondAttribute="trailing" constant="8" symbolic="YES" id="ehN-Dw-JLz"/>
+                                        <constraint firstItem="Apy-Af-yZj" firstAttribute="top" secondItem="UVq-l1-ARD" secondAttribute="topMargin" constant="-5" id="hw0-RV-uu3"/>
+                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="leading" secondItem="Apy-Af-yZj" secondAttribute="trailing" constant="8" symbolic="YES" id="iHa-ve-mp6"/>
+                                        <constraint firstItem="gxU-SU-kuO" firstAttribute="trailing" secondItem="Pyv-cU-oSz" secondAttribute="trailing" id="ldp-wf-eLe"/>
+                                        <constraint firstItem="Pyv-cU-oSz" firstAttribute="top" secondItem="UVq-l1-ARD" secondAttribute="topMargin" id="pEE-ZG-hxc"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
