@@ -581,7 +581,7 @@
 				INFOPLIST_FILE = "Kangxi Radicals/KangxiRadicals-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "663e7ba2-502f-4ed7-bd10-dcc905f390d6";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

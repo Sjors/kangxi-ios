@@ -30,6 +30,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+#ifdef DEBUG
+    [[NSUserDefaults standardUserDefaults] setObject:@"paid" forKey:@"fullVersion"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+#endif
+    
 #ifndef DEBUG
     [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     [[Mixpanel sharedInstance] track:@"Launch"];
